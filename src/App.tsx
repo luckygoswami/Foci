@@ -1,3 +1,6 @@
+import { toast, ToastContainer } from 'react-toastify';
+import { Button } from './components/ui/button';
+
 function App() {
   return (
     <>
@@ -28,6 +31,15 @@ function App() {
           aut sapiente, reiciendis esse illo assumenda id temporibus tempora
           qui?
         </p>
+        <Button onClick={() => toast.success('too easy!')}>
+          toast the msg
+        </Button>
+        <ToastContainer
+          position="top-center"
+          toastStyle={{
+            backgroundColor: 'var(--background)',
+          }}
+        />
       </div>
     </>
   );
