@@ -1,7 +1,9 @@
 import { useRef } from 'react';
 import './AuthForm.css';
+import { useNavigate } from 'react-router-dom';
 
 function LoginForm() {
+  const navigate = useNavigate();
   const container = useRef<HTMLDivElement>(null);
 
   return (
@@ -33,7 +35,8 @@ function LoginForm() {
             </div>
             <button
               type="submit"
-              className="btn">
+              className="btn"
+              onClick={() => navigate('/')}>
               Login
             </button>
             <p>or login with social platforms</p>
