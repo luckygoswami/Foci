@@ -1,10 +1,55 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '@/features/auth/AuthProvider';
+import { toast } from 'react-toastify';
 import './AuthForm.css';
-import { useNavigate } from 'react-router-dom';
 
-function LoginForm() {
+function AuthForm() {
   const navigate = useNavigate();
+  const location = useLocation();
   const container = useRef<HTMLDivElement>(null);
+
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const { googleLogin, emailLogin, emailSignup } = useAuth();
+
+  const from = (location.state as any)?.from?.pathname || '/app';
+
+  const handleLogin = async () => {
+    setLoading(true);
+    try {
+      await emailLogin(email, password);
+      navigate(from, { replace: true });
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : 'Login failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignup = async () => {
+    setLoading(true);
+    try {
+      await emailSignup(email, password);
+      navigate('/app');
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : 'Signup failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      await googleLogin();
+      navigate(from, { replace: true });
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : 'Authentication failed');
+    }
+  };
 
   return (
     <div className="body">
@@ -12,12 +57,17 @@ function LoginForm() {
         className="container"
         ref={container}>
         <div className="form-box login">
-          <form action="">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleLogin();
+            }}>
             <h1 className="font-bold">Login</h1>
             <div className="input-box">
               <input
                 type="text"
-                placeholder="Username"
+                placeholder="Enter Username or Email"
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
               <i className="fa-solid fa-user"></i>
@@ -26,6 +76,7 @@ function LoginForm() {
               <input
                 type="password"
                 placeholder="Enter Password"
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
               <i className="fa-solid fa-lock"></i>
@@ -36,33 +87,33 @@ function LoginForm() {
             <button
               type="submit"
               className="btn"
-              onClick={() => navigate('/')}>
-              Login
+              disabled={loading}>
+              {loading ? 'Logging in...' : 'Login'}
             </button>
             <p>or login with social platforms</p>
             <div className="social-icons">
-              <a href="#">
-                <i className="fa-brands fa-google"></i>
-              </a>
-              <a href="#">
-                <i className="fa-brands fa-facebook"></i>
-              </a>
-              <a href="#">
-                <i className="fa-brands fa-github"></i>
-              </a>
-              <a href="#">
-                <i className="fa-brands fa-linkedin"></i>
-              </a>
+              <i
+                className="fa-brands fa-google"
+                onClick={handleGoogleLogin}></i>
+              <i className="fa-brands fa-facebook"></i>
+              <i className="fa-brands fa-github"></i>
+              <i className="fa-brands fa-linkedin"></i>
             </div>
           </form>
         </div>
+
         <div className="form-box register">
-          <form action="">
-            <h1 className="font-bold">Registration</h1>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSignup();
+            }}>
+            <h1 className="font-bold">Sign Up</h1>
             <div className="input-box">
               <input
                 type="text"
                 placeholder="Username"
+                onChange={(e) => setUsername(e.target.value)}
                 required
               />
               <i className="fa-solid fa-user"></i>
@@ -71,6 +122,7 @@ function LoginForm() {
               <input
                 type="email"
                 placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
               <i className="fa-solid fa-envelope"></i>
@@ -79,29 +131,25 @@ function LoginForm() {
               <input
                 type="password"
                 placeholder="Enter Password"
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
               <i className="fa-solid fa-lock"></i>
             </div>
             <button
               type="submit"
-              className="btn">
-              Register
+              className="btn"
+              disabled={loading}>
+              {loading ? 'Signing up...' : 'Sign up'}
             </button>
-            <p>or register with social platforms</p>
+            <p>or signup with social platforms</p>
             <div className="social-icons">
-              <a href="#">
-                <i className="fa-brands fa-google"></i>
-              </a>
-              <a href="#">
-                <i className="fa-brands fa-facebook"></i>
-              </a>
-              <a href="#">
-                <i className="fa-brands fa-github"></i>
-              </a>
-              <a href="#">
-                <i className="fa-brands fa-linkedin"></i>
-              </a>
+              <i
+                className="fa-brands fa-google"
+                onClick={handleGoogleLogin}></i>
+              <i className="fa-brands fa-facebook"></i>
+              <i className="fa-brands fa-github"></i>
+              <i className="fa-brands fa-linkedin"></i>
             </div>
           </form>
         </div>
@@ -112,10 +160,8 @@ function LoginForm() {
             <p>Don't have an account?</p>
             <button
               className="btn register-btn"
-              onClick={() => {
-                container.current?.classList.add('active');
-              }}>
-              Register
+              onClick={() => container.current?.classList.add('active')}>
+              Sign Up
             </button>
           </div>
           <div className="toggle-panel toggle-right">
@@ -123,9 +169,7 @@ function LoginForm() {
             <p>Already have an account?</p>
             <button
               className="btn login-btn"
-              onClick={() => {
-                container.current?.classList.remove('active');
-              }}>
+              onClick={() => container.current?.classList.remove('active')}>
               Login
             </button>
           </div>
@@ -135,4 +179,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+export default AuthForm;

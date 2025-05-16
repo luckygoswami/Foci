@@ -118,7 +118,7 @@ form {
   justify-content: center;
 }
 
-.social-icons a {
+.social-icons i {
   display: inline-flex;
   padding: 10px;
   border: 2px solid #ccc;
