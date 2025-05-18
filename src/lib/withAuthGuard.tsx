@@ -1,4 +1,5 @@
 import AuthGuard from '@/components/AuthGuard';
+import AppLayout from '@/components/layouts/AppLayout';
 import { isValidElement } from 'react';
 import { type RouteObject } from 'react-router-dom';
 
@@ -20,7 +21,11 @@ export function wrapWithAuthGuard(
       route.element &&
       isValidElement(route.element)
     ) {
-      wrappedRoute.element = <AuthGuard>{route.element}</AuthGuard>;
+      wrappedRoute.element = (
+        <AuthGuard>
+          <AppLayout children={route.element} />
+        </AuthGuard>
+      );
     }
 
     if (route.children) {
