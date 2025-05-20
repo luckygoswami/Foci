@@ -1,13 +1,34 @@
+import type { DocumentReference, Timestamp } from 'firebase/firestore';
+import type { FirebaseUserId, GroupId } from './core';
+import type { StudySession } from './study';
+
 export interface User {
-  uid: string;
+  id: FirebaseUserId;
   username: string;
   email: string;
-  displayName: string;
+  name: string;
   avatarUrl?: string;
-  groups: string[];
-  currentGroupId?: string;
-  totalStudySeconds: number;
-  weeklyStudySeconds: Record<string, number>;
-  isStudying: boolean;
-  currentSessionStartedAt?: number;
+  bio: string;
+  studyGoal: string;
+  subjects: string[];
+  dailyTargetMinutes: number;
+  totalStudyTime: number;
+  streakCount: number;
+  studySessions: DocumentReference<StudySession>[];
+  lastActive: Timestamp;
+  friends: FirebaseUserId[];
+  groups: GroupId[];
+  privacySettings: {
+    showStudyTime: boolean;
+    showOnlineStatus: boolean;
+  };
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+}
+
+export interface UserStatus {
+  id: FirebaseUserId;
+  state: 'studying' | 'online' | 'offline';
+  startedAt: Timestamp | null;
+  lastChanged: Timestamp;
 }
