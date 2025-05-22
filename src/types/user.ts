@@ -13,17 +13,21 @@ export interface User {
   subjects: string[];
   dailyTargetMinutes: number;
   totalStudyTime: number;
-  streakCount: number;
   studySessions: DocumentReference<StudySession>[];
   lastActive: Timestamp;
   friends: FirebaseUserId[];
   groups: GroupId[];
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+  streak: {
+    current: number;
+    longest: number;
+    updatedAt: Timestamp;
+  };
   privacySettings: {
     showStudyTime: boolean;
     showOnlineStatus: boolean;
   };
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
 }
 
 export interface UserStatus {

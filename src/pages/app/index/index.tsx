@@ -6,7 +6,7 @@ function Home() {
 
   return (
     <>
-      <h1>Welcom to Foci!</h1>
+      <h1>Welcome to Foci..</h1>
       <Button
         variant={'destructive'}
         onClick={logout}>

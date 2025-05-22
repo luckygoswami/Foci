@@ -6,6 +6,7 @@ export interface Group {
   id: GroupId;
   name: string;
   description: string;
+  tags?: string[];
   creatorId: FirebaseUserId;
   memberCount: number;
   members: GroupMember[];

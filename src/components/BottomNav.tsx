@@ -1,11 +1,12 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Users, BarChart, User } from 'lucide-react';
+import { Home, Users, BarChart, UserCog, Handshake } from 'lucide-react';
 
 const navItems = [
   { to: '/app', icon: <Home size={20} />, label: 'Home' },
-  { to: '/app/groups', icon: <Users size={20} />, label: 'Groups' },
   { to: '/app/progress', icon: <BarChart size={20} />, label: 'Progress' },
-  { to: '/app/profile', icon: <User size={20} />, label: 'Profile' },
+  { to: '/app/groups', icon: <Users size={20} />, label: 'Groups' },
+  { to: '/app/buddies', icon: <Handshake size={20} />, label: 'Buddies' },
+  { to: '/app/account', icon: <UserCog size={20} />, label: 'Account' },
 ];
 
 export default function BottomNav() {
