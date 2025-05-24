@@ -1,5 +1,9 @@
 function GroupsDashboard() {
-  return <h1>GroupsDashboard</h1>;
+  return (
+    <main>
+      <h1>GroupsDashboard</h1>;
+    </main>
+  );
 }
 
 export default GroupsDashboard;

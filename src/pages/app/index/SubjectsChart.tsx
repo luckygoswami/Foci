@@ -1,7 +1,6 @@
 import {
   PieChart,
   Pie,
-  Sector,
   Cell,
   ResponsiveContainer,
   Legend,
@@ -43,37 +42,39 @@ const renderCustomizedLabel = ({
 };
 
 export default function SubjectsChart() {
-  {
-    return (
-      <ResponsiveContainer
-        width="100%"
-        height="100%">
-        <PieChart
-          width={400}
-          height={400}>
-          <Pie
-            className="focus:outline-none"
-            data={data}
-            cx="50%"
-            cy="50%"
-            // labelLine={false}
-            label={renderCustomizedLabel}
-            cornerRadius={5}
-            outerRadius={80}
-            isAnimationActive={true}
-            fill="#8884d8"
-            dataKey="value">
-            {data.map((entry, index) => (
-              <Cell
-                onClick={(e) => e.preventDefault}
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
-            ))}
-          </Pie>
-          <Tooltip />
-        </PieChart>
-      </ResponsiveContainer>
-    );
-  }
+  return (
+    <ResponsiveContainer
+      width="100%"
+      height="100%">
+      <PieChart
+        width={400}
+        height={400}>
+        <Pie
+          className="focus:outline-none"
+          data={data}
+          cx="50%"
+          cy="50%"
+          labelLine={false}
+          label={renderCustomizedLabel}
+          cornerRadius={5}
+          outerRadius={80}
+          isAnimationActive={true}
+          fill="#8884d8"
+          dataKey="value">
+          {data.map((entry, index) => (
+            <Cell
+              key={`cell-${index}`}
+              fill={COLORS[index % COLORS.length]}
+            />
+          ))}
+        </Pie>
+        <Legend
+          align="right"
+          verticalAlign="middle"
+          layout="vertical"
+        />
+        <Tooltip />
+      </PieChart>
+    </ResponsiveContainer>
+  );
 }

@@ -1,45 +1,56 @@
-import React, { PureComponent } from 'react';
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
 
 const data = [
-  { name: 'Group A', value: 1500 },
-  { name: 'Group B', value: 2304 },
+  { name: 'remaining', value: 576 },
+  { name: 'target', value: 2880 },
 ];
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
-export default class WeeklyGoalChart extends PureComponent {
-  static demoUrl =
-    'https://codesandbox.io/s/pie-chart-with-padding-angle-7ux0o';
+const renderCustomLegend = () => {
+  return (
+    <div className="flex flex-col text-center">
+      <div className="flex justify-center">
+        <span>{`${data[1].value - data[0].value}`}</span>
+        <span className="font-ligh">{`/${data[1].value}`}</span>
+      </div>
+      <b>Weekly Goal</b>
+    </div>
+  );
+};
 
-  render() {
+export default function WeeklyGoalChart() {
+  {
     return (
-      <>
-        <ResponsiveContainer
-          width="100%"
-          height="100%">
-          <PieChart
-            width={800}
-            height={400}
-            onMouseEnter={this.onPieEnter}>
-            <Pie
-              data={data}
-              cx="50%"
-              cy="50%"
-              innerRadius={60}
-              outerRadius={80}
-              fill="#8884d8"
-              paddingAngle={1}
-              dataKey="value">
-              {data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-          </PieChart>
-        </ResponsiveContainer>
-      </>
+      <ResponsiveContainer
+        width="100%"
+        height="100%">
+        <PieChart
+          width={800}
+          height={400}>
+          <Pie
+            className="focus:outline-none"
+            data={data}
+            cx="50%"
+            cy="50%"
+            innerRadius={60}
+            outerRadius={80}
+            fill="#8884d8"
+            dataKey="value">
+            {data.map((entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
+            ))}
+          </Pie>
+          <Legend
+            align="center"
+            verticalAlign="middle"
+            layout="vertical"
+            content={renderCustomLegend}
+          />
+        </PieChart>
+      </ResponsiveContainer>
     );
   }
 }

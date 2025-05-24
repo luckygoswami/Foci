@@ -145,8 +145,19 @@
 
 body {
   font-family: 'Poppins', sans-serif;
+  height: 100dvh;
 }
 
-.jetBrains-text {
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex-grow: 1;
+}
+
+.jetBrains {
   font-family: 'JetBrains', sans-serif;
 }

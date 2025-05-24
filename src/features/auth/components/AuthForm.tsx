@@ -52,7 +52,7 @@ function AuthForm() {
   };
 
   return (
-    <div className="body">
+    <div className="form-body">
       <div
         className="container"
         ref={container}>

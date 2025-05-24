@@ -1,5 +1,5 @@
 function BuddiesDashboard() {
-  return <div>BuddiesDashboard</div>;
+  return <main>BuddiesDashboard</main>;
 }
 
 export default BuddiesDashboard;

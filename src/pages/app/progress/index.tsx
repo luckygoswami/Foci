@@ -1,5 +1,9 @@
 function ProgressDashboard() {
-  return <h1>ProgressDashboard</h1>;
+  return (
+    <main>
+      <h1>ProgressDashboard</h1>
+    </main>
+  );
 }
 
 export default ProgressDashboard;
