@@ -57,7 +57,7 @@ export default function SubjectsChart() {
           labelLine={false}
           label={renderCustomizedLabel}
           cornerRadius={5}
-          outerRadius={80}
+          outerRadius={100}
           isAnimationActive={true}
           fill="#8884d8"
           dataKey="value">

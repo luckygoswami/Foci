@@ -10,8 +10,8 @@ const renderCustomLegend = () => {
   return (
     <div className="flex flex-col text-center">
       <div className="flex justify-center">
-        <span>{`${data[1].value - data[0].value}`}</span>
-        <span className="font-ligh">{`/${data[1].value}`}</span>
+        <span className="opacity-60">{`${data[1].value - data[0].value}`}</span>
+        <span>{`/${data[1].value}`}</span>
       </div>
       <b>Daily Goal</b>
     </div>

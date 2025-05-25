@@ -47,24 +47,16 @@ const Timer: React.FC<TimerProps> = ({
         {formatTime(time)}
       </div>
       {!autoStart && (
-        <div className="flex space-x-2">
-          {!isRunning ? (
-            <button
-              onClick={handleStart}
-              className="px-4 py-1 bg-blue-500 text-white rounded">
-              Start
-            </button>
-          ) : (
-            <button
-              onClick={handlePause}
-              className="px-4 py-1 bg-yellow-500 text-white rounded">
-              Pause
-            </button>
-          )}
+        <div className="btn-container flex w-full space-x-2">
+          <button
+            className="px-4 py-2 grow bg-blue-500 text-2x text-white rounded"
+            onClick={isRunning ? handlePause : handleStart}>
+            {!isRunning ? 'Start' : 'Pause'}
+          </button>
           <button
             onClick={handleReset}
-            className="px-4 py-1 bg-gray-500 text-white rounded">
-            Reset
+            className="px-4 py-2 grow bg-gray-500 text-2x text-white rounded">
+            End
           </button>
         </div>
       )}
