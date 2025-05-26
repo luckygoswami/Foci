@@ -52,7 +52,7 @@ function AuthForm() {
   };
 
   return (
-    <div className="form-body">
+    <main className="form-body">
       <div
         className="container"
         ref={container}>
@@ -175,7 +175,7 @@ function AuthForm() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 

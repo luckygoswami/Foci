@@ -156,6 +156,7 @@ body {
 
 main {
   grid-row: 1;
+  overflow: hidden;
 }
 
 .jetBrains {
