@@ -150,14 +150,19 @@ body {
 
 #root {
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 1fr auto; /* main + navbar */
 }
 
 main {
-  flex-grow: 1;
+  grid-row: 1;
 }
 
 .jetBrains {
   font-family: 'JetBrains', sans-serif;
+}
+
+.recharts-legend-item {
+  margin-right: 0 !important;
+  margin-left: 5px;
 }

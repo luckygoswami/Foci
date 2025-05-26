@@ -46,9 +46,7 @@ export default function SubjectsChart() {
     <ResponsiveContainer
       width="100%"
       height="100%">
-      <PieChart
-        width={400}
-        height={400}>
+      <PieChart>
         <Pie
           className="focus:outline-none"
           data={data}
@@ -72,6 +70,7 @@ export default function SubjectsChart() {
           align="right"
           verticalAlign="middle"
           layout="vertical"
+          wrapperStyle={{ right: 0 }}
         />
         <Tooltip />
       </PieChart>
