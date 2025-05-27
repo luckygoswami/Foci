@@ -9,10 +9,10 @@ function GroupsDashboard() {
         <SearchBox type="group" />
       </div>
 
-      <div className="h-full border-x border-t rounded-tr-2xl rounded-tl-2xl px-2 border-black">
+      <div className="flex-[1] flex flex-col border-x border-t rounded-tr-2xl rounded-tl-2xl px-2 border-black overflow-hidden">
         <h1 className="font-bold text-3xl m-2">Joined Groups</h1>
-        <div className="h-full overflow-y-auto">
-          <div className="space-y-4 pb-50">
+        <div className="flex-[1] overflow-y-auto">
+          <div className="space-y-4 pb-20">
             {[...Array(13)].map((_, i) => (
               <GroupCard
                 key={i}

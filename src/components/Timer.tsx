@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 interface TimerProps {
   initialTime?: number; // in seconds
   autoStart?: boolean;
+  size: 'big' | 'small';
 }
 
 const formatTime = (totalSeconds: number) => {
@@ -15,10 +16,7 @@ const formatTime = (totalSeconds: number) => {
   return `${hours}:${minutes}:${seconds}`;
 };
 
-const Timer: React.FC<TimerProps> = ({
-  initialTime = 0,
-  autoStart = false,
-}) => {
+const Timer: React.FC<TimerProps> = ({ initialTime = 0, autoStart, size }) => {
   const [time, setTime] = useState(initialTime);
   const [isRunning, setIsRunning] = useState(autoStart);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -43,13 +41,14 @@ const Timer: React.FC<TimerProps> = ({
 
   return (
     <div className="flex flex-col items-center space-y-2">
-      <div className="text-6xl font-extrabold jetBrains">
+      <div
+        className={`${size == 'big' && 'text-6xl'} font-extrabold jetBrains`}>
         {formatTime(time)}
       </div>
-      {!autoStart && (
+      {size == 'big' && (
         <div className="btn-container flex w-full space-x-2">
           <button
-            className="px-4 py-2 grow bg-blue-500 text-2x text-white rounded"
+            className="px-4 py-2 grow bg-blue-500 text-white rounded"
             onClick={isRunning ? handlePause : handleStart}>
             {!isRunning ? 'Start' : 'Pause'}
           </button>

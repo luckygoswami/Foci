@@ -6,7 +6,7 @@ function SearchBox({ type }: { type: string }) {
       <input
         className="mx-2 my-1 w-full px-1 focus:outline-0"
         type="text"
-        placeholder={`Search ${type}s`}
+        placeholder={`Search ${type}`}
       />
       <Search />
     </div>
