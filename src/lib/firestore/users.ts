@@ -10,19 +10,23 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase-config';
 import type { FirebaseUserId } from '@/types/core';
-import type { User } from '@/types/user';
+import type { UserData } from '@/types/user';
+import type { User } from 'firebase/auth';
 
 export const getUserById = async (
   userId: FirebaseUserId
-): Promise<User | null> => {
+): Promise<UserData | null> => {
   const userRef = doc(db, 'users', userId);
   const snapshot = await getDoc(userRef);
-  return snapshot.exists() ? (snapshot.data() as User) : null;
+  return snapshot.exists() ? (snapshot.data() as UserData) : null;
 };
 
-export const createUser = async (user: User): Promise<void> => {
-  const userRef = doc(db, 'users', user.id);
-  await setDoc(userRef, user);
+export const createUserDataIfNotExists = async (
+  userId: FirebaseUserId,
+  userData: Partial<UserData>
+): Promise<void> => {
+  const userRef = doc(db, 'users', userId);
+  userRef && (await setDoc(userRef, userData));
 };
 
 export const updateUser = async (
