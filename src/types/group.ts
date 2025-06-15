@@ -1,9 +1,6 @@
-import type { DocumentReference, Timestamp } from 'firebase/firestore';
-import type { FirebaseUserId, GroupId } from './core';
-import type { User } from './user';
+import type { FirebaseUserId } from './core';
 
 export interface Group {
-  id: GroupId;
   name: string;
   description: string;
   tags?: string[];
@@ -11,13 +8,13 @@ export interface Group {
   memberCount: number;
   members: GroupMember[];
   isPublic: boolean;
-  joinCode?: string;
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
+  joinCode: number;
+  createdAt: number;
+  updatedAt: number;
 }
 
 export interface GroupMember {
-  userRef: DocumentReference<User>;
+  userId: FirebaseUserId;
   role: 'admin' | 'member';
-  joinedAt: Timestamp;
+  joinedAt: number;
 }
