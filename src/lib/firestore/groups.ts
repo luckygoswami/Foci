@@ -1,15 +1,14 @@
 import {
   doc,
-  setDoc,
   getDoc,
   updateDoc,
   collection,
-  query,
-  where,
-  getDocs,
+  addDoc,
+  arrayUnion,
 } from 'firebase/firestore';
 import { db } from '../firebase-config';
-import type { Group, GroupId } from '@/types/group';
+import type { GroupId } from '@/types/core';
+import type { Group } from '@/types/group';
 
 export const getGroupById = async (groupId: GroupId): Promise<Group | null> => {
   const groupRef = doc(db, 'groups', groupId);
@@ -17,9 +16,12 @@ export const getGroupById = async (groupId: GroupId): Promise<Group | null> => {
   return snapshot.exists() ? (snapshot.data() as Group) : null;
 };
 
-export const createGroup = async (group: Group): Promise<void> => {
-  const groupRef = doc(db, 'groups', group.id);
-  await setDoc(groupRef, group);
+export const createGroup = async (groupData: Group): Promise<void> => {
+  const newGroupRef = await addDoc(collection(db, 'groups'), groupData);
+  const userDoc = doc(db, 'users', groupData.creatorId);
+  await updateDoc(userDoc, {
+    groups: arrayUnion(newGroupRef.id),
+  });
 };
 
 export const updateGroup = async (
