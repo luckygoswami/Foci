@@ -16,15 +16,11 @@ export const addStudySession = async (
   sessionData: StudySession
 ): Promise<void> => {
   await addDoc(collection(db, 'studySessions'), sessionData);
-  const userRef = doc(db, 'users', sessionData.userId);
-  const userDoc = await getDoc(userRef);
 
-  if (userDoc.exists()) {
-    const prevTime = userDoc.data().totalStudyTime;
-    await updateDoc(userRef, {
-      totalStudyTime: prevTime + sessionData.duration,
-    });
-  }
+  const userRef = doc(db, 'users', sessionData.userId);
+  await updateDoc(userRef, {
+    totalStudyTime: increment(sessionData.duration),
+  });
 };
 
 export const getStudySessionsByUser = async (
