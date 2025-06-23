@@ -1,7 +1,8 @@
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
-import { db } from '../firebase-config';
+import { db, rtdb } from '../firebase-config';
 import type { FirebaseUserId } from '@/types/core';
 import type { UserData } from '@/types/user';
+import { ref, set } from 'firebase/database';
 
 export const getUserById = async (
   userId: FirebaseUserId
@@ -25,4 +26,16 @@ export const updateUser = async (
 ): Promise<void> => {
   const userRef = doc(db, 'users', userId);
   await updateDoc(userRef, data);
+};
+
+export const setUserStatus = async (
+  userId: FirebaseUserId,
+  state: 'online' | 'studying' | 'offline',
+  startedAt: number | null = null
+): Promise<void> => {
+  set(ref(rtdb, 'userStatus/' + userId), {
+    state,
+    startedAt,
+    lastChanged: Date.now(),
+  });
 };

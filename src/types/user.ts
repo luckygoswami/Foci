@@ -26,7 +26,6 @@ export interface UserData {
 }
 
 export interface UserStatus {
-  uid: FirebaseUserId;
   state: 'studying' | 'online' | 'offline';
   startedAt: number | null;
   lastChanged: number;
