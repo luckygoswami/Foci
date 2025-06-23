@@ -5,8 +5,8 @@ import {
   where,
   getDocs,
   updateDoc,
-  getDoc,
   doc,
+  increment,
 } from 'firebase/firestore';
 import { db } from '../firebase-config';
 import type { StudySession } from '@/types/study';
