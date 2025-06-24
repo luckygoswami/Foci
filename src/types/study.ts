@@ -7,5 +7,13 @@ export interface StudySession {
   endTime: number;
   duration: number;
   subject: string;
+}
+
+export interface CurrentSession {
+  startTime: number;
+  duration: number;
+  state: 'studying' | 'idle';
+  subject: string;
+  groupIds?: GroupId[];
   isPublic: boolean;
 }
