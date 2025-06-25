@@ -24,9 +24,3 @@ export interface UserData {
     showOnlineStatus: boolean;
   };
 }
-
-export interface UserStatus {
-  state: 'studying' | 'online' | 'offline';
-  startedAt: number | null;
-  lastChanged: number;
-}
