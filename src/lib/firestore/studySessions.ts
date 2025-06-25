@@ -11,11 +11,19 @@ import {
 import { db, rtdb } from '../firebase-config';
 import type { CurrentSession, StudySession } from '@/types/study';
 import type { FirebaseUserId, GroupId } from '@/types/core';
-import { ref, set, update } from 'firebase/database';
+import { get, ref, remove, set, update } from 'firebase/database';
 
-export const addStudySession = async (
-  sessionData: StudySession
-): Promise<void> => {
+function getEffectiveDuration(sessionData: CurrentSession): number {
+  const startTime = sessionData.resumeTime || sessionData.startTime;
+  const now = Date.now();
+  const elapsedMs = now - startTime;
+  const elapsedMinutes = Math.floor(elapsedMs / 60000);
+  const duration = sessionData.duration + elapsedMinutes;
+
+  return duration;
+}
+
+const addStudySession = async (sessionData: StudySession): Promise<void> => {
   await addDoc(collection(db, 'studySessions'), sessionData);
 
   const userRef = doc(db, 'users', sessionData.userId);
@@ -54,10 +62,35 @@ export const getStudySessionsByDate = async (
   return snapshot.docs.map((doc) => doc.data() as StudySession);
 };
 
-export const setCurrentSession = async (
+async function fetchCurrentSession(
+  userId: FirebaseUserId
+): Promise<CurrentSession> {
+  const local = localStorage.getItem('currentSession') ?? 'null';
+
+  if (local) {
+    return JSON.parse(local) as CurrentSession;
+  } else {
+    const sessionRef = ref(rtdb, 'currentSessions/' + userId);
+    try {
+      const snapshot = await get(sessionRef);
+
+      if (snapshot.exists()) {
+        return snapshot.val() as CurrentSession;
+      } else {
+        throw new Error("Can't retrieve current session data.");
+      }
+    } catch (e) {
+      throw new Error(
+        `Error reading session from database: ${(e as Error).message}`
+      );
+    }
+  }
+}
+
+export const startCurrentSession = async (
   userId: FirebaseUserId,
   subject: string,
-  groupIds: GroupId[] = [],
+  groupIds?: GroupId[],
   isPublic: boolean = true
 ): Promise<void> => {
   const session: CurrentSession = {
@@ -65,8 +98,8 @@ export const setCurrentSession = async (
     duration: 0,
     state: 'studying',
     subject,
-    groupIds,
     isPublic,
+    ...(groupIds && { groupIds }),
   };
 
   await set(ref(rtdb, 'currentSessions/' + userId), session);
@@ -78,27 +111,64 @@ export const setCurrentSession = async (
 export const pauseCurrentSession = async (
   userId: FirebaseUserId
 ): Promise<void> => {
-  const session: CurrentSession = JSON.parse(
-    localStorage.getItem('currentSession') ?? 'null'
-  );
-  const startTime = session.startTime;
-  const now = Date.now();
-  const elapsedMs = now - startTime;
-  const elapsedMinutes = Math.floor(elapsedMs / 60000);
+  const sessionData: CurrentSession = await fetchCurrentSession(userId);
+  const duration = getEffectiveDuration(sessionData);
 
+  const sessionUpdate: Partial<CurrentSession> = {
+    duration,
+    state: 'idle',
+  };
   await update(ref(rtdb, 'currentSessions/' + userId), {
-    startTime: null,
-    duration: increment(elapsedMinutes),
-    state: 'pause',
+    ...sessionUpdate,
   });
 
   localStorage.setItem(
     'currentSession',
     JSON.stringify({
-      ...session,
-      startTime: null,
-      duration: session.duration + elapsedMinutes,
-      state: 'idle',
+      ...sessionData,
+      ...sessionUpdate,
     })
   );
+};
+
+export const resumeCurrentSession = async (
+  userId: FirebaseUserId
+): Promise<void> => {
+  const sessionUpdate: Partial<CurrentSession> = {
+    state: 'studying',
+    resumeTime: Date.now(),
+  };
+
+  await update(ref(rtdb, 'currentSessions/' + userId), {
+    ...sessionUpdate,
+  });
+
+  const sessionData: CurrentSession = await fetchCurrentSession(userId);
+  localStorage.setItem(
+    'currentSession',
+    JSON.stringify({
+      ...sessionData,
+      ...sessionUpdate,
+    })
+  );
+};
+
+export const endCurrentSession = async (
+  userId: FirebaseUserId
+): Promise<void> => {
+  const sessionData: CurrentSession = await fetchCurrentSession(userId);
+  const duration = getEffectiveDuration(sessionData);
+
+  const session: StudySession = {
+    userId,
+    startTime: sessionData.startTime,
+    endTime: Date.now(),
+    duration,
+    subject: sessionData.subject,
+    ...(sessionData.groupIds && { groupIds: sessionData.groupIds }),
+  };
+
+  await addStudySession(session);
+  await remove(ref(rtdb, 'currentSessions/' + userId));
+  localStorage.removeItem('currentSession');
 };
