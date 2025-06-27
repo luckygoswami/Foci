@@ -1,7 +1,7 @@
 import { User2 } from 'lucide-react';
-import { useAuth } from '@/features/auth/AuthProvider';
+import { useAuth } from '@/features/auth';
 
-function UserDetails() {
+export function UserDetails() {
   const { user } = useAuth();
 
   return (
@@ -19,5 +19,3 @@ function UserDetails() {
     </>
   );
 }
-
-export default UserDetails;

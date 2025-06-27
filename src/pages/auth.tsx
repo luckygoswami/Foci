@@ -1,5 +1,5 @@
-import { AuthForm } from '@/features/auth/components';
-import { useAuth } from '@/features/auth/AuthProvider';
+import { AuthForm } from '@/features/auth';
+import { useAuth } from '@/features/auth';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 

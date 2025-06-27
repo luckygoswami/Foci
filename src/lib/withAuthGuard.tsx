@@ -1,4 +1,4 @@
-import AuthGuard from '@/components/AuthGuard';
+import { AuthGuard } from '@/features/auth';
 import AppLayout from '@/components/layouts/AppLayout';
 import { isValidElement } from 'react';
 import { type RouteObject } from 'react-router-dom';

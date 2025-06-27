@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 import SearchBox from '@/components/SearchBox';
-import BuddySessionCard from '@/features/buddies/components/BuddySessionCard';
-import BuddyRequestCard from '@/features/buddies/components/BuddyRequestCard';
+import { BuddySessionCard, BuddyRequestCard } from '@/features/buddies';
 
 const requests = [
   {

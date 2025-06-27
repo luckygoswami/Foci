@@ -18,7 +18,7 @@ const renderCustomLegend = () => {
   );
 };
 
-export default function DailyGoalChart() {
+export function DailyGoalChart() {
   {
     return (
       <>

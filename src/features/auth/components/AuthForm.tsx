@@ -1,10 +1,10 @@
 import { useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@/features/auth/AuthProvider';
+import { useAuth } from '@/features/auth';
 import { toast } from 'react-toastify';
 import './AuthForm.css';
 
-function AuthForm() {
+export function AuthForm() {
   const navigate = useNavigate();
   const location = useLocation();
   const container = useRef<HTMLDivElement>(null);
@@ -14,7 +14,7 @@ function AuthForm() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { googleLogin, emailLogin, emailSignup } = useAuth();
+  const { googleLogin, emailLogin, emailSignup, user } = useAuth();
 
   const from = (location.state as any)?.from?.pathname || '/app';
 
@@ -48,6 +48,7 @@ function AuthForm() {
       navigate(from, { replace: true });
     } catch (err: unknown) {
       toast.error(err instanceof Error ? err.message : 'Authentication failed');
+    } finally {
     }
   };
 
@@ -178,5 +179,3 @@ function AuthForm() {
     </main>
   );
 }
-
-export default AuthForm;

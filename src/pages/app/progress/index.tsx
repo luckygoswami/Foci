@@ -1,5 +1,5 @@
-import Streakboard from '@/features/streaks/components/Streakboard';
-import SubjectProgressChart from '@/features/charts/components/SubjectProgressChart';
+import { Streakboard } from '@/features/streaks';
+import { SubjectProgressChart } from '@/features/charts';
 
 function ProgressDashboard() {
   return (

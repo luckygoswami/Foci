@@ -1,6 +1,6 @@
 import { Flame } from 'lucide-react';
 
-function Streakboard() {
+export function Streakboard() {
   return (
     <>
       <h1 className="font-bold text-4xl">Streakboard</h1>
@@ -55,5 +55,3 @@ function Streakboard() {
     </>
   );
 }
-
-export default Streakboard;

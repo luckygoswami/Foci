@@ -2,7 +2,7 @@ import { useLocation, useRoutes } from 'react-router-dom';
 import { Suspense, useMemo } from 'react';
 import routes from '~react-pages';
 import { wrapWithAuthGuard } from '@/lib/withAuthGuard';
-import LoadingScreen from './components/LoadingScreen';
+import LoadingScreen from '@/components/LoadingScreen';
 import { ToastContainer } from 'react-toastify';
 
 function App() {

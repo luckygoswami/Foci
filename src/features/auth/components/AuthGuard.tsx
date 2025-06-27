@@ -1,9 +1,9 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@/features/auth/AuthProvider';
+import { useAuth } from '@/features/auth';
 import LoadingScreen from '@/components/LoadingScreen';
 
-function AuthGuard({ children }: { children: React.ReactNode }) {
+export function AuthGuard({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
   const location = useLocation();
 
@@ -23,5 +23,3 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
 
   return <>{children}</>;
 }
-
-export default AuthGuard;

@@ -18,7 +18,7 @@ const renderCustomLegend = () => {
   );
 };
 
-export default function WeeklyGoalChart() {
+export function WeeklyGoalChart() {
   {
     return (
       <ResponsiveContainer

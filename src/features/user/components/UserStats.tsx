@@ -1,4 +1,4 @@
-function UserStats() {
+export function UserStats() {
   return (
     <div className="account-stats text-[0.75rem] bg-blue-200 rounded-2xl grid grid-cols-3 p-3">
       <div className="flex flex-col justify-center items-center border-r border-black">
@@ -22,5 +22,3 @@ function UserStats() {
     </div>
   );
 }
-
-export default UserStats;

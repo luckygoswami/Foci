@@ -1,6 +1,6 @@
 import { BookOpenIcon } from 'lucide-react';
 
-export default function GroupCard({ no }: { no: number }) {
+export function GroupCard({ no }: { no: number }) {
   return (
     <div className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
       <div className="flex items-start gap-3">

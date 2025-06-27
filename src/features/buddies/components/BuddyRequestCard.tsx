@@ -8,7 +8,7 @@ interface BuddyRequestCardProps {
   onAccept(): void;
   onReject(): void;
 }
-const BuddyRequestCard: React.FC<BuddyRequestCardProps> = ({
+export const BuddyRequestCard: React.FC<BuddyRequestCardProps> = ({
   name,
   avatar,
   mutualFriends,
@@ -58,5 +58,3 @@ const BuddyRequestCard: React.FC<BuddyRequestCardProps> = ({
     </div>
   );
 };
-
-export default BuddyRequestCard;
