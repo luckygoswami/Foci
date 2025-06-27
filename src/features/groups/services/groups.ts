@@ -6,7 +6,7 @@ import {
   addDoc,
   arrayUnion,
 } from 'firebase/firestore';
-import { db } from '../firebase-config';
+import { db } from '@/lib/firebase-config';
 import type { GroupId } from '@/types/core';
 import type { Group } from '@/types/group';
 

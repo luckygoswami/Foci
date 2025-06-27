@@ -1,5 +1,5 @@
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
-import { db } from '../firebase-config';
+import { db } from '@/lib/firebase-config';
 import type { FirebaseUserId } from '@/types/core';
 import type { UserData } from '@/types/user';
 

@@ -8,7 +8,7 @@ import {
   doc,
   increment,
 } from 'firebase/firestore';
-import { db, rtdb } from '../firebase-config';
+import { db, rtdb } from '@/lib/firebase-config';
 import type { CurrentSession, StudySession } from '@/types/study';
 import type { FirebaseUserId, GroupId } from '@/types/core';
 import { get, ref, remove, set, update } from 'firebase/database';
@@ -62,7 +62,7 @@ export const getStudySessionsByDate = async (
   return snapshot.docs.map((doc) => doc.data() as StudySession);
 };
 
-async function fetchCurrentSession(
+export async function fetchCurrentSession(
   userId: FirebaseUserId
 ): Promise<CurrentSession> {
   const local = localStorage.getItem('currentSession') ?? 'null';
@@ -168,7 +168,10 @@ export const endCurrentSession = async (
     ...(sessionData.groupIds && { groupIds: sessionData.groupIds }),
   };
 
-  await addStudySession(session);
-  await remove(ref(rtdb, 'currentSessions/' + userId));
-  localStorage.removeItem('currentSession');
+  try {
+    duration && (await addStudySession(session));
+  } finally {
+    await remove(ref(rtdb, 'currentSessions/' + userId));
+    localStorage.removeItem('currentSession');
+  }
 };

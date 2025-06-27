@@ -41,7 +41,7 @@ const renderCustomizedLabel = ({
   );
 };
 
-export default function SubjectsChart() {
+export default function SubjectDistributionPieChart() {
   return (
     <ResponsiveContainer
       width="100%"

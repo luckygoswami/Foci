@@ -1,5 +1,5 @@
-import Streakboard from './Streakboard';
-import SubjectProgress from './SubjectProgress';
+import Streakboard from '@/features/streaks/components/Streakboard';
+import SubjectProgressChart from '@/features/charts/components/SubjectProgressChart';
 
 function ProgressDashboard() {
   return (
@@ -11,13 +11,13 @@ function ProgressDashboard() {
       <div className="flex-[1.5] p-2 border-x border-t border-black rounded-tr-4xl rounded-tl-4xl">
         <div className="flex space-x-4 overflow-x-auto pb-2 snap-x snap-mandatory w-full h-full">
           <div className="flex-shrink-0 w-full sm:w-[400px] h-full snap-center">
-            <SubjectProgress />
+            <SubjectProgressChart />
           </div>
           <div className="flex-shrink-0 w-full sm:w-[400px] h-full snap-center">
-            <SubjectProgress />
+            <SubjectProgressChart />
           </div>
           <div className="flex-shrink-0 w-full sm:w-[400px] h-full snap-center">
-            <SubjectProgress />
+            <SubjectProgressChart />
           </div>
         </div>
       </div>

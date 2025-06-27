@@ -1,6 +1,6 @@
 import { Check, X, Clock } from 'lucide-react';
 
-interface ProfileCardProps {
+interface BuddyRequestCardProps {
   name: string;
   avatar: string;
   mutualFriends: number;
@@ -8,7 +8,7 @@ interface ProfileCardProps {
   onAccept(): void;
   onReject(): void;
 }
-const ProfileCard: React.FC<ProfileCardProps> = ({
+const BuddyRequestCard: React.FC<BuddyRequestCardProps> = ({
   name,
   avatar,
   mutualFriends,
@@ -59,4 +59,4 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   );
 };
 
-export default ProfileCard;
+export default BuddyRequestCard;

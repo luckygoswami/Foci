@@ -47,7 +47,7 @@ const data = [
   },
 ];
 
-export default function SubjectProgress() {
+export default function SubjectProgressChart() {
   {
     return (
       <ResponsiveContainer

@@ -1,5 +1,5 @@
 import SearchBox from '@/components/SearchBox';
-import GroupCard from './GroupCard';
+import GroupCard from '@/features/groups/components/GroupCard';
 import { PlusIcon } from 'lucide-react';
 
 function GroupsDashboard() {

@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import SearchBox from '@/components/SearchBox';
-import BuddyCard from './BuddyCard';
-import ProfileCard from './ProfileCard';
+import BuddySessionCard from '@/features/buddies/components/BuddySessionCard';
+import BuddyRequestCard from '@/features/buddies/components/BuddyRequestCard';
 
 const requests = [
   {
@@ -89,7 +89,7 @@ export default function BuddiesDashboard() {
                 <div
                   key={i}
                   className="flex justify-center items-center">
-                  <BuddyCard />
+                  <BuddySessionCard />
                 </div>
               ))}
             </div>
@@ -99,7 +99,7 @@ export default function BuddiesDashboard() {
           <div className="flex-shrink-0 w-full snap-center overflow-y-auto">
             <div className="grid grid-cols-1 gap-2 p-3">
               {requests.map((request) => (
-                <ProfileCard
+                <BuddyRequestCard
                   key={request.id}
                   {...request}
                   onAccept={() => console.log('[request accepted]')}

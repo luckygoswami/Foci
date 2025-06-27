@@ -1,7 +1,7 @@
 import Timer from '@/components/Timer';
 import { UserCircle2 } from 'lucide-react';
 
-function BuddyCard({ autostart }: { autostart?: boolean }) {
+function BuddySessionCard({ autostart }: { autostart?: boolean }) {
   return (
     <div className="border border-black rounded-md size-25 flex flex-col justify-evenly items-center">
       <UserCircle2 />
@@ -14,4 +14,4 @@ function BuddyCard({ autostart }: { autostart?: boolean }) {
   );
 }
 
-export default BuddyCard;
+export default BuddySessionCard;
