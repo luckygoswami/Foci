@@ -1,6 +1,6 @@
 import type { FirebaseUserId, GroupId } from './core';
 
-export interface StudySession {
+export interface Session {
   userId: FirebaseUserId;
   startTime: number;
   endTime: number;
@@ -12,8 +12,9 @@ export interface StudySession {
 export interface CurrentSession {
   startTime: number;
   resumeTime?: number;
-  duration: number;
-  state: 'studying' | 'idle';
+  lastUpdated: number;
+  accumulatedDuration: number;
+  paused: boolean;
   subject: string;
   groupIds?: GroupId[];
   isPublic: boolean;

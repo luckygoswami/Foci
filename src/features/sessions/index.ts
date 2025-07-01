@@ -1,1 +1,1 @@
-export * from './services/studySessions';
+export * from './services/sessions';
