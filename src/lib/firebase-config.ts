@@ -19,8 +19,8 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
 const firebaseAuth = getAuth(app);
+
 const db = initializeFirestore(app, {
   localCache: persistentLocalCache({
     tabManager: persistentMultipleTabManager(),
