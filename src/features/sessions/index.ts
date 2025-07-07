@@ -1,4 +1,5 @@
 export * from './context/CurrentSessionProvider';
+export * from './context/useCurrentSession';
 export * from './services/firestoreSession';
 export * from './services/localSession';
 export * from './services/remoteSession';
