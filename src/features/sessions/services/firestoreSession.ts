@@ -51,6 +51,13 @@ export const getSessionsByUser = async (
   return snapshot.docs.map((doc) => doc.data() as Session);
 };
 
+/**
+ * Fetches user sessions within a date range from Firestore
+ * @param userId - User ID to filter sessions
+ * @param date - Start date (YYYY-MM-DD)
+ * @param [tillDate] - Optional end date (inclusive)
+ * @returns Promise with array of Session objects
+ */
 export const getSessionsByDate = async (
   userId: FirebaseUserId,
   date: string,
