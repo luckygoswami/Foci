@@ -2,7 +2,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
 import { useEffect, useState } from 'react';
 import type { UserData } from '@/types';
 import type { GoalProgress } from '../types';
-import { getWeeklyGoalProgress } from '../services/charts';
+import { fetchWeeklyGoalProgress } from '../services/charts';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
@@ -20,11 +20,12 @@ const renderCustomLegend = (data: GoalProgress) => {
 
 export function WeeklyGoalChart({ userData }: { userData: UserData }) {
   const [data, setData] = useState<GoalProgress | null>(null);
+
   useEffect(() => {
     if (data || !userData) return;
     const fetch = async () => {
       try {
-        const progress = await getWeeklyGoalProgress(userData);
+        const progress = await fetchWeeklyGoalProgress(userData);
         setData(progress);
       } catch (err) {
         console.error('Failed to load weekly goal progress:', err);

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   PieChart,
   Pie,
@@ -6,12 +7,9 @@ import {
   Legend,
   Tooltip,
 } from 'recharts';
-
-const data = [
-  { name: 'Physics', value: 150 },
-  { name: 'Chemistry', value: 60 },
-  { name: 'Mathematics', value: 190 },
-];
+import type { SubjectDuration } from '../types';
+import { fetchSubjectTimeDistribution } from '../services/charts';
+import type { FirebaseUserId } from '@/types/core';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
@@ -24,7 +22,17 @@ const renderCustomizedLabel = ({
   outerRadius,
   percent,
   index,
+}: {
+  cx: number;
+  cy: number;
+  midAngle: number;
+  innerRadius: number;
+  outerRadius: number;
+  percent: number;
+  index: number;
 }) => {
+  if (percent == 0) return null;
+
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
@@ -41,7 +49,36 @@ const renderCustomizedLabel = ({
   );
 };
 
-export function SubjectDistributionChart() {
+export function SubjectTimeDistributionChart({
+  userId,
+}: {
+  userId: FirebaseUserId;
+}) {
+  const [data, setData] = useState<SubjectDuration[] | null>(null);
+
+  useEffect(() => {
+    if (data || !userId) return;
+    const fetch = async () => {
+      try {
+        const progress = await fetchSubjectTimeDistribution(userId);
+        setData(progress);
+      } catch (err) {
+        console.error('Failed to fetch subject distribution:', err);
+      }
+    };
+
+    fetch();
+  }, [data, userId]);
+
+  if (!data || !userId) return null;
+
+  // TODO: show skeleton for empty data.
+  if (data.length === 0) {
+    return (
+      <div className="text-center opacity-50">No sessions found to show.</div>
+    );
+  }
+
   return (
     <ResponsiveContainer
       width="100%"

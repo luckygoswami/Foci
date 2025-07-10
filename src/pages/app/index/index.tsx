@@ -1,6 +1,6 @@
 import {
   DailyGoalChart,
-  SubjectDistributionChart,
+  SubjectTimeDistributionChart,
   WeeklyGoalChart,
 } from '@/features/charts';
 import Timer from '@/components/Timer';
@@ -19,10 +19,11 @@ import {
 import { useOnlineStatus } from '@/features/connection';
 import { toast } from 'react-toastify';
 import { useUserData } from '@/features/user';
+import type { FirebaseUserId } from '@/types/core';
 
 function Home() {
   const { userData } = useUserData();
-  const userId = userData!.userId;
+  const userId = userData?.userId as FirebaseUserId;
   const {
     session: currentSession,
     setSession: setCurrentSession,
@@ -130,7 +131,11 @@ function Home() {
       </div>
       <div className="flex-[2.5] flex justify-evenly items-center p-1 flex-col border-x border-t border-black rounded-tr-4xl rounded-tl-4xl">
         <div className="flex-[1.5] min-w-full">
-          <SubjectDistributionChart />
+          {!userId ? (
+            <div>loading...</div>
+          ) : (
+            <SubjectTimeDistributionChart userId={userId} />
+          )}
         </div>
         <div className="flex-[1] flex min-w-full justify-between">
           <div className="size-40">

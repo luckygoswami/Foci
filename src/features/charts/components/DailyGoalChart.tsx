@@ -1,5 +1,5 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
-import { getDailyGoalProgress } from '../services/charts';
+import { fetchDailyGoalProgress } from '../services/charts';
 import { useEffect, useState } from 'react';
 import type { GoalProgress } from '../types';
 import type { UserData } from '@/types';
@@ -20,11 +20,12 @@ const renderCustomLegend = (data: GoalProgress) => {
 
 export function DailyGoalChart({ userData }: { userData: UserData }) {
   const [data, setData] = useState<GoalProgress | null>(null);
+
   useEffect(() => {
     if (data || !userData) return;
     const fetch = async () => {
       try {
-        const progress = await getDailyGoalProgress(userData);
+        const progress = await fetchDailyGoalProgress(userData);
         setData(progress);
       } catch (err) {
         console.error('Failed to load daily goal progress:', err);
