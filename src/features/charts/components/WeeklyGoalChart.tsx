@@ -1,24 +1,41 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
+import { useEffect, useState } from 'react';
+import type { UserData } from '@/types';
+import type { GoalProgress } from '../types';
+import { getWeeklyGoalProgress } from '../services/charts';
 
-const data = [
-  { name: 'remaining', value: 576 },
-  { name: 'target', value: 2880 },
-];
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
-const renderCustomLegend = () => {
+const renderCustomLegend = (data: GoalProgress) => {
   return (
     <div className="flex flex-col text-center">
       <div className="flex justify-center">
-        <span className="opacity-60">{`${data[1].value - data[0].value}`}</span>
-        <span>{`/${data[1].value}`}</span>
+        <span className="opacity-60">{`${data[0].value}`}</span>
+        <span>{`/${data[1].value + data[0].value}`}</span>
       </div>
       <b>Weekly Goal</b>
     </div>
   );
 };
 
-export function WeeklyGoalChart() {
+export function WeeklyGoalChart({ userData }: { userData: UserData }) {
+  const [data, setData] = useState<GoalProgress | null>(null);
+  useEffect(() => {
+    if (data || !userData) return;
+    const fetch = async () => {
+      try {
+        const progress = await getWeeklyGoalProgress(userData);
+        setData(progress);
+      } catch (err) {
+        console.error('Failed to load weekly goal progress:', err);
+      }
+    };
+
+    fetch();
+  }, [data, userData]);
+
+  if (!userData || !data) return null;
+
   {
     return (
       <ResponsiveContainer
@@ -47,7 +64,7 @@ export function WeeklyGoalChart() {
             align="center"
             verticalAlign="middle"
             layout="vertical"
-            content={renderCustomLegend}
+            content={() => renderCustomLegend(data)}
           />
         </PieChart>
       </ResponsiveContainer>

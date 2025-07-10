@@ -141,7 +141,11 @@ function Home() {
             )}
           </div>
           <div className="size-40">
-            <WeeklyGoalChart />
+            {!userData ? (
+              <div>loading...</div>
+            ) : (
+              <WeeklyGoalChart userData={userData} />
+            )}
           </div>
         </div>
       </div>
