@@ -1,0 +1,28 @@
+import { getSessionsByDate } from '@/features/sessions';
+import { formatMediumDate } from '@/lib/utils';
+import type { UserData } from '@/types';
+import type { GoalProgress } from '../types';
+
+export async function getDailyGoalProgress(
+  userData: UserData
+): Promise<GoalProgress> {
+  const date = Date.now();
+  const sessions = await getSessionsByDate(
+    userData.userId,
+    formatMediumDate(date)
+  );
+
+  const target = userData.dailyTargetMinutes;
+  const completed = sessions.reduce((acc, curr) => acc + curr.duration, 0);
+  const progress: GoalProgress = [
+    {
+      name: 'completed',
+      value: completed,
+    },
+    {
+      name: 'remaining',
+      value: Math.max(0, target - completed),
+    },
+  ];
+  return progress;
+}

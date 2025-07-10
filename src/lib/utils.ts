@@ -65,3 +65,50 @@ export function formatTimestamp(timestamp: number): string {
     hour12: true,
   });
 }
+
+/**
+ * Formats a timestamp as a human-readable medium-length date string.
+ * Uses British English locale formatting (e.g. "15 Jan 2023").
+ *
+ * @param timestamp - Unix timestamp in milliseconds
+ * @returns Formatted date string (e.g. "15 Jan 2023")
+ *
+ * @example
+ * const dateString = formatMediumDate(1673827200000);
+ * console.log(dateString); // "15 Jan 2023"
+ */
+export function formatMediumDate(timestamp: number): string {
+  return new Date(timestamp).toLocaleString('en-GB', {
+    dateStyle: 'medium',
+  });
+}
+
+/**
+ * Calculates the start and end dates of the week containing the given timestamp.
+ * Week is considered to run from Sunday 00:00:00 to Saturday 23:59:59.999.
+ *
+ * @param {number} timestamp - Unix timestamp in milliseconds
+ * @returns {Object} Week boundaries
+ * @returns {Date} return.firstDay - Start of week (Sunday 00:00:00)
+ * @returns {Date} return.lastDay - End of week (Saturday 23:59:59.999)
+ */
+export function getWeekBoundaries(timestamp: number): {
+  firstDay: Date;
+  lastDay: Date;
+} {
+  const date = new Date(timestamp);
+  const dayOfWeek = date.getDay(); // 0 (Sunday) to 6 (Saturday)
+
+  const sundayOffset = -dayOfWeek;
+  const saturdayOffset = 6 - dayOfWeek;
+
+  const firstDay = new Date(date);
+  firstDay.setDate(date.getDate() + sundayOffset);
+  firstDay.setHours(0, 0, 0, 0);
+
+  const lastDay = new Date(date);
+  lastDay.setDate(date.getDate() + saturdayOffset);
+  lastDay.setHours(23, 59, 59, 999);
+
+  return { firstDay, lastDay };
+}

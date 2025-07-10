@@ -1,24 +1,41 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
+import { getDailyGoalProgress } from '../services/charts';
+import { useEffect, useState } from 'react';
+import type { GoalProgress } from '../types';
+import type { UserData } from '@/types';
 
-const data = [
-  { name: 'remaining', value: 168 },
-  { name: 'target', value: 480 },
-];
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
-const renderCustomLegend = () => {
+const renderCustomLegend = (data: GoalProgress) => {
   return (
     <div className="flex flex-col text-center">
       <div className="flex justify-center">
-        <span className="opacity-60">{`${data[1].value - data[0].value}`}</span>
-        <span>{`/${data[1].value}`}</span>
+        <span className="opacity-60">{`${data[0].value}`}</span>
+        <span>{`/${data[1].value + data[0].value}`}</span>
       </div>
       <b>Daily Goal</b>
     </div>
   );
 };
 
-export function DailyGoalChart() {
+export function DailyGoalChart({ userData }: { userData: UserData }) {
+  const [data, setData] = useState<GoalProgress | null>(null);
+  useEffect(() => {
+    if (data || !userData) return;
+    const fetch = async () => {
+      try {
+        const progress = await getDailyGoalProgress(userData);
+        setData(progress);
+      } catch (err) {
+        console.error('Failed to load daily goal progress:', err);
+      }
+    };
+
+    fetch();
+  }, [data, userData]);
+
+  if (!userData || !data) return null;
+
   {
     return (
       <>
@@ -48,7 +65,7 @@ export function DailyGoalChart() {
               align="center"
               verticalAlign="middle"
               layout="vertical"
-              content={renderCustomLegend}
+              content={() => renderCustomLegend(data)}
             />
           </PieChart>
         </ResponsiveContainer>

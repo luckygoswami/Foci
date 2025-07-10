@@ -1,6 +1,7 @@
 import type { FirebaseUserId, GroupId } from './core';
 
 export interface UserData {
+  userId: FirebaseUserId;
   username: string;
   email: string;
   name: string;
@@ -8,6 +9,7 @@ export interface UserData {
   studyGoal: string;
   subjects: string[];
   dailyTargetMinutes: number;
+  weeklyTargetMinutes: number;
   totalStudyTime: number;
   lastActive: number;
   friends: FirebaseUserId[];

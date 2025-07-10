@@ -4,7 +4,6 @@ import {
   WeeklyGoalChart,
 } from '@/features/charts';
 import Timer from '@/components/Timer';
-import { useAuth } from '@/features/auth';
 import { useCallback, useEffect, useState } from 'react';
 import {
   endSession,
@@ -23,7 +22,7 @@ import { useUserData } from '@/features/user';
 
 function Home() {
   const { userData } = useUserData();
-  const userId = useAuth().user!.uid;
+  const userId = userData!.userId;
   const {
     session: currentSession,
     setSession: setCurrentSession,
@@ -135,7 +134,11 @@ function Home() {
         </div>
         <div className="flex-[1] flex min-w-full justify-between">
           <div className="size-40">
-            <DailyGoalChart />
+            {!userData ? (
+              <div>loading...</div>
+            ) : (
+              <DailyGoalChart userData={userData} />
+            )}
           </div>
           <div className="size-40">
             <WeeklyGoalChart />
