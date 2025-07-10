@@ -1,4 +1,6 @@
+import { getEffectiveDuration } from '@/features/sessions';
 import { formatDuration } from '@/lib/utils';
+import type { CurrentSession } from '@/types';
 import { useEffect, useRef, useState } from 'react';
 
 interface TimerProps {
@@ -11,6 +13,7 @@ interface TimerProps {
   onEnd?: () => void;
   setSubjectDialog?: (s: boolean) => void;
   selectedSubject?: string | null;
+  currentSession?: CurrentSession | null;
 }
 
 const Timer = ({
@@ -23,6 +26,7 @@ const Timer = ({
   onEnd,
   setSubjectDialog,
   selectedSubject,
+  currentSession,
 }: TimerProps) => {
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -45,15 +49,15 @@ const Timer = ({
   }, [initialTime, autoStart]);
 
   useEffect(() => {
-    if (isRunning) {
-      intervalRef.current = setInterval(() => {
-        setTime((prev) => prev + 1);
-      }, 1000);
-    }
+    if (!isRunning || !currentSession) return;
+
+    intervalRef.current = setInterval(() => {
+      setTime(getEffectiveDuration(currentSession));
+    }, 1000);
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [isRunning]);
+  }, [isRunning, currentSession]);
 
   useEffect(() => {
     if (selectedSubject && !sessionStarted) {

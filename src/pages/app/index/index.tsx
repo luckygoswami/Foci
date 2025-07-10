@@ -119,6 +119,7 @@ function Home() {
             onEnd={handleEnd}
             setSubjectDialog={setSubjectDialog}
             selectedSubject={selectedSubject}
+            currentSession={currentSession}
           />
         )}
         <SubjectDialog
