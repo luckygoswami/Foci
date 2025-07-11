@@ -26,12 +26,16 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      setUserData(undefined);
+      setLoading(false);
+      return;
+    }
 
     const fetchUserData = async () => {
       try {
+        setLoading(true);
         const userDoc = await getDoc(doc(db, 'users', user.uid));
-
         if (userDoc.exists()) {
           setUserData(userDoc.data() as UserData);
         }
