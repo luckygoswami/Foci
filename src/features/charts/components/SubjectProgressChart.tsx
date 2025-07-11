@@ -1,53 +1,49 @@
+import { useEffect, useState } from 'react';
 import {
   LineChart,
   Line,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
+  CartesianGrid,
 } from 'recharts';
+import type { SegmentedSubjectProgress } from '../types';
+import type { FirebaseUserId } from '@/types/core';
+import { getSessionsByUser } from '@/features/sessions';
+import { get7SegmentProgressForSubject } from '../services/charts';
 
-const data = [
-  {
-    name: 'Page A',
-    uv: 4000,
-    amt: 2400,
-  },
-  {
-    name: 'Page B',
-    uv: 3000,
-    amt: 2210,
-  },
-  {
-    name: 'Page C',
-    uv: 2000,
-    amt: 2290,
-  },
-  {
-    name: 'Page D',
-    uv: 2780,
-    amt: 2000,
-  },
-  {
-    name: 'Page E',
-    uv: 1890,
-    amt: 2181,
-  },
-  {
-    name: 'Page F',
-    uv: 2390,
-    amt: 2500,
-  },
-  {
-    name: 'Page G',
-    uv: 3490,
-    amt: 2100,
-  },
-];
+export function SubjectProgressChart({
+  userId,
+  subject,
+}: {
+  userId: FirebaseUserId;
+  subject: string;
+}) {
+  const [data, setData] = useState<SegmentedSubjectProgress[] | null>(null);
+  useEffect(() => {
+    if (data || !userId) return;
 
-export function SubjectProgressChart() {
+    const fetch = async () => {
+      try {
+        const userSessions = await getSessionsByUser(userId);
+        // TODO: later get the user sessions from context or cache
+        const progress = get7SegmentProgressForSubject(subject, userSessions);
+        setData(progress);
+      } catch (err) {
+        console.error(
+          'Failed to fetch the segmented progress of subject.',
+          err
+        );
+      }
+    };
+
+    fetch();
+  }, [data, userId]);
+
+  if (!data || !userId) return null;
+
   {
     return (
       <ResponsiveContainer
@@ -63,21 +59,27 @@ export function SubjectProgressChart() {
             left: 20,
             bottom: 5,
           }}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <CartesianGrid
+            strokeDasharray="50 0"
+            vertical={false}
+            opacity={0.5}
+          />
+          <XAxis dataKey="segment" />
           <YAxis />
           <Tooltip />
           <Legend />
           <Line
             type="monotone"
-            dataKey="pv"
+            dataKey="lastMonth"
+            name="Last Month"
             stroke="#8884d8"
-            activeDot={{ r: 8 }}
           />
           <Line
             type="monotone"
-            dataKey="uv"
+            dataKey="thisMonth"
+            name="This Month"
             stroke="#82ca9d"
+            activeDot={{ r: 8 }}
           />
         </LineChart>
       </ResponsiveContainer>
