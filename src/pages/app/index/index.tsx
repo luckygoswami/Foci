@@ -94,7 +94,7 @@ function Home() {
     if (!currentSession) return;
 
     try {
-      await endSession(userId, currentSession);
+      endSession(userId, currentSession);
       setCurrentSession(null);
       toast.success('Session ended!');
     } catch (error) {
