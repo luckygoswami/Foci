@@ -95,6 +95,7 @@ function Home() {
 
     try {
       endSession(userId, currentSession);
+      setSelectedSubject(null);
       setCurrentSession(null);
       toast.success('Session ended!');
     } catch (error) {
