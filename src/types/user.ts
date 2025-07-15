@@ -1,4 +1,4 @@
-import type { FirebaseUserId, GroupId } from './core';
+import type { FirebaseUserId, GroupId, Streak } from './core';
 
 export interface UserData {
   userId: FirebaseUserId;
@@ -16,11 +16,7 @@ export interface UserData {
   groups: GroupId[];
   createdAt: number;
   updatedAt: number;
-  streak: {
-    current: number;
-    longest: number;
-    updatedAt: number;
-  };
+  streak: Streak;
   privacySettings: {
     showStudyTime: boolean;
     showOnlineStatus: boolean;

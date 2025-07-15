@@ -11,6 +11,7 @@ interface TimerProps {
   onPause?: () => void;
   onResume?: () => void;
   onEnd?: () => void;
+  on60s?: () => void;
   setSubjectDialog?: (s: boolean) => void;
   selectedSubject?: string | null;
   currentSession?: CurrentSession | null;
@@ -24,6 +25,7 @@ const Timer = ({
   onPause,
   onResume,
   onEnd,
+  on60s,
   setSubjectDialog,
   selectedSubject,
   currentSession,
@@ -32,6 +34,7 @@ const Timer = ({
   const [isRunning, setIsRunning] = useState(false);
   const [sessionStarted, setSessionStarted] = useState(!!initialTime);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [streakUpdated, setStreakUpdated] = useState(false);
 
   useEffect(() => {
     if (initialTime) {
@@ -67,7 +70,15 @@ const Timer = ({
     }
   }, [selectedSubject]);
 
+  useEffect(() => {
+    if (!streakUpdated && time >= 60) {
+      on60s?.();
+      setStreakUpdated(true);
+    }
+  }, [time]);
+
   const handleStart = () => {
+    setStreakUpdated(false);
     setSubjectDialog?.(true);
   };
 
@@ -85,6 +96,7 @@ const Timer = ({
     setTime(0);
     setIsRunning(false);
     setSessionStarted(false);
+    setStreakUpdated(false);
     onEnd?.();
   };
 

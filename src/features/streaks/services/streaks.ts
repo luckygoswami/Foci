@@ -67,13 +67,9 @@ export function getStreakDays(streak: Streak): string[] {
     'Saturday',
   ];
 
-  const today = new Date();
-  const todayMidnight = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate()
-  ).getTime();
-  const todayIndex = today.getDay();
+  const today = Date.now();
+  const todayMidnight = getStartOfDay(today);
+  const todayIndex = new Date(today).getDay();
 
   const includeToday = lastActivityDate === todayMidnight;
 

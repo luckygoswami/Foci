@@ -21,7 +21,6 @@ const renderCustomizedLabel = ({
   innerRadius,
   outerRadius,
   percent,
-  index,
 }: {
   cx: number;
   cy: number;

@@ -112,3 +112,17 @@ export function getWeekBoundaries(timestamp: number): {
 
   return { firstDay, lastDay };
 }
+
+/**
+ * Returns the Unix timestamp (in milliseconds) for the start of the day (00:00:00.000)
+ * corresponding to the provided timestamp.
+ *
+ * @param timestamp - The input Unix timestamp in milliseconds.
+ * @returns The timestamp (in ms) at 00:00:00.000 of the same day.
+ *
+ * @example
+ * getStartOfDay(1752018424000); // → 1752000000000
+ */
+export function getStartOfDay(timestamp: number): number {
+  return new Date(timestamp).setHours(0, 0, 0, 0);
+}
