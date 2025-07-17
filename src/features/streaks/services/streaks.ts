@@ -1,17 +1,17 @@
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { getStartOfDay } from '@/lib/utils';
 import { db } from '@/lib/firebase-config';
-import type { FirebaseUserId, Streak } from '@/types/core';
+import type { Streak } from '@/types/core';
 
 export async function updateStreakIfNeeded(
   userId: string,
   sessionStartTime: number
-) {
+): Promise<Streak | null> {
   const userRef = doc(db, 'users', userId);
   const userSnap = await getDoc(userRef);
   const userData = userSnap.data();
 
-  if (!userData) return;
+  if (!userData) return null;
 
   const streak = userData.streak || {
     current: 0,
@@ -23,28 +23,25 @@ export async function updateStreakIfNeeded(
   const lastDay = streak.lastActivityDate || 0;
   const yesterday = sessionDay - 86400000;
 
-  if (sessionDay === lastDay) return; // Already updated for today
+  if (sessionDay === lastDay) return null; // Already updated for today
 
   const current = lastDay === yesterday ? streak.current + 1 : 1;
-
   const longest = Math.max(streak.longest, current);
 
-  await updateDoc(userRef, {
-    'streak.current': current,
-    'streak.longest': longest,
-    'streak.lastActivityDate': sessionDay,
-  });
-}
+  const updatedStreak = {
+    current: current,
+    longest: longest,
+    lastActivityDate: sessionDay,
+  };
 
-export async function setStreak(userId: FirebaseUserId) {
-  const userRef = doc(db, 'users', userId);
-  await updateDoc(userRef, {
+  // Explicitly not using await to make this offline compatible
+  updateDoc(userRef, {
     streak: {
-      current: 12,
-      lastActivityDate: new Date(2025, 6, 12, 0, 0, 0, 0).getTime(),
-      longest: 9,
+      ...updatedStreak,
     },
   });
+
+  return updatedStreak;
 }
 
 /**

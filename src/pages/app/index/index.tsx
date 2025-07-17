@@ -19,12 +19,13 @@ import {
 import { useOnlineStatus } from '@/features/connection';
 import { toast } from 'react-toastify';
 import { useUserData } from '@/features/user';
-import type { FirebaseUserId } from '@/types/core';
 import { updateStreakIfNeeded } from '@/features/streaks';
+import { useAuth } from '@/features/auth';
+import type { FirebaseUserId } from '@/types/core';
 
 function Home() {
-  const { userData } = useUserData();
-  const userId = userData?.userId as FirebaseUserId;
+  const { userData, setUserData } = useUserData();
+  const userId = useAuth().user?.uid as FirebaseUserId; // Extracting userId from useAuth not from UserData coz application load is dependent on useAuth load, not on userData
   const {
     session: currentSession,
     setSession: setCurrentSession,
@@ -107,7 +108,19 @@ function Home() {
 
   function handle60sUpdate(): void {
     if (!currentSession) return;
-    updateStreakIfNeeded(userId, currentSession?.startTime);
+    updateStreakIfNeeded(userId, currentSession?.startTime).then((res) => {
+      if (res) {
+        setUserData((prev) => {
+          if (prev)
+            return {
+              ...prev,
+              streak: {
+                ...res,
+              },
+            };
+        });
+      }
+    });
   }
 
   return (

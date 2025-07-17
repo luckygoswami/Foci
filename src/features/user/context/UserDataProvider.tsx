@@ -13,6 +13,7 @@ import {
 
 type UserDataContextType = {
   userData: UserData | undefined;
+  setUserData: React.Dispatch<React.SetStateAction<UserData | undefined>>;
   loading: boolean;
 };
 
@@ -49,7 +50,10 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
     fetchUserData();
   }, [user]);
 
-  const value = useMemo(() => ({ userData, loading }), [userData, loading]);
+  const value = useMemo(
+    () => ({ userData, setUserData, loading }),
+    [userData, loading]
+  );
 
   return (
     <UserDataContext.Provider value={value}>

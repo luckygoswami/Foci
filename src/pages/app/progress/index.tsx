@@ -8,10 +8,13 @@ function ProgressDashboard() {
   const userId = userData?.userId as FirebaseUserId;
   const subjects = userData?.subjects;
 
+  // TODO: show loading skeleton here
+  if (!userData) return <div>Loading...</div>;
+
   return (
     <main className="flex flex-col px-2 gap-5">
       <div className="flex-[1] flex flex-col justify-between p-2 border-x border-b border-black rounded-br-4xl rounded-bl-4xl">
-        <Streakboard />
+        <Streakboard userData={userData} />
       </div>
 
       <div className="flex-[1.5] p-2 border-x border-t border-black rounded-tr-4xl rounded-tl-4xl">
