@@ -20,6 +20,7 @@ import { useOnlineStatus } from '@/features/connection';
 import { toast } from 'react-toastify';
 import { useUserData } from '@/features/user';
 import type { FirebaseUserId } from '@/types/core';
+import { updateStreakIfNeeded } from '@/features/streaks';
 
 function Home() {
   const { userData } = useUserData();
@@ -104,6 +105,11 @@ function Home() {
     }
   }, [currentSession, userId, setCurrentSession]);
 
+  function handle60sUpdate(): void {
+    if (!currentSession) return;
+    updateStreakIfNeeded(userId, currentSession?.startTime);
+  }
+
   return (
     <main className="flex flex-col px-2 gap-5">
       <div className="flex-[1] flex justify-center items-center p-2 border-x border-b border-black rounded-br-4xl rounded-bl-4xl">
@@ -118,6 +124,7 @@ function Home() {
             onPause={() => handleSessionAction('pause')}
             onResume={() => handleSessionAction('resume')}
             onEnd={handleEnd}
+            on60s={handle60sUpdate}
             setSubjectDialog={setSubjectDialog}
             selectedSubject={selectedSubject}
             currentSession={currentSession}
