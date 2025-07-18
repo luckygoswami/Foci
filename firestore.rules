@@ -1,0 +1,60 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Sessions: users can only write their own sessions
+    match /sessions/{sessionId} {
+      allow create: if isValidNewSession();
+      allow update: if isSessionOwner() && isValidSessionUpdate();
+      allow read: if request.auth.uid != null;
+      allow delete: if false;
+
+      function isSessionOwner() {
+        return request.auth != null &&
+               request.auth.uid == resource.data.userId;
+      }
+
+      function isValidNewSession() {
+        return request.auth != null &&
+               request.auth.uid == request.resource.data.userId &&
+               request.resource.data.duration > 0 &&
+               request.resource.data.startTime < request.resource.data.endTime &&
+               request.resource.data.subject is string;
+      }
+
+      function isValidSessionUpdate() {
+        return request.resource.data.duration >= resource.data.duration &&
+               request.resource.data.startTime == resource.data.startTime;
+      }
+    }
+
+    // Users: only allow reading and updating own profile and streak
+    match /users/{userId} {
+      allow read: if request.auth != null
+      allow update: if request.auth != null && request.auth.uid == userId && isValidUserUpdate();
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow delete: if false;
+
+      function isValidUserUpdate() {
+        let oldDate = resource.data.streak.lastActivityDate;
+        let newDate = request.resource.data.streak.lastActivityDate;
+        let oldStreak = resource.data.streak.current;
+        let newStreak = request.resource.data.streak.current;
+        let oldLongest = resource.data.streak.longest;
+        let newLongest = request.resource.data.streak.longest;
+
+        return newDate < oldDate 
+          ? false
+          : (newDate == oldDate
+            ? (oldStreak == newStreak && oldLongest == newLongest)
+            : true);
+      }
+    }
+
+    // Deny all other writes
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
