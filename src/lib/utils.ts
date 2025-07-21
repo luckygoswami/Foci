@@ -126,3 +126,22 @@ export function getWeekBoundaries(timestamp: number): {
 export function getStartOfDay(timestamp: number): number {
   return new Date(timestamp).setHours(0, 0, 0, 0);
 }
+
+/**
+ * Creates a new array with the elements of the input array randomly shuffled.
+ *
+ * Uses the Fisher-Yates (Knuth) shuffle algorithm for uniform randomization.
+ * The original array is not mutated.
+ *
+ * @template T
+ * @param {T[]} arr - The array to shuffle.
+ * @returns {T[]} A new array with the elements of `arr` in random order.
+ */
+export function shuffle<T>(arr: T[]): T[] {
+  const result = arr.slice();
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
