@@ -1,4 +1,4 @@
-import type { FirebaseUserId, GroupId, Streak } from './core';
+import type { FirebaseUserId, Streak } from './core';
 
 export interface UserData {
   userId: FirebaseUserId;
@@ -13,7 +13,6 @@ export interface UserData {
   totalStudyTime: number;
   lastActive: number;
   friends: FirebaseUserId[];
-  groups: GroupId[];
   createdAt: number;
   updatedAt: number;
   streak: Streak;

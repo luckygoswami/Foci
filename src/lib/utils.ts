@@ -145,3 +145,29 @@ export function shuffle<T>(arr: T[]): T[] {
   }
   return result;
 }
+
+/**
+ * Generates a random alphanumeric code of a specified length.
+ *
+ * The generated code uses the characters A-Z (excluding O and I) and 2-9 (excluding 0 and 1)
+ * to avoid confusion between similarly shaped characters.
+ *
+ * @param {number} [length=6] - The desired length of the generated code. Defaults to 6.
+ * @returns {string} A randomly generated code string.
+ *
+ * @example
+ * // Returns a code like '9GJ27K'
+ * generateRandomCode();
+ *
+ * @example
+ * // Returns a code like 'N4GFRM8P'
+ * generateRandomCode(8);
+ */
+export function generateRandomCode(length: number = 6): string {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Exclude O, 0, I, 1 for clarity
+  let code = '';
+  for (let i = 0; i < length; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}

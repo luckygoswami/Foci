@@ -1,15 +1,15 @@
-import type { FirebaseUserId, GroupId } from './core';
+import type { FirebaseUserId } from './core';
 
 export interface Group {
-  groupId: GroupId;
   name: string;
   avatarId: string;
-  description: string;
+  description?: string;
+  isPublic: boolean;
   tags?: string[];
   creatorId: FirebaseUserId;
   memberCount: number;
   members: GroupMember[];
-  isPublic: boolean;
+  memberIds: FirebaseUserId[];
   joinCode: string;
   createdAt: number;
   updatedAt: number;
