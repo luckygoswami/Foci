@@ -9,7 +9,7 @@ import {
 } from 'recharts';
 import type { SubjectDuration } from '../types';
 import { fetchSubjectTimeDistribution } from '../services/charts';
-import type { FirebaseUserId } from '@/types/core';
+import type { FirebaseUserId } from '@/types';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 

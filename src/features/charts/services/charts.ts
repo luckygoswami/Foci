@@ -1,12 +1,11 @@
 import { getSessionsByDate } from '@/features/sessions';
 import { formatMediumDate, getWeekBoundaries } from '@/lib/utils';
-import type { UserData } from '@/types';
+import type { UserData, FirebaseUserId } from '@/types';
 import type {
   GoalProgress,
   SegmentedSubjectProgress,
   SubjectDuration,
 } from '../types';
-import type { FirebaseUserId } from '@/types/core';
 
 export async function fetchDailyGoalProgress(
   userData: UserData

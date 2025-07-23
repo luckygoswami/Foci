@@ -9,10 +9,11 @@ import {
   getDocs,
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase-config';
-import type { FirebaseUserId, GroupId } from '@/types/core';
-import type { Group } from '@/types/group';
+import type { FirebaseUserId, Group, GroupId } from '@/types';
 
-export const getGroupById = async (groupId: GroupId): Promise<Group | null> => {
+export const fetchGroupById = async (
+  groupId: GroupId
+): Promise<Group | null> => {
   const groupRef = doc(db, 'groups', groupId);
   const snapshot = await getDoc(groupRef);
   return snapshot.exists() ? (snapshot.data() as Group) : null;

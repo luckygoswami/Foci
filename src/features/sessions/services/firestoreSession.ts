@@ -1,6 +1,5 @@
 import { db } from '@/lib/firebase-config';
-import type { Session } from '@/types';
-import type { FirebaseUserId } from '@/types/core';
+import type { FirebaseUserId, Session } from '@/types';
 import {
   collection,
   doc,

@@ -1,7 +1,7 @@
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { getStartOfDay } from '@/lib/utils';
 import { db } from '@/lib/firebase-config';
-import type { Streak } from '@/types/core';
+import type { Streak } from '@/types';
 
 export async function updateStreakIfNeeded(
   userId: string,

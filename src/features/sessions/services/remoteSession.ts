@@ -1,6 +1,5 @@
 import { rtdb } from '@/lib/firebase-config';
-import type { CurrentSession } from '@/types';
-import type { FirebaseUserId } from '@/types/core';
+import type { CurrentSession, FirebaseUserId } from '@/types';
 import { child, get, ref, remove, set, update } from 'firebase/database';
 
 export async function getRemoteSession(

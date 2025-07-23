@@ -8,7 +8,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import type { CurrentSession } from '@/types/session';
+import type { CurrentSession } from '@/types';
 import { XCircle, HardDrive, Cloud } from 'lucide-react';
 import { formatDuration, formatTimestamp, toTitleCase } from '@/lib/utils';
 

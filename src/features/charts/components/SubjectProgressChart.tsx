@@ -10,7 +10,7 @@ import {
   CartesianGrid,
 } from 'recharts';
 import type { SegmentedSubjectProgress } from '../types';
-import type { FirebaseUserId } from '@/types/core';
+import type { FirebaseUserId } from '@/types';
 import { getSessionsByUser } from '@/features/sessions';
 import { get7SegmentProgressForSubject } from '../services/charts';
 

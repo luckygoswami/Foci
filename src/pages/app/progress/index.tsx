@@ -1,7 +1,7 @@
 import { Streakboard } from '@/features/streaks';
 import { SubjectProgressChart } from '@/features/charts';
 import { useUserData } from '@/features/user';
-import type { FirebaseUserId } from '@/types/core';
+import type { FirebaseUserId } from '@/types';
 
 function ProgressDashboard() {
   const { userData } = useUserData();

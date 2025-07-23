@@ -8,7 +8,7 @@ import {
   sessionExistsInFirestore,
   endSession,
 } from '@/features/sessions';
-import type { CurrentSession } from '@/types/session';
+import type { CurrentSession } from '@/types';
 import { useAuth } from '@/features/auth';
 import { useOnlineStatus } from '@/features/connection';
 

@@ -1,7 +1,6 @@
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase-config';
-import type { FirebaseUserId } from '@/types/core';
-import type { UserData } from '@/types/user';
+import type { FirebaseUserId, UserData } from '@/types';
 
 export const getUserById = async (
   userId: FirebaseUserId

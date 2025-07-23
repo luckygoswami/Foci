@@ -1,5 +1,4 @@
-import type { CurrentSession, Session } from '@/types';
-import type { FirebaseUserId, GroupId } from '@/types/core';
+import type { CurrentSession, FirebaseUserId, GroupId, Session } from '@/types';
 import {
   removeLocalSession,
   setLocalSession,

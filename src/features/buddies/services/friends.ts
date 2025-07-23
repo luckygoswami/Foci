@@ -1,7 +1,6 @@
 import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase-config';
-import type { FirebaseUserId } from '@/types/core';
-import type { FriendRequest } from '@/types/friend';
+import type { FirebaseUserId, FriendRequest } from '@/types';
 
 export const sendFriendRequest = async (
   fromId: FirebaseUserId,

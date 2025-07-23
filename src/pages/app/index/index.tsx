@@ -21,7 +21,7 @@ import { toast } from 'react-toastify';
 import { useUserData } from '@/features/user';
 import { updateStreakIfNeeded } from '@/features/streaks';
 import { useAuth } from '@/features/auth';
-import type { FirebaseUserId } from '@/types/core';
+import type { FirebaseUserId } from '@/types';
 
 function Home() {
   const { userData, setUserData } = useUserData();

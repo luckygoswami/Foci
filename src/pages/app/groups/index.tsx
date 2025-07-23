@@ -8,8 +8,7 @@ import {
 } from '@/features/groups';
 import { useUserData } from '@/features/user';
 import { generateRandomCode } from '@/lib/utils';
-import type { Group } from '@/types';
-import type { FirebaseUserId, GroupId } from '@/types/core';
+import type { FirebaseUserId, GroupId, Group } from '@/types';
 import { PlusIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 

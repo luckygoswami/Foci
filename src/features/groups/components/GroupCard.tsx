@@ -1,7 +1,6 @@
-import type { Group } from '@/types';
+import type { Group, GroupId } from '@/types';
 import { GROUP_AVATAR_OPTIONS } from './GroupAvatarPicker';
 import { useNavigate } from 'react-router-dom';
-import type { GroupId } from '@/types/core';
 
 export function GroupCard({
   groupId,
@@ -20,7 +19,7 @@ export function GroupCard({
   return (
     <div
       className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
-      onClick={() => navigate(`${groupId}`)}>
+      onClick={() => navigate(`${groupId}`, { state: { groupData } })}>
       <div className="flex items-start gap-3">
         <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center">
           <Icon className={`w-6 h-6 ${color}`} />
