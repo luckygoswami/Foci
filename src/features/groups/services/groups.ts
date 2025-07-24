@@ -9,7 +9,8 @@ import {
   getDocs,
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase-config';
-import type { FirebaseUserId, Group, GroupId } from '@/types';
+import type { FirebaseUserId, Group, GroupId, GroupMember } from '@/types';
+import type { GroupMemberRoles } from '../types';
 
 export const fetchGroupById = async (
   groupId: GroupId
@@ -50,4 +51,20 @@ export const updateGroup = async (
 ): Promise<void> => {
   const groupRef = doc(db, 'groups', groupId);
   await updateDoc(groupRef, data);
+};
+
+export const getGroupRoles = (
+  groupMembers: GroupMember[]
+): GroupMemberRoles => {
+  const creator = groupMembers.find(
+    (mem) => mem.role === 'creator'
+  ) as GroupMember;
+  const admins = groupMembers.filter((mem) => mem.role === 'admin');
+  const members = groupMembers.filter((mem) => mem.role === 'member');
+
+  return {
+    creator,
+    admins,
+    members,
+  };
 };
