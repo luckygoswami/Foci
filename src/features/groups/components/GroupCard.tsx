@@ -1,6 +1,6 @@
 import type { Group, GroupId } from '@/types';
-import { GROUP_AVATAR_OPTIONS } from './GroupAvatarPicker';
 import { useNavigate } from 'react-router-dom';
+import { defaultAvatar, GROUP_AVATAR_OPTIONS } from '../groupAvatarOptions';
 
 export function GroupCard({
   groupId,
@@ -10,11 +10,12 @@ export function GroupCard({
   groupData: Group;
 }) {
   const navigate = useNavigate();
-  const { name, avatarId, isPublic, memberCount } = groupData;
+  const { name, avatarId, isPublic, members } = groupData;
+  const memberCount = members.length;
 
-  const { icon: Icon, color } = GROUP_AVATAR_OPTIONS.filter(
-    (option) => option.id == avatarId
-  )[0];
+  const { icon: Avatar, color } =
+    GROUP_AVATAR_OPTIONS.find((avatar) => avatar.id == avatarId) ||
+    defaultAvatar;
 
   return (
     <div
@@ -22,7 +23,7 @@ export function GroupCard({
       onClick={() => navigate(`${groupId}`, { state: { groupData } })}>
       <div className="flex items-start gap-3">
         <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center">
-          <Icon className={`w-6 h-6 ${color}`} />
+          <Avatar className={`size-6 ${color}`} />
         </div>
 
         <div className="flex flex-col flex-1 min-w-0">
