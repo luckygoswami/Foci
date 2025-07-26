@@ -13,7 +13,7 @@ export function GroupMembersList({ members }: { members: GroupMember[] }) {
   } = getGroupRoles(members);
 
   return (
-    <ol className="members-list h-5/12 overflow-scroll borde border-blue-500 py-2">
+    <ol className="members-list h-5/12 overflow-x-hidden overflow-y-scroll py-2">
       {/* creator */}
       <li className="flex items-center mb-3">
         <div
