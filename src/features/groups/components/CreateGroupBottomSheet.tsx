@@ -1,35 +1,26 @@
-import React, { useEffect, useState, type FormEvent, useMemo } from 'react';
-import GroupAvatarPicker, { GROUP_AVATAR_OPTIONS } from './GroupAvatarPicker';
-import { shuffle } from '@/lib/utils';
-
-interface CreateGroupBottomSheetProps {
-  open: boolean;
-  onClose: () => void;
-  onSubmit: (group: {
-    name: string;
-    description: string;
-    isPublic: boolean;
-    tags?: string[];
-  }) => void;
-}
+import React, { useEffect, useState, type FormEvent } from 'react';
+import GroupAvatarPicker from './GroupAvatarPicker';
+import { generateRandomCode } from '@/lib/utils';
+import type { Group } from '@/types';
+import { X } from 'lucide-react';
+import { useUserData } from '@/features/user';
+import type { CreateGroupBottomSheetProps } from '../types';
+import { createGroup } from '../services/groups';
+import PrivacySelector from './PrivacySelector';
+import TagInput from './TagInput';
 
 export const CreateGroupBottomSheet: React.FC<CreateGroupBottomSheetProps> = ({
   open,
   onClose,
-  onSubmit,
+  onCreation,
 }) => {
+  const { userData } = useUserData();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [isPublic, setIsPublic] = useState(true);
   const [tags, setTags] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
-
-  const randomizedAvatarOptions = useMemo(
-    () => shuffle(GROUP_AVATAR_OPTIONS),
-    []
-  );
-  const [avatarOptions] = useState(randomizedAvatarOptions);
-  const [avatarId, setAvatarId] = useState(randomizedAvatarOptions[0].id);
+  const [avatarId, setAvatarId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     function handler(e: KeyboardEvent) {
@@ -39,7 +30,8 @@ export const CreateGroupBottomSheet: React.FC<CreateGroupBottomSheetProps> = ({
     return () => document.removeEventListener('keydown', handler);
   }, [open, onClose]);
 
-  if (!open) return null;
+  if (!open || !userData) return null;
+  const { userId, avatarId: userAvatar, name: userName } = userData;
 
   const handleSheetClick = (e: React.MouseEvent) => {
     // Prevent bubbling so clicks inside don't close
@@ -53,18 +45,53 @@ export const CreateGroupBottomSheet: React.FC<CreateGroupBottomSheetProps> = ({
       return;
     }
     setError(null);
-    onSubmit({
+
+    const now = Date.now();
+    const newGroupData: Group = {
       name: name.trim(),
-      description: description.trim(),
+      // @ts-ignore
+      avatarId,
+      ...(description.trim() && { description: description.trim() }),
       isPublic,
-      tags: tags
-        ? tags
+      ...(tags &&
+        tags
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean).length > 0 && {
+          tags: tags
             .split(',')
             .map((s) => s.trim())
-            .filter(Boolean)
-        : undefined,
-    });
-    // Optionally reset fields here, or handle in parent
+            .filter(Boolean),
+        }),
+      creatorId: userId,
+      members: [
+        {
+          userId,
+          avatarId: userAvatar!,
+          name: userName,
+          role: 'creator',
+          joinedAt: now,
+        },
+      ],
+      memberIds: [userId],
+      joinCode: generateRandomCode(),
+      createdAt: now,
+      updatedAt: now,
+    };
+
+    createGroup(newGroupData)
+      .then((groupId) => {
+        if (groupId) {
+          onCreation({ ...newGroupData, groupId });
+        }
+        // TODO: show a success notification here
+      })
+      .catch((err) => console.error('Create Group: ', err));
+
+    setName('');
+    setDescription('');
+    setTags('');
+    setError(null);
   };
 
   return (
@@ -87,7 +114,7 @@ export const CreateGroupBottomSheet: React.FC<CreateGroupBottomSheetProps> = ({
             className="text-2xl p-1 text-gray-400 hover:text-gray-600"
             onClick={onClose}
             type="button">
-            x
+            <X />
           </button>
         </div>
 
@@ -97,21 +124,21 @@ export const CreateGroupBottomSheet: React.FC<CreateGroupBottomSheetProps> = ({
           <GroupAvatarPicker
             value={avatarId}
             onChange={setAvatarId}
-            options={avatarOptions}
           />
+
           <label className="text-sm font-medium">
             Group Name<span className="text-primary">*</span>
             <input
               type="text"
               value={name}
               required
-              maxLength={50}
+              maxLength={20}
               onChange={(e) => setName(e.target.value)}
               className="block w-full mt-1 rounded-md border border-gray-300 px-3 py-2 bg-white dark:bg-gray-800 text-base focus:outline-primary"
               placeholder="Enter group name"
-              autoFocus
             />
           </label>
+
           <label className="text-sm font-medium">
             Description
             <textarea
@@ -120,43 +147,19 @@ export const CreateGroupBottomSheet: React.FC<CreateGroupBottomSheetProps> = ({
               className="block w-full mt-1 rounded-md border border-gray-300 px-3 py-2 bg-white dark:bg-gray-800 text-base resize-none focus:outline-primary"
               placeholder="Description (optional)"
               rows={2}
-              maxLength={120}
+              maxLength={85}
             />
           </label>
-          <label className="text-sm font-medium">
-            Tags
-            <input
-              type="text"
-              value={tags}
-              onChange={(e) => setTags(e.target.value)}
-              className="block w-full mt-1 rounded-md border border-gray-300 px-3 py-2 bg-white dark:bg-gray-800 text-base focus:outline-primary"
-              placeholder="e.g. dsa, morning"
-            />
-            <span className="text-xs text-gray-400">Comma separated</span>
-          </label>
-          <div className="flex items-center gap-2 mt-2">
-            <label className="block text-base font-semibold mb-2">
-              Privacy
-            </label>
-            <div className="bg-gray-100 rounded-xl flex w-fit overflow-hidden">
-              <button
-                type="button"
-                className={`px-5 py-1 font-medium text-sm focus:outline-none transition ${
-                  isPublic ? 'bg-white shadow text-black' : 'text-gray-400'
-                }`}
-                onClick={() => setIsPublic(true)}>
-                Public
-              </button>
-              <button
-                type="button"
-                className={`px-5 py-1 font-medium text-sm focus:outline-none transition ${
-                  !isPublic ? 'bg-white shadow text-black' : 'text-gray-400'
-                }`}
-                onClick={() => setIsPublic(false)}>
-                Private
-              </button>
-            </div>
-          </div>
+
+          <TagInput
+            value={tags}
+            onChange={setTags}
+          />
+
+          <PrivacySelector
+            value={isPublic}
+            onChange={setIsPublic}
+          />
           {
             // TODO: show toast message for this error
             error && <div className="text-sm text-red-600">{error}</div>

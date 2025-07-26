@@ -1,14 +1,12 @@
 import SearchBox from '@/components/SearchBox';
 import { useAuth } from '@/features/auth';
 import {
-  createGroup,
   CreateGroupBottomSheet,
   getGroupsJoinedByUser,
   GroupCard,
 } from '@/features/groups';
 import { useUserData } from '@/features/user';
-import { generateRandomCode } from '@/lib/utils';
-import type { FirebaseUserId, GroupId, Group } from '@/types';
+import type { FirebaseUserId, Group, GroupId } from '@/types';
 import { PlusIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -16,50 +14,18 @@ function GroupsDashboard() {
   const userId = useAuth().user?.uid as FirebaseUserId;
   const [showSheet, setShowSheet] = useState(false);
   const { userData } = useUserData();
-  const [groups, setGroups] = useState<(Group & { groupId: string })[]>([]);
-
-  function handleSubmit(
-    groupData: Pick<
-      Group,
-      'name' | 'avatarId' | 'description' | 'isPublic' | 'tags'
-    >
-  ) {
-    const now = Date.now();
-    const newGroup: Group & { groupId?: GroupId } = {
-      ...groupData,
-      creatorId: userId,
-      memberCount: 1,
-      members: [{ userId, role: 'admin', joinedAt: now }],
-      memberIds: [userId],
-      joinCode: generateRandomCode(),
-      createdAt: now,
-      updatedAt: now,
-    };
-
-    createGroup(newGroup)
-      .then((groupId) => {
-        if (groupId) {
-          setGroups((prev) => [...prev, { ...newGroup, groupId }]);
-        }
-        // TODO: show a success notification here
-      })
-      .catch((err) => console.error('Create Group: ', err));
-  }
+  const [groups, setGroups] = useState<(Group & { groupId: GroupId })[]>([]);
 
   useEffect(() => {
     if (!userData) return;
 
-    async function fetchGroups() {
-      try {
-        const groups = await getGroupsJoinedByUser(userId);
-        setGroups(groups);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
-    fetchGroups();
+    getGroupsJoinedByUser(userId).then(setGroups);
   }, [userData]);
+
+  const handleCreation = (newGroup: Group & { groupId: GroupId }) => {
+    setGroups((prev) => [...prev, { ...newGroup }]);
+    setShowSheet(false);
+  };
 
   return (
     <main className="flex flex-col px-2 gap-3">
@@ -74,11 +40,11 @@ function GroupsDashboard() {
             {!groups ? (
               <div>Loading...</div>
             ) : (
-              groups.map((_, i) => (
+              groups.map((group) => (
                 <GroupCard
-                  key={groups[i].groupId}
-                  groupId={groups[i].groupId}
-                  groupData={groups[i]}
+                  key={group.groupId}
+                  groupId={group.groupId}
+                  groupData={group}
                 />
               ))
             )}
@@ -95,10 +61,7 @@ function GroupsDashboard() {
       <CreateGroupBottomSheet
         open={showSheet}
         onClose={() => setShowSheet(false)}
-        onSubmit={(groupData) => {
-          handleSubmit(groupData);
-          setShowSheet(false);
-        }}
+        onCreation={handleCreation}
       />
     </main>
   );

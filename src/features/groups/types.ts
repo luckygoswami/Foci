@@ -1,4 +1,4 @@
-import type { GroupMember } from '@/types';
+import type { Group, GroupId, GroupMember } from '@/types';
 import type { LucideIcon } from 'lucide-react';
 
 export interface GroupMemberRoles {
@@ -15,7 +15,22 @@ export interface GroupAvatarOption {
 }
 
 export interface GroupAvatarPickerProps {
-  value: string;
+  value: string | undefined;
   onChange: (avatarId: string) => void;
-  options: GroupAvatarOption[];
+}
+
+export interface CreateGroupBottomSheetProps {
+  open: boolean;
+  onClose: () => void;
+  onCreation: (group: Group & { groupId: GroupId }) => void;
+}
+
+export interface PrivacySelectorProps {
+  value: boolean;
+  onChange: (v: boolean) => void;
+}
+
+export interface TagInputProps {
+  value: string;
+  onChange: (v: string) => void;
 }

@@ -1,16 +1,28 @@
-import React from 'react';
+import { shuffle } from '@/lib/utils';
 import type { GroupAvatarPickerProps } from '../types';
+import { GROUP_AVATAR_OPTIONS } from '../groupAvatarOptions';
+import { useEffect, useMemo } from 'react';
 
 const GroupAvatarPicker: React.FC<GroupAvatarPickerProps> = ({
   value,
   onChange,
-  options,
 }) => {
+  const randomizedAvatarOptions = useMemo(
+    () => shuffle(GROUP_AVATAR_OPTIONS),
+    []
+  );
+
+  useEffect(() => {
+    if (randomizedAvatarOptions.length) {
+      onChange(randomizedAvatarOptions[0].id);
+    }
+  }, []);
+
   return (
     <div>
       <div className="text-sm font-medium mb-1">Group Avatar</div>
       <div className="flex flex-wrap gap-4 max-h-40 overflow-y-auto p-2">
-        {options.map(({ id, icon: Icon, color, label }) => (
+        {randomizedAvatarOptions.map(({ id, icon: Icon, color, label }) => (
           <button
             key={id}
             type="button"

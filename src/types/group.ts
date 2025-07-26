@@ -7,7 +7,6 @@ export interface Group {
   isPublic: boolean;
   tags?: string[];
   creatorId: FirebaseUserId;
-  memberCount: number;
   members: GroupMember[];
   memberIds: FirebaseUserId[];
   joinCode: string;
@@ -17,6 +16,8 @@ export interface Group {
 
 export interface GroupMember {
   userId: FirebaseUserId;
-  role: 'admin' | 'member';
+  name: string;
+  avatarId: string;
+  role: 'admin' | 'member' | 'creator';
   joinedAt: number;
 }
