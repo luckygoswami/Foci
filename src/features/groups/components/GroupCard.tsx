@@ -2,7 +2,7 @@ import type { Group, GroupId } from '@/types';
 import { useNavigate } from 'react-router-dom';
 import { defaultAvatar, GROUP_AVATAR_OPTIONS } from '../groupAvatarOptions';
 
-export function GroupCard({
+export default function GroupCard({
   groupId,
   groupData,
 }: {
@@ -30,7 +30,7 @@ export function GroupCard({
           <div className="font-medium truncate text-base">{name}</div>
           <div className="flex gap-2 items-center mt-1">
             <span className="text-xs text-gray-400">
-              {memberCount} member{memberCount !== 1 ? 's' : ''}
+              {memberCount} member{memberCount > 1 ? 's' : ''}
             </span>
             <span
               className={`inline-block px-2 py-0.5 rounded text-xs ${
