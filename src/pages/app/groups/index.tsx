@@ -3,28 +3,56 @@ import SnapSections from '@/components/SnapSections';
 import { useAuth } from '@/features/auth';
 import {
   CreateGroupBottomSheet,
-  getGroupsJoinedByUser,
-  GroupCard,
+  fetchGroupInvitesByRecipient,
+  fetchGroupsJoinedByUser,
+  GroupsList,
+  InvitesList,
 } from '@/features/groups';
 import { useUserData } from '@/features/user';
-import type { FirebaseUserId, Group, GroupId } from '@/types';
+import type { FirebaseUserId, Group, GroupId, GroupInvite } from '@/types';
 import { PlusIcon } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 function GroupsDashboard() {
   const userId = useAuth().user?.uid as FirebaseUserId;
   const [showSheet, setShowSheet] = useState(false);
   const { userData } = useUserData();
-  const [groups, setGroups] = useState<(Group & { groupId: GroupId })[]>([]);
+  const [groups, setGroups] = useState<(Group & { groupId: GroupId })[] | null>(
+    null
+  );
+  const [invites, setInvites] = useState<GroupInvite[] | null>(null);
+  const inviteListRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!userData) return;
-
-    getGroupsJoinedByUser(userId).then(setGroups);
+    fetchGroupsJoinedByUser(userId).then(setGroups);
   }, [userData]);
 
+  useEffect(() => {
+    const section = inviteListRef.current;
+    let observer: IntersectionObserver;
+
+    if (section && invites === null) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            fetchGroupInvitesByRecipient(userId).then(setInvites);
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.5 }
+      );
+      observer.observe(section);
+    }
+
+    return () => observer && observer.disconnect();
+  }, [invites]);
+
   const handleCreation = (newGroup: Group & { groupId: GroupId }) => {
-    setGroups((prev) => [...prev, { ...newGroup }]);
+    setGroups((prev) => {
+      if (!prev) return null;
+      return [...prev, { ...newGroup }];
+    });
     setShowSheet(false);
   };
 
@@ -47,24 +75,7 @@ function GroupsDashboard() {
         <SearchBox type="group" />
       </div>
 
-      <div className="flex-[1] flex flex-col border-x border-t rounded-tr-2xl rounded-tl-2xl px-2 border-black overflow-hidden">
-        <h1 className="font-bold text-3xl m-2">Joined Groups</h1>
-        <div className="flex-[1] overflow-y-auto">
-          <div className="space-y-4 pb-20">
-            {!groups ? (
-              <div>Loading...</div>
-            ) : (
-              groups.map((group) => (
-                <GroupCard
-                  key={group.groupId}
-                  groupId={group.groupId}
-                  groupData={group}
-                />
-              ))
-            )}
-          </div>
-        </div>
-      </div>
+      <SnapSections sections={sections} />
 
       <button className="fixed bottom-20 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 z-10">
         <PlusIcon
