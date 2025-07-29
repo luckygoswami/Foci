@@ -4,10 +4,16 @@ import { useRef, useState } from 'react';
 function SnapSections({
   sections,
 }: {
-  sections: { title: string; component: React.ComponentType<any> }[];
+  sections: {
+    title: string;
+    component: React.ComponentType<any>;
+    props?: Record<string, any>;
+  }[];
 }) {
   const titles = sections.map((section) => section.title);
-  const components = sections.map((section) => section.component);
+  const components = sections.map((section) => {
+    return { component: section.component, props: section.props };
+  });
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState(0);
 
@@ -60,11 +66,14 @@ function SnapSections({
         ref={scrollContainerRef}
         onScroll={handleScroll}
         className="flex space-x-4 overflow-x-auto snap-x snap-mandatory overflow-y-hidden scroll-smooth no-scrollbar flex-[1]">
-        {components.map((Comp, i) => (
+        {components.map(({ component: Comp, props }, i) => (
           <div
             key={i}
             className="flex-shrink-0 w-full snap-center overflow-y-auto">
-            <Comp />
+            <Comp
+              {...(props || {})}
+              prop={'hi'}
+            />
           </div>
         ))}
       </div>

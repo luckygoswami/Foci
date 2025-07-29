@@ -1,4 +1,5 @@
 import SearchBox from '@/components/SearchBox';
+import SnapSections from '@/components/SnapSections';
 import { useAuth } from '@/features/auth';
 import {
   CreateGroupBottomSheet,
@@ -26,6 +27,19 @@ function GroupsDashboard() {
     setGroups((prev) => [...prev, { ...newGroup }]);
     setShowSheet(false);
   };
+
+  const sections = [
+    {
+      title: 'joined',
+      component: GroupsList,
+      props: { groups },
+    },
+    {
+      title: 'invites',
+      component: InvitesList,
+      props: { invites, setInvites, inviteListRef },
+    },
+  ];
 
   return (
     <main className="flex flex-col px-2 gap-3">
