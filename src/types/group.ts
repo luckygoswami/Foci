@@ -1,6 +1,7 @@
-import type { FirebaseUserId } from './core';
+import type { FirebaseUserId, GroupId } from './core';
 
 export interface Group {
+  // Not including groupId inside doc to support groupCreation in offline mode. The groupId'll be assigned while offlne
   name: string;
   avatarId: string;
   description?: string;
@@ -20,4 +21,16 @@ export interface GroupMember {
   avatarId: string;
   role: 'admin' | 'member' | 'creator';
   joinedAt: number;
+}
+
+export interface GroupInvite {
+  senderId: FirebaseUserId;
+  senderName: string;
+  senderAvatarId: string;
+  recipientId: FirebaseUserId;
+  groupId: GroupId;
+  groupName: string;
+  groupAvatarId: string;
+  createdAt: number;
+  status: 'pending' | 'accepted' | 'rejected';
 }
