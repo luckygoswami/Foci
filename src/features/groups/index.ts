@@ -4,4 +4,7 @@ export * from './components/GroupMembersList';
 export * from './components/GroupsList';
 export * from './components/InvitesList';
 export * from './components/FriendsInviteModal';
-export * from './services/groups';
+export * from './services/groupApi';
+export * from './services/groupInvites';
+export * from './services/groupMembers';
+export * from './services/groupRoles';
