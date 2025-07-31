@@ -1,5 +1,5 @@
 import type { GroupMember } from '@/types';
-import { getGroupRoles } from '../services/groups';
+import { getGroupRoles } from '../services/groupRoles';
 
 const creatorBg = 'a7c7e7';
 const adminsBg = ['a8e6cf', 'ffb7b2', 'c3b1e1', 'fff5ba'];

@@ -1,12 +1,9 @@
 import type { GroupInvite } from '@/types';
 import InviteCard from './InviteCard';
-import {
-  acceptGroupInvite,
-  addGroupMember,
-  rejectGroupInvite,
-} from '../services/groups';
 import { useUserData } from '@/features/user';
 import type { Ref } from 'react';
+import { acceptGroupInvite, rejectGroupInvite } from '../services/groupInvites';
+import { addGroupMember } from '../services/groupMembers';
 
 export function InvitesList({
   invites,

@@ -5,7 +5,7 @@ import type { Group } from '@/types';
 import { X } from 'lucide-react';
 import { useUserData } from '@/features/user';
 import type { CreateGroupBottomSheetProps } from '../types';
-import { createGroup } from '../services/groups';
+import { createGroup } from '../services/groupApi';
 import PrivacySelector from './PrivacySelector';
 import TagInput from './TagInput';
 
