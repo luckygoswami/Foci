@@ -52,9 +52,45 @@ service cloud.firestore {
       }
     }
 
+    match /groups/{groupId} {
+      // Only authenticated users can create a new group, and they must be the creator
+      allow create: if request.auth != null
+                    && request.resource.data.creatorId == request.auth.uid;
+
+      // Only the creator of the group (or admin) can delete it
+      allow delete: if request.auth != null
+                    && (resource.data.creatorId == request.auth.uid
+                        // add role-based admin logic if you wish, e.g.:
+                        // || (resource.data.members
+                        //       .where(member => member.userId == request.auth.uid && member.role == 'admin').size() > 0)
+                        );
+
+      allow read: if request.auth != null;
+
+      // Validation (for both create and update): group must always have at least one member (the creator)
+      function isValidGroup() {
+        return request.resource.data.members.size() > 0;
+      }
+      allow create, update: if isValidGroup();
+  }
+
+    match /groupInvites/{inviteId} {
+      allow create: if request.auth != null &&
+                    request.auth.uid == request.resource.data.senderId;
+      allow read: if request.auth.uid == resource.data.recipientId ||
+                  request.auth.uid == resource.data.senderId;
+      allow update: if (request.auth.uid == resource.data.recipientId || request.auth.uid == resource.data.senderId);
+      allow delete: if request.auth.uid == resource.data.creatorId;
+  }
+
+  // Deny everything else
+  match /{document=**} {
+    allow read, write: if false;
+  }
+}
+
     // Deny all other writes
     match /{document=**} {
       allow read, write: if false;
     }
   }
-}
