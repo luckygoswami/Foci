@@ -1,10 +1,53 @@
-import { useState } from 'react';
-
-const subjects = ['Math', 'Physics', 'Chemistry', 'Biology'];
-const friends = ['boy_2423819', 'boy_2423849', 'woman_2423909', 'girl_2423845'];
+import {
+  fetchDailyGoalProgress,
+  fetchWeeklyGoalProgress,
+} from '@/features/charts/services/charts';
+import { fetchUserDataByUserId, useUserData } from '@/features/user';
+import { getMonthYear } from '@/lib/utils';
+import type { FirebaseUserId, UserData } from '@/types';
+import { useEffect, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 
 function UserProfile() {
-  const [friend, setFriend] = useState(false);
+  const { userData: currentUserData } = useUserData();
+  const [isFriend, setIsFriend] = useState(false);
+  const location = useLocation();
+  const { userId } = useParams<{ userId: FirebaseUserId }>();
+  const { userData } = location.state || {};
+  const [user, setUser] = useState<UserData | null>(userData || null);
+  const [todayProgress, setTodayProgress] = useState(0);
+  const [weekProgress, setWeekProgress] = useState(0);
+
+  useEffect(() => {
+    if (!userId || !currentUserData) return;
+
+    if (!user) {
+      fetchUserDataByUserId(userId)
+        .then((res) => {
+          setUser(res);
+          fetchDailyGoalProgress(res).then(setTodayProgress);
+          fetchWeeklyGoalProgress(res).then(setWeekProgress);
+        })
+        .catch((err) => console.error(err));
+    } else {
+      setIsFriend(
+        currentUserData.friends.some((friend) => friend.userId == user.userId)
+      );
+    }
+  }, [userId, currentUserData, user]);
+
+  // TODO: add loading skeleton
+  if (!user || !currentUserData) return <div>Loading...</div>;
+  const {
+    username,
+    name,
+    bio,
+    subjects,
+    totalStudyTime,
+    friends,
+    streak,
+    createdAt,
+  } = user;
 
   return (
     <main className="bg-gray-100 grid  grid-rows-[2fr_1fr_1.2fr_1fr_0.6fr] gap-2 px-4 py-2 borde border-red-500">
@@ -16,11 +59,9 @@ function UserProfile() {
           width={100}
           className="mx-auto rounded-full border mb-4 bg-gray-50"
         />
-        <h2 className="text-xl font-bold">doejohn</h2>
-        <p className="text-gray-700">John Doe</p>
-        <p className="text-gray-500 mt-2">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </p>
+        <h2 className="text-xl font-bold">{username}</h2>
+        <p className="text-gray-700">{name}</p>
+        <p className="text-gray-500 mt-2">{bio}</p>
       </div>
 
       {/* Subjects & Streak */}
@@ -39,7 +80,9 @@ function UserProfile() {
         </div>
         <div className="streak bg-white shadow rounded-2xl p-4">
           <h3 className="font-semibold mb-2">Streak</h3>
-          <p className="text-2xl font-bold text-gray-800">15 🔥</p>
+          <p className="text-2xl font-bold text-gray-800">
+            {streak.current} 🔥
+          </p>
         </div>
       </div>
 
@@ -48,15 +91,21 @@ function UserProfile() {
         <h3 className="font-semibold mb-2">Study Stats</h3>
         <div className="grid grid-cols-3 gap-2 text-center text-sm text-gray-600">
           <div className="border-r border-gray-300">
-            <p className="font-medium text-gray-800 text-lg">2h</p>
+            <p className="font-medium text-gray-800 text-lg">
+              {todayProgress[0]?.value}
+            </p>
             <p>Today</p>
           </div>
           <div>
-            <p className="font-medium text-gray-800 text-lg">4h</p>
+            <p className="font-medium text-gray-800 text-lg">
+              {weekProgress[0]?.value}
+            </p>
             <p>This Week</p>
           </div>
           <div className="border-l border-gray-300">
-            <p className="font-medium text-gray-800 text-lg">120 h</p>
+            <p className="font-medium text-gray-800 text-lg">
+              {totalStudyTime / 60} h
+            </p>
             <p>Total</p>
           </div>
         </div>
@@ -67,32 +116,36 @@ function UserProfile() {
         <div className="shadow bg-white rounded-2xl p-4">
           <h3 className="font-semibold mb-2">Friends</h3>
           <div className="flex -space-x-2">
-            {friends.map((avatarId, i) => (
-              <img
-                key={i}
-                src={`/assets/avatars/${avatarId}.svg`}
-                alt="Friend Avatar"
-                className="w-8 h-8 rounded-full border-2 border-white bg-gray-300"
-              />
-            ))}
+            {!friends.length ? (
+              <div>no friends...</div>
+            ) : (
+              friends.map((friend, i) => (
+                <img
+                  key={i}
+                  src={`/assets/avatars/${friend.avatarId}.svg`}
+                  alt="Friend Avatar"
+                  className="w-8 h-8 rounded-full border-2 border-white bg-gray-300"
+                />
+              ))
+            )}
           </div>
         </div>
         <div className="shadow bg-white rounded-2xl p-4">
           <h3 className="font-semibold mb-2">Joined</h3>
-          <p className="text-gray-700">Jan 2022</p>
+          <p className="text-gray-700">{getMonthYear(createdAt)}</p>
         </div>
       </div>
 
       {/* Add-Remove button */}
-      {friend ? (
+      {isFriend ? (
         <button
-          onClick={() => setFriend((prev) => !prev)}
+          onClick={() => setIsFriend((prev) => !prev)}
           className="flex-1 py-2 rounded-xl bg-red-100 text-red-400 font-semibold text-lg flex items-center justify-center hover:bg-red-200 transition-colors">
           Remove Buddy
         </button>
       ) : (
         <button
-          onClick={() => setFriend((prev) => !prev)}
+          onClick={() => setIsFriend((prev) => !prev)}
           className="flex-1 py-2 rounded-xl bg-blue-200 text-blue-700 font-semibold text-xl flex items-center justify-center hover:bg-blue-300 transition-colors">
           Add Buddy
         </button>
