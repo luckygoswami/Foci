@@ -171,3 +171,13 @@ export function generateRandomCode(length: number = 6): string {
   }
   return code;
 }
+
+/**
+ * Returns a formatted string with the month and year from a Unix timestamp.
+ * @param timestamp - The input Unix timestamp in milliseconds.
+ * @returns A string in the format "Jan 2022".
+ */
+export function getMonthYear(timestamp: number): string {
+  const date = new Date(timestamp);
+  return date.toLocaleString('default', { month: 'short', year: 'numeric' });
+}
