@@ -2,7 +2,7 @@ import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase-config';
 import type { FirebaseUserId, UserData } from '@/types';
 
-export const getUserById = async (
+export const fetchUserDataByUserId = async (
   userId: FirebaseUserId
 ): Promise<UserData | null> => {
   const userRef = doc(db, 'users', userId);
