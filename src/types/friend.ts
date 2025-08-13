@@ -1,9 +1,18 @@
 import type { FirebaseUserId } from './core';
 
+export interface Friend {
+  userId: FirebaseUserId;
+  name: string;
+  avatarId: string;
+}
+
 export interface FriendRequest {
-  fromId: FirebaseUserId;
-  toId: FirebaseUserId;
+  senderId: FirebaseUserId;
+  senderName: string;
+  senderAvatarId: string;
+  recipientId: FirebaseUserId;
+  recipientName: string;
+  recipientAvatarId: string;
   createdAt: number;
-  status: 'pending' | 'accepted' | 'declined';
-  message?: string;
+  status: 'pending' | 'accepted' | 'rejected';
 }
