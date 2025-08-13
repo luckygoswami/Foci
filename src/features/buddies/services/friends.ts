@@ -7,6 +7,8 @@ import {
   doc,
   getDoc,
   runTransaction,
+  arrayUnion,
+  updateDoc,
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase-config';
 import type { FirebaseUserId, FriendRequest, UserData } from '@/types';
@@ -26,7 +28,7 @@ export const sendFriendRequest = async (
   );
 };
 
-export const fetchFriendRequests = async (
+export const fetchRequestsByRecipient = async (
   recipientId: FirebaseUserId
 ): Promise<FriendRequest[]> => {
   const q = query(
@@ -42,11 +44,15 @@ export const fetchFriendRequests = async (
 export const hasSentFriendRequest = async (
   senderId: FirebaseUserId,
   recipientId: FirebaseUserId
-): Promise<boolean> => {
+): Promise<FriendRequest | null> => {
   const requestId = `${senderId}_${recipientId}`;
   const docRef = doc(db, 'friendRequests', requestId);
   const snapshot = await getDoc(docRef);
-  return snapshot.exists() && snapshot.data().status == 'pending';
+
+  if (!snapshot.exists()) return null;
+
+  const data = snapshot.data() as FriendRequest;
+  return data.status == 'pending' ? data : null;
 };
 
 export const unfriendUser = async (
@@ -78,5 +84,47 @@ export const unfriendUser = async (
     tx.update(friendRef, {
       friends: friendData.friends.filter((f) => f.userId !== userId),
     });
+  });
+};
+
+export const acceptFriendRequest = async (request: FriendRequest) => {
+  const { senderId, recipientId } = request;
+  const requestId = `${senderId}_${recipientId}`;
+  const friend = {
+    userId: request.senderId,
+    name: request.senderName,
+    avatarId: request.senderAvatarId,
+  };
+  const user = {
+    userId: request.recipientId,
+    name: request.recipientName,
+    avatarId: request.recipientAvatarId,
+  };
+
+  await runTransaction(db, async (tx) => {
+    const userRef = doc(db, 'users', recipientId);
+    const friendRef = doc(db, 'users', senderId);
+    const reqRef = doc(db, 'friendRequests', requestId);
+
+    tx.update(userRef, {
+      friends: arrayUnion(friend),
+    });
+
+    tx.update(friendRef, {
+      friends: arrayUnion(user),
+    });
+
+    tx.update(reqRef, {
+      status: 'accepted',
+    });
+  });
+};
+
+export const rejectFriendRequest = async (request: FriendRequest) => {
+  const reqId = `${request.senderId}_${request.recipientId}`;
+
+  const reqRef = doc(db, 'friendRequests', reqId);
+  updateDoc(reqRef, {
+    status: 'rejected',
   });
 };
