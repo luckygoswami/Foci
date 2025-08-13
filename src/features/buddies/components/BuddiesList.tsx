@@ -1,15 +1,19 @@
-import { BuddySessionCard } from './BuddySessionCard';
+import type { Friend } from '@/types';
+import BuddyCard from './BuddyCard';
 
-export function BuddiesList() {
+export function BuddiesList({ friends }: { friends: Friend[] }) {
   return (
-    <div className="grid grid-cols-3 gap-3 p-2">
-      {[...Array(16)].map((_, i) => (
-        <div
-          key={i}
-          className="flex justify-center items-center">
-          <BuddySessionCard />
-        </div>
-      ))}
+    <div className="flex-col">
+      {!friends.length ? (
+        <div>no buddies yet...</div>
+      ) : (
+        friends.map((friend, i) => (
+          <BuddyCard
+            key={friend.userId + i}
+            friend={friend}
+          />
+        ))
+      )}
     </div>
   );
 }
