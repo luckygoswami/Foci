@@ -19,7 +19,7 @@ export function StudyStats({ userData }: { userData: UserData }) {
   }, []);
 
   return (
-    <div className="study-stats bg-white shadow rounded-2xl p-4 borde border-blue-500">
+    <div className="study-stats bg-white shadow rounded-2xl p-4">
       <h3 className="font-semibold mb-2">Study Stats</h3>
       <div className="grid grid-cols-3 gap-2 text-center text-sm text-gray-600">
         <div className="border-r border-gray-300">

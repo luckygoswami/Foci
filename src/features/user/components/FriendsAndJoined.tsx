@@ -5,7 +5,7 @@ export function FriendsAndJoined({ userData }: { userData: UserData }) {
   const { friends, createdAt } = userData;
 
   return (
-    <div className="friends-joined grid grid-cols-2 gap-2 borde border-blue-500">
+    <div className="friends-joined grid grid-cols-2 gap-2">
       <div className="shadow bg-white rounded-2xl p-4">
         <h3 className="font-semibold mb-2">Friends</h3>
         <div className="flex -space-x-2">
