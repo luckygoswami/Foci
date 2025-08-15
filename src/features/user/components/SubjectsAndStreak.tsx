@@ -1,13 +1,16 @@
+import { Fire } from '@/assets/icons';
+import { isStreakBroken } from '@/features/streaks';
 import type { UserData } from '@/types';
 
 export function SubjectsAndStreak({ userData }: { userData: UserData }) {
   const { subjects, streak } = userData;
+  const isBroken = isStreakBroken(streak);
 
   return (
-    <div className="subjects-streak grid grid-cols-[2fr_1fr] gap-2 borde border-blue-500 ">
+    <div className="subjects-streak grid grid-cols-[2fr_1fr] gap-2">
       <div className="subjects bg-white shadow rounded-2xl p-4 overflow-hidden">
         <h3 className="font-semibold mb-2">Subjects</h3>
-        <div className="flex gap-2 overflow-scroll no-scrollbar">
+        <div className="flex gap-2 overflow-x-auto no-scrollbar">
           {subjects.map((subject) => (
             <span
               key={subject}
@@ -19,7 +22,16 @@ export function SubjectsAndStreak({ userData }: { userData: UserData }) {
       </div>
       <div className="streak bg-white shadow rounded-2xl p-4">
         <h3 className="font-semibold mb-2">Streak</h3>
-        <p className="text-2xl font-bold text-gray-800">{streak.current} 🔥</p>
+        <p
+          className={`text-2xl font-bold ${
+            !isBroken ? 'text-gray-800' : 'text-gray-400'
+          } flex items-baseline`}>
+          {streak.current}
+          <Fire
+            className="ml-2"
+            variant={`${isBroken ? 'bw' : 'color'}`}
+          />
+        </p>
       </div>
     </div>
   );

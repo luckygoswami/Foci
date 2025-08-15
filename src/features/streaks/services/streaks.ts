@@ -79,3 +79,10 @@ export function getStreakDays(streak: Streak): string[] {
 
   return days;
 }
+
+export function isStreakBroken(streak: Streak): boolean {
+  if (!streak.current) return true;
+
+  const yesterdayMidnight = getStartOfDay(Date.now()) - 86400000;
+  return yesterdayMidnight > streak.lastActivityDate;
+}
