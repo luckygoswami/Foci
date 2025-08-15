@@ -1,10 +1,6 @@
 import type { UserData } from '@/types';
-import { Flame } from 'lucide-react';
 import { getStreakDays } from '../services/streaks';
-
-interface StreakboardProps {
-  userData: UserData;
-}
+import { Fire } from '@/assets/icons';
 
 const weekDays = [
   'Sunday',
@@ -16,7 +12,7 @@ const weekDays = [
   'Saturday',
 ];
 
-export function Streakboard({ userData }: StreakboardProps) {
+export function Streakboard({ userData }: { userData: UserData }) {
   const streakDays = getStreakDays(userData.streak);
   const today = new Date().getDay();
 
@@ -26,18 +22,21 @@ export function Streakboard({ userData }: StreakboardProps) {
       <div className="current-streak">
         <span className="text-6xl flex items-center">
           {userData.streak?.current || 0}
-          <Flame
-            size={45}
-            fill="yellow"
-          />
+          <Fire className="size-10" />
         </span>
       </div>
       <div className="streak-week flex justify-evenly text-center">
         {weekDays.map((day, i) => (
           <span key={`${day}_${i}`}>
-            <Flame
-              fill={streakDays.includes(day) ? 'yellow' : 'white'}
-              stroke={day == weekDays[today] ? 'orange' : 'black'}
+            <Fire
+              variant={`${
+                day == weekDays[today]
+                  ? 'outline'
+                  : streakDays.includes(day)
+                  ? 'color'
+                  : 'bw'
+              }`}
+              className="size-7"
             />
             {day.slice(0, 3)}
           </span>
