@@ -15,12 +15,12 @@ export function cn(...inputs: ClassValue[]) {
  * formatDuration(3665) // → "01:01:05"
  * ```
  */
-export const formatDuration = (seconds: number) => {
+export function formatDuration(seconds: number) {
   const hours = String(Math.floor(seconds / 3600)).padStart(2, '0');
   const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
   const secondsStr = String(seconds % 60).padStart(2, '0');
   return `${hours}:${minutes}:${secondsStr}`;
-};
+}
 
 /**
  * Converts each word in a string to **Title Case** —
