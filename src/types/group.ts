@@ -3,6 +3,7 @@ import type { FirebaseUserId, GroupId } from './core';
 export interface Group {
   // Not including groupId inside doc to support groupCreation in offline mode. The groupId'll be assigned while offlne
   name: string;
+  name_lower: string;
   avatarId: string;
   description?: string;
   isPublic: boolean;

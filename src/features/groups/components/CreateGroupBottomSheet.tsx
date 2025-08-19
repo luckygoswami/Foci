@@ -49,6 +49,7 @@ export const CreateGroupBottomSheet: React.FC<CreateGroupBottomSheetProps> = ({
     const now = Date.now();
     const newGroupData: Group = {
       name: name.trim(),
+      name_lower: name.trim().toLowerCase(),
       // @ts-ignore
       avatarId,
       ...(description.trim() && { description: description.trim() }),
@@ -96,7 +97,7 @@ export const CreateGroupBottomSheet: React.FC<CreateGroupBottomSheetProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/30 flex justify-center items-end"
+      className="fixed inset-0 z-15 bg-black/30 flex justify-center items-end"
       onClick={onClose}
       aria-modal="true"
       role="dialog">
