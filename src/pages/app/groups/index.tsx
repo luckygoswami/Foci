@@ -1,4 +1,3 @@
-import SearchBox from '@/components/SearchBox';
 import SnapSections from '@/components/SnapSections';
 import { useAuth } from '@/features/auth';
 import {
@@ -8,6 +7,7 @@ import {
   GroupsList,
   InvitesList,
 } from '@/features/groups';
+import { SearchBar } from '@/features/search';
 import { useUserData } from '@/features/user';
 import type { FirebaseUserId, Group, GroupId, GroupInvite } from '@/types';
 import { PlusIcon } from 'lucide-react';
@@ -71,13 +71,14 @@ function GroupsDashboard() {
 
   return (
     <main className="flex flex-col px-2 gap-3">
-      <div className="mt-2">
-        <SearchBox type="group" />
+      <div className="mt-2 flex items-center">
+        <SearchBar targetType="groups" />
+        <h2 className="fixed left-2/5 text-xl text-gray-600">Groups</h2>
       </div>
 
       <SnapSections sections={sections} />
 
-      <button className="fixed bottom-20 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 z-10">
+      <button className="fixed bottom-20 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 z-3">
         <PlusIcon
           className="size-6"
           onClick={() => setShowSheet(true)}
