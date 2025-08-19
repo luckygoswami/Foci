@@ -17,7 +17,7 @@ interface TimerProps {
   currentSession?: CurrentSession | null;
 }
 
-const Timer = ({
+export function Timer({
   initialTime,
   autoStart,
   size,
@@ -29,7 +29,7 @@ const Timer = ({
   setSubjectDialog,
   selectedSubject,
   currentSession,
-}: TimerProps) => {
+}: TimerProps) {
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [sessionStarted, setSessionStarted] = useState(!!initialTime);
@@ -132,6 +132,4 @@ const Timer = ({
       )}
     </div>
   );
-};
-
-export default Timer;
+}

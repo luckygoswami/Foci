@@ -1,7 +1,7 @@
 import { toTitleCase } from '@/lib/utils';
 import { useRef, useState } from 'react';
 
-function SnapSections({
+export function SnapSections({
   sections,
 }: {
   sections: {
@@ -80,5 +80,3 @@ function SnapSections({
     </div>
   );
 }
-
-export default SnapSections;

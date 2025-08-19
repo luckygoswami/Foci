@@ -3,7 +3,7 @@ import {
   SubjectTimeDistributionChart,
   WeeklyGoalChart,
 } from '@/features/charts';
-import Timer from '@/components/Timer';
+import { Timer } from '@/components';
 import { useCallback, useEffect, useState } from 'react';
 import {
   endSession,

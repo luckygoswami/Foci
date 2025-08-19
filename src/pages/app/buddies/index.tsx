@@ -1,5 +1,5 @@
 import { SearchBar } from '@/features/search';
-import SnapSections from '@/components/SnapSections';
+import { SnapSections } from '@/components';
 import { useAuth } from '@/features/auth';
 import {
   BuddiesList,
