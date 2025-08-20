@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 
-export default function RootRedirect() {
+export default function AppIndex() {
   return (
     <Navigate
       to="/app/home"
