@@ -3,7 +3,7 @@ import { SubjectProgressChart } from '@/features/charts';
 import { useUserData } from '@/features/user';
 import type { FirebaseUserId } from '@/types';
 
-function ProgressDashboard() {
+export default function ProgressDashboard() {
   const { userData } = useUserData();
   const userId = userData?.userId as FirebaseUserId;
   const subjects = userData?.subjects;
@@ -12,7 +12,10 @@ function ProgressDashboard() {
   if (!userData) return <div>Loading...</div>;
 
   return (
-    <main className="flex flex-col px-2 gap-5">
+    <div
+      role="region"
+      aria-label="Progress Dashboard"
+      className="flex flex-col px-2 gap-5">
       <div className="flex-[1] flex flex-col justify-between p-2 border-x border-b border-black rounded-br-4xl rounded-bl-4xl">
         <Streakboard userData={userData} />
       </div>
@@ -31,8 +34,6 @@ function ProgressDashboard() {
           ))}
         </div>
       </div>
-    </main>
+    </div>
   );
 }
-
-export default ProgressDashboard;

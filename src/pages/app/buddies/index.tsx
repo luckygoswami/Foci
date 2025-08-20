@@ -50,13 +50,16 @@ export default function BuddiesDashboard() {
   ];
 
   return (
-    <main className="flex flex-col px-2 gap-3">
+    <div
+      role="region"
+      aria-label="Buddies Dashboard"
+      className="flex flex-col px-2 gap-3">
       <div className="mt-2 flex items-center">
         <SearchBar targetType="users" />
         <h2 className="fixed left-2/5 text-xl text-gray-600">Buddies</h2>
       </div>
 
       <SnapSections sections={sections} />
-    </main>
+    </div>
   );
 }

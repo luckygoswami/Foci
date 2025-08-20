@@ -3,7 +3,7 @@ import { useAuth } from '@/features/auth';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function Auth() {
+export default function AuthDashboard() {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
 

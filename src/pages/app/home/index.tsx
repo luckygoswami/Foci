@@ -23,7 +23,7 @@ import { updateStreakIfNeeded } from '@/features/streaks';
 import { useAuth } from '@/features/auth';
 import type { FirebaseUserId } from '@/types';
 
-function Home() {
+export default function HomeDashboard() {
   const { userData, setUserData } = useUserData();
   const userId = useAuth().user?.uid as FirebaseUserId; // Extracting userId from useAuth not from UserData coz application load is dependent on useAuth load, not on userData
   const {
@@ -124,7 +124,10 @@ function Home() {
   }
 
   return (
-    <main className="flex flex-col px-2 gap-5">
+    <div
+      role="region"
+      aria-label="Home Dashboard"
+      className="flex flex-col px-2 gap-5">
       <div className="flex-[1] flex justify-center items-center p-2 border-x border-b border-black rounded-br-4xl rounded-bl-4xl">
         {sessionLoading ? (
           <span className="animate-pulse text-lg">Loading session...</span>
@@ -175,8 +178,6 @@ function Home() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
-
-export default Home;

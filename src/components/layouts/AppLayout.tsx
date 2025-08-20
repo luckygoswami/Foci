@@ -4,7 +4,7 @@ import BottomNav from '../BottomNav';
 function AppLayout({ children }: { children: JSX.Element }) {
   return (
     <>
-      {children}
+      <main>{children}</main>
       <BottomNav />
     </>
   );

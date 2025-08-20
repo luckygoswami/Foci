@@ -17,7 +17,7 @@ import type { FirebaseUserId, UserData } from '@/types';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
-function UserProfile() {
+export default function UserDetailsPage() {
   const { userData, setUserData } = useUserData();
   const location = useLocation();
   const navigate = useNavigate();
@@ -181,7 +181,10 @@ function UserProfile() {
   }
 
   return (
-    <main className="bg-gray-100 grid  grid-rows-[2fr_1fr_1.2fr_1fr_0.6fr] gap-2 px-4 py-2">
+    <div
+      role="region"
+      aria-label="User Details"
+      className="bg-gray-100 grid  grid-rows-[2fr_1fr_1.2fr_1fr_0.6fr] gap-2 px-4 py-2">
       {!profileData || loadingFriendship ? (
         // TODO: add loading skeleton
         <div>Loading...</div>
@@ -195,8 +198,6 @@ function UserProfile() {
           <div className="actions-menu flex gap-2 mt-2">{renderActions()}</div>
         </>
       )}
-    </main>
+    </div>
   );
 }
-
-export default UserProfile;

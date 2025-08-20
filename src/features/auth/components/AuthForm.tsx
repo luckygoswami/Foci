@@ -53,126 +53,131 @@ export function AuthForm() {
   };
 
   return (
-    <main className="form-body">
+    <main>
       <div
-        className="container"
-        ref={container}>
-        <div className="form-box login">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleLogin();
-            }}>
-            <h1 className="font-bold">Login</h1>
-            <div className="input-box">
-              <input
-                type="text"
-                placeholder="Enter Username or Email"
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <i className="fa-solid fa-user"></i>
-            </div>
-            <div className="input-box">
-              <input
-                type="password"
-                placeholder="Enter Password"
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <i className="fa-solid fa-lock"></i>
-            </div>
-            <div className="forgot-link">
-              <a href="#">Forgot Password</a>
-            </div>
-            <button
-              type="submit"
-              className="btn"
-              disabled={loading}>
-              {loading ? 'Logging in...' : 'Login'}
-            </button>
-            <p>or login with social platforms</p>
-            <div className="social-icons">
-              <i
-                className="fa-brands fa-google"
-                onClick={handleGoogleLogin}></i>
-              <i className="fa-brands fa-facebook"></i>
-              <i className="fa-brands fa-github"></i>
-              <i className="fa-brands fa-linkedin"></i>
-            </div>
-          </form>
-        </div>
-
-        <div className="form-box register">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleSignup();
-            }}>
-            <h1 className="font-bold">Sign Up</h1>
-            <div className="input-box">
-              <input
-                type="text"
-                placeholder="Username"
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
-              <i className="fa-solid fa-user"></i>
-            </div>
-            <div className="input-box">
-              <input
-                type="email"
-                placeholder="Email"
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <i className="fa-solid fa-envelope"></i>
-            </div>
-            <div className="input-box">
-              <input
-                type="password"
-                placeholder="Enter Password"
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <i className="fa-solid fa-lock"></i>
-            </div>
-            <button
-              type="submit"
-              className="btn"
-              disabled={loading}>
-              {loading ? 'Signing up...' : 'Sign up'}
-            </button>
-            <p>or signup with social platforms</p>
-            <div className="social-icons">
-              <i
-                className="fa-brands fa-google"
-                onClick={handleGoogleLogin}></i>
-              <i className="fa-brands fa-facebook"></i>
-              <i className="fa-brands fa-github"></i>
-              <i className="fa-brands fa-linkedin"></i>
-            </div>
-          </form>
-        </div>
-
-        <div className="toggle-box">
-          <div className="toggle-panel toggle-left">
-            <h1 className="font-bold">Hello, Welcome!</h1>
-            <p>Don't have an account?</p>
-            <button
-              className="btn register-btn"
-              onClick={() => container.current?.classList.add('active')}>
-              Sign Up
-            </button>
+        role="region"
+        aria-label="Auth Form"
+        className="form-body">
+        <div
+          className="container"
+          ref={container}>
+          <div className="form-box login">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleLogin();
+              }}>
+              <h1 className="font-bold">Login</h1>
+              <div className="input-box">
+                <input
+                  type="text"
+                  placeholder="Enter Username or Email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                <i className="fa-solid fa-user"></i>
+              </div>
+              <div className="input-box">
+                <input
+                  type="password"
+                  placeholder="Enter Password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <i className="fa-solid fa-lock"></i>
+              </div>
+              <div className="forgot-link">
+                <a href="#">Forgot Password</a>
+              </div>
+              <button
+                type="submit"
+                className="btn"
+                disabled={loading}>
+                {loading ? 'Logging in...' : 'Login'}
+              </button>
+              <p>or login with social platforms</p>
+              <div className="social-icons">
+                <i
+                  className="fa-brands fa-google"
+                  onClick={handleGoogleLogin}></i>
+                <i className="fa-brands fa-facebook"></i>
+                <i className="fa-brands fa-github"></i>
+                <i className="fa-brands fa-linkedin"></i>
+              </div>
+            </form>
           </div>
-          <div className="toggle-panel toggle-right">
-            <h1 className="font-bold">Welcome Back!</h1>
-            <p>Already have an account?</p>
-            <button
-              className="btn login-btn"
-              onClick={() => container.current?.classList.remove('active')}>
-              Login
-            </button>
+
+          <div className="form-box register">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSignup();
+              }}>
+              <h1 className="font-bold">Sign Up</h1>
+              <div className="input-box">
+                <input
+                  type="text"
+                  placeholder="Username"
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                />
+                <i className="fa-solid fa-user"></i>
+              </div>
+              <div className="input-box">
+                <input
+                  type="email"
+                  placeholder="Email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                <i className="fa-solid fa-envelope"></i>
+              </div>
+              <div className="input-box">
+                <input
+                  type="password"
+                  placeholder="Enter Password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <i className="fa-solid fa-lock"></i>
+              </div>
+              <button
+                type="submit"
+                className="btn"
+                disabled={loading}>
+                {loading ? 'Signing up...' : 'Sign up'}
+              </button>
+              <p>or signup with social platforms</p>
+              <div className="social-icons">
+                <i
+                  className="fa-brands fa-google"
+                  onClick={handleGoogleLogin}></i>
+                <i className="fa-brands fa-facebook"></i>
+                <i className="fa-brands fa-github"></i>
+                <i className="fa-brands fa-linkedin"></i>
+              </div>
+            </form>
+          </div>
+
+          <div className="toggle-box">
+            <div className="toggle-panel toggle-left">
+              <h1 className="font-bold">Hello, Welcome!</h1>
+              <p>Don't have an account?</p>
+              <button
+                className="btn register-btn"
+                onClick={() => container.current?.classList.add('active')}>
+                Sign Up
+              </button>
+            </div>
+            <div className="toggle-panel toggle-right">
+              <h1 className="font-bold">Welcome Back!</h1>
+              <p>Already have an account?</p>
+              <button
+                className="btn login-btn"
+                onClick={() => container.current?.classList.remove('active')}>
+                Login
+              </button>
+            </div>
           </div>
         </div>
       </div>

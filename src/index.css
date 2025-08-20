@@ -185,6 +185,10 @@ main {
   overflow: hidden;
 }
 
+[role='region'] {
+  height: 100%;
+}
+
 .jetBrains {
   font-family: 'JetBrains', sans-serif;
 }

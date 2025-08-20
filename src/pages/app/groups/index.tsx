@@ -13,7 +13,7 @@ import type { FirebaseUserId, Group, GroupId, GroupInvite } from '@/types';
 import { PlusIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
-function GroupsDashboard() {
+export default function GroupsDashboard() {
   const userId = useAuth().user?.uid as FirebaseUserId;
   const [showSheet, setShowSheet] = useState(false);
   const { userData } = useUserData();
@@ -70,7 +70,10 @@ function GroupsDashboard() {
   ];
 
   return (
-    <main className="flex flex-col px-2 gap-3">
+    <div
+      role="region"
+      aria-label="Groups Dashboard"
+      className="flex flex-col px-2 gap-3">
       <div className="mt-2 flex items-center">
         <SearchBar targetType="groups" />
         <h2 className="fixed left-2/5 text-xl text-gray-600">Groups</h2>
@@ -89,8 +92,6 @@ function GroupsDashboard() {
         onClose={() => setShowSheet(false)}
         onCreation={handleCreation}
       />
-    </main>
+    </div>
   );
 }
-
-export default GroupsDashboard;

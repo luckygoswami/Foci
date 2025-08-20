@@ -129,7 +129,10 @@ export default function GroupDetailsPage() {
   if (!group || !userData) return <div>Loading...</div>;
 
   return (
-    <main className="bg-white flex flex-col justify-between px-4 py-2">
+    <div
+      role="region"
+      aria-label="Group Details"
+      className="bg-white flex flex-col justify-between px-4 py-2">
       <>
         <GroupDetails group={group} />
         <GroupMembersList members={group.members} />
@@ -171,6 +174,6 @@ export default function GroupDetailsPage() {
           )}
         </div>
       </>
-    </main>
+    </div>
   );
 }
