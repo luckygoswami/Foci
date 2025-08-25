@@ -46,7 +46,7 @@ export function OnboardingWizard({ user }: { user: User }) {
         username,
         name,
         email,
-        avatarId,
+        avatarId: avatarId ?? 'boy_2423856',
         bio,
         subjects,
         dailyTargetMinutes,

@@ -68,7 +68,7 @@ export function StepStudy({
         <div className="mt-1 flex gap-2">
           <input
             id="subjects-input"
-            className="flex-1 rounded border px-3 py-2"
+            className="w-full rounded border px-3 py-2"
             value={subjectInput}
             onChange={(e) => setSubjectInput(e.target.value)}
             placeholder="Add a subject and press Add"
@@ -162,40 +162,6 @@ export function StepStudy({
           <span>{fmt(WEEKLY_MAX)}</span>
         </div>
       </div>
-      {/* <div className="grid grid-cols-2 gap-3">
-        <div>
-          <label
-            htmlFor="dailyTarget-input"
-            className="text-sm font-medium">
-            Daily Target (min)
-          </label>
-          <input
-            id="dailyTarget-input"
-            type="number"
-            className="mt-1 w-full rounded border px-3 py-2"
-            value={dailyTargetMinutes}
-            min={15}
-            max={1200}
-            onChange={handleDailyTarget}
-          />
-        </div>
-        <div>
-          <label
-            htmlFor="weeklyTarget-input"
-            className="text-sm font-medium">
-            Weekly Target (min)
-          </label>
-          <input
-            id="weeklyTarget-input"
-            type="number"
-            min={15}
-            max={8400}
-            className="mt-1 w-full rounded border px-3 py-2"
-            value={weeklyTargetMinutes}
-            onChange={handleWeeklyTarget}
-          />
-        </div>
-      </div> */}
     </div>
   );
 }

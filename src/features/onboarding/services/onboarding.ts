@@ -8,7 +8,6 @@ export function defaultState(user: User): OnboardingState {
   return {
     username: '',
     name: user.displayName || '',
-    avatarId: 'boy_2423856',
     bio: '',
     subjects: [],
     dailyTargetMinutes: 120,
