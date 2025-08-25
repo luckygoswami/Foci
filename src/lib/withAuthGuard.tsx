@@ -2,6 +2,7 @@ import { AuthGuard } from '@/features/auth';
 import AppLayout from '@/components/layouts/AppLayout';
 import { isValidElement } from 'react';
 import { type RouteObject } from 'react-router-dom';
+import { OnboardingGate } from '@/features/onboarding';
 
 type MetaRouteObject = RouteObject & {
   meta?: {
@@ -23,7 +24,9 @@ export function wrapWithAuthGuard(
     ) {
       wrappedRoute.element = (
         <AuthGuard>
-          <AppLayout children={route.element} />
+          <OnboardingGate>
+            <AppLayout children={route.element} />
+          </OnboardingGate>
         </AuthGuard>
       );
     }

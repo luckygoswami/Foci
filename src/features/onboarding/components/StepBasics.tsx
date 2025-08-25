@@ -74,7 +74,7 @@ export function StepBasics({
         </label>
         <div className="mt-1 flex gap-2">
           <input
-            className="flex-1 rounded border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             id="username-input"
             required
             value={username}
