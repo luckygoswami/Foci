@@ -1,15 +1,15 @@
-import { AuthForm } from '@/features/auth';
-import { useAuth } from '@/features/auth';
+import { AuthForm, useAuth } from '@/features/auth';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function AuthDashboard() {
   const { user, loading: authLoading } = useAuth();
+  const redirectTo = useLocation().state.from.pathname; // default will be '/'
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!authLoading && user) {
-      navigate('/app', { replace: true });
+      navigate(redirectTo, { replace: true });
     }
   }, [user, authLoading, navigate]);
 
