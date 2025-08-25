@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "dev": "node scripts/generateAvatarList.js && vite",
+    "build": "node scripts/generateAvatarList.js && tsc -b && vite build",
+    "preview": "node scripts/generateAvatarList.js && vite preview",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.14",

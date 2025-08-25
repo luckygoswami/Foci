@@ -27,3 +27,4 @@ dist-ssr
 admin/
 firebase-export/
 .firebaserc
+src/constants/avatars.ts
