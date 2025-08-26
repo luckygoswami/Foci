@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return unsubscribe;
   }, [sentVerification]);
 
-  const emailSignup = async (email: string, password: string) => {
+  async function emailSignup(email: string, password: string) {
     try {
       await createUserWithEmailAndPassword(firebaseAuth, email, password);
       setSentVerification(false);
@@ -79,9 +79,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.error('Signup failed:', err);
       throw new Error(authErrorToMessage(err.code));
     }
-  };
+  }
 
-  const emailLogin = async (email: string, password: string) => {
+  async function emailLogin(email: string, password: string) {
     try {
       await signInWithEmailAndPassword(firebaseAuth, email, password);
       setSentVerification(false);
@@ -89,9 +89,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.error('Login failed:', err);
       throw new Error(authErrorToMessage(err.code));
     }
-  };
+  }
 
-  const googleLogin = async () => {
+  async function googleLogin() {
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(firebaseAuth, provider);
@@ -99,25 +99,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.error('Login failed:', err);
       throw new Error(authErrorToMessage(err.code));
     }
-  };
+  }
 
-  const resetPassword = async (email: string) => {
+  async function resetPassword(email: string) {
     try {
       await sendPasswordResetEmail(firebaseAuth, email);
     } catch (err: any) {
       console.error('Password reset failed:', err);
       throw new Error(authErrorToMessage(err.code));
     }
-  };
+  }
 
-  const logout = async () => {
+  async function logout() {
     try {
       await signOut(firebaseAuth);
     } catch (err: any) {
       console.error('Logout failed:', err);
       throw new Error(authErrorToMessage(err.code));
     }
-  };
+  }
 
   const authContextValue = useMemo(
     () => ({
@@ -139,10 +139,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useAuth = () => {
+export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-};
+}

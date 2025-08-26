@@ -13,81 +13,100 @@ import {
 import { db } from '@/lib/firebase-config';
 import type { FirebaseUserId, FriendRequest, UserData } from '@/types';
 
-export const sendFriendRequest = async (
+export async function sendFriendRequest(
   friendRequest: FriendRequest
-): Promise<void> => {
+): Promise<void> {
   const { senderId, recipientId } = friendRequest;
 
   if (senderId === recipientId) {
-    throw new Error("You can't send a friend request to yourself.");
+    throw new Error('Cannot send a friend request to self.');
   }
 
-  await setDoc(
-    doc(db, 'friendRequests', `${senderId}_${recipientId}`),
-    friendRequest
-  );
-};
+  try {
+    await setDoc(
+      doc(db, 'friendRequests', `${senderId}_${recipientId}`),
+      friendRequest
+    );
+  } catch (err: any) {
+    console.error('Sending friend request failed:', err);
+    throw new Error('Failed to send friend request.');
+  }
+}
 
-export const fetchRequestsByRecipient = async (
+export async function fetchRequestsByRecipient(
   recipientId: FirebaseUserId
-): Promise<FriendRequest[]> => {
+): Promise<FriendRequest[]> {
   const q = query(
     collection(db, 'friendRequests'),
     where('recipientId', '==', recipientId),
     where('status', '==', 'pending')
   );
 
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((doc) => doc.data() as FriendRequest);
-};
+  try {
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((doc) => doc.data() as FriendRequest);
+  } catch (err: any) {
+    console.error('Fetching friend requests failed:', err);
+    throw new Error('Failed to fetch friend requests.');
+  }
+}
 
-export const hasSentFriendRequest = async (
+export async function hasSentFriendRequest(
   senderId: FirebaseUserId,
   recipientId: FirebaseUserId
-): Promise<FriendRequest | null> => {
+): Promise<FriendRequest | null> {
   const requestId = `${senderId}_${recipientId}`;
   const docRef = doc(db, 'friendRequests', requestId);
-  const snapshot = await getDoc(docRef);
 
-  if (!snapshot.exists()) return null;
+  try {
+    const snapshot = await getDoc(docRef);
+    if (!snapshot.exists()) return null;
 
-  const data = snapshot.data() as FriendRequest;
-  return data.status == 'pending' ? data : null;
-};
+    const data = snapshot.data() as FriendRequest;
+    return data.status == 'pending' ? data : null;
+  } catch (err: any) {
+    console.error('Error in checking friend request sent or not:', err);
+    throw new Error('Something went wrong!');
+  }
+}
 
-export const unfriendUser = async (
+export async function unfriendUser(
   userId: FirebaseUserId,
   friendId: FirebaseUserId
-) => {
+) {
   if (userId === friendId) throw new Error('Cannot unfriend yourself');
 
-  await runTransaction(db, async (tx) => {
-    const userRef = doc(db, 'users', userId);
-    const friendRef = doc(db, 'users', friendId);
+  try {
+    await runTransaction(db, async (tx) => {
+      const userRef = doc(db, 'users', userId);
+      const friendRef = doc(db, 'users', friendId);
 
-    const [userSnap, friendSnap] = await Promise.all([
-      tx.get(userRef),
-      tx.get(friendRef),
-    ]);
+      const [userSnap, friendSnap] = await Promise.all([
+        tx.get(userRef),
+        tx.get(friendRef),
+      ]);
 
-    if (!userSnap.exists() || !friendSnap.exists()) {
-      throw new Error('User or friend not found');
-    }
+      if (!userSnap.exists() || !friendSnap.exists()) {
+        throw new Error('User or friend not found');
+      }
 
-    const userData = userSnap.data() as UserData;
-    const friendData = friendSnap.data() as UserData;
+      const userData = userSnap.data() as UserData;
+      const friendData = friendSnap.data() as UserData;
 
-    tx.update(userRef, {
-      friends: userData.friends.filter((f) => f.userId !== friendId),
+      tx.update(userRef, {
+        friends: userData.friends.filter((f) => f.userId !== friendId),
+      });
+
+      tx.update(friendRef, {
+        friends: friendData.friends.filter((f) => f.userId !== userId),
+      });
     });
+  } catch (err: any) {
+    throw new Error('Unable to unfriend user.');
+  }
+}
 
-    tx.update(friendRef, {
-      friends: friendData.friends.filter((f) => f.userId !== userId),
-    });
-  });
-};
-
-export const acceptFriendRequest = async (request: FriendRequest) => {
+export async function acceptFriendRequest(request: FriendRequest) {
   const { senderId, recipientId } = request;
   const requestId = `${senderId}_${recipientId}`;
   const friend = {
@@ -101,30 +120,36 @@ export const acceptFriendRequest = async (request: FriendRequest) => {
     avatarId: request.recipientAvatarId,
   };
 
-  await runTransaction(db, async (tx) => {
-    const userRef = doc(db, 'users', recipientId);
-    const friendRef = doc(db, 'users', senderId);
-    const reqRef = doc(db, 'friendRequests', requestId);
+  try {
+    await runTransaction(db, async (tx) => {
+      const userRef = doc(db, 'users', recipientId);
+      const friendRef = doc(db, 'users', senderId);
+      const reqRef = doc(db, 'friendRequests', requestId);
 
-    tx.update(userRef, {
-      friends: arrayUnion(friend),
+      tx.update(userRef, {
+        friends: arrayUnion(friend),
+      });
+
+      tx.update(friendRef, {
+        friends: arrayUnion(user),
+      });
+
+      tx.update(reqRef, {
+        status: 'accepted',
+      });
     });
+  } catch (err: any) {
+    throw new Error('Unable to accept friend request.');
+  }
+}
 
-    tx.update(friendRef, {
-      friends: arrayUnion(user),
-    });
-
-    tx.update(reqRef, {
-      status: 'accepted',
-    });
-  });
-};
-
-export const rejectFriendRequest = async (request: FriendRequest) => {
+export async function rejectFriendRequest(request: FriendRequest) {
   const reqId = `${request.senderId}_${request.recipientId}`;
-
   const reqRef = doc(db, 'friendRequests', reqId);
-  updateDoc(reqRef, {
-    status: 'rejected',
-  });
-};
+
+  try {
+    updateDoc(reqRef, { status: 'rejected' });
+  } catch (err: any) {
+    throw new Error('Unable to reject friend request.');
+  }
+}

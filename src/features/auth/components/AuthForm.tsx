@@ -12,7 +12,7 @@ export function AuthForm() {
 
   const { googleLogin, emailLogin, emailSignup, resetPassword } = useAuth();
 
-  const handleLogin = async () => {
+  async function handleLogin() {
     setLoading(true);
     setPassword('');
     try {
@@ -22,9 +22,9 @@ export function AuthForm() {
     } finally {
       setLoading(false);
     }
-  };
+  }
 
-  const handleSignup = async () => {
+  async function handleSignup() {
     setLoading(true);
     setPassword('');
     try {
@@ -34,9 +34,9 @@ export function AuthForm() {
     } finally {
       setLoading(false);
     }
-  };
+  }
 
-  const handleGoogleLogin = async () => {
+  async function handleGoogleLogin() {
     try {
       await googleLogin();
     } catch (err: any) {
@@ -44,9 +44,9 @@ export function AuthForm() {
     } finally {
       setLoading(false);
     }
-  };
+  }
 
-  const handleForgotPassword = async () => {
+  async function handleForgotPassword() {
     if (!email) {
       toast.error('Enter the email first!');
       return;
@@ -59,7 +59,7 @@ export function AuthForm() {
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   function toggleShowPassword() {
     setShowPassword((prev) => !prev);

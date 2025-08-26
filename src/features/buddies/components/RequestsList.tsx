@@ -3,6 +3,7 @@ import { acceptFriendRequest, rejectFriendRequest } from '../services/friends';
 import { useUserData } from '@/features/user';
 import type { Friend, FriendRequest } from '@/types';
 import RequestCard from './RequestCard';
+import toast from 'react-hot-toast';
 
 export function RequestsList({
   requests,
@@ -15,42 +16,52 @@ export function RequestsList({
 }) {
   const { setUserData } = useUserData();
 
-  function handleAcceptRequest(request: FriendRequest) {
-    acceptFriendRequest(request);
+  async function handleAcceptRequest(request: FriendRequest) {
+    try {
+      await acceptFriendRequest(request);
 
-    // remove request from list
-    const newRequests = requests.filter(
-      (req) => req.senderId != request.senderId
-    );
-    setRequests(newRequests);
+      // remove request from list
+      const newRequests = requests.filter(
+        (req) => req.senderId != request.senderId
+      );
+      setRequests(newRequests);
 
-    // add friend to userData state
-    setUserData((prev) => {
-      if (!prev) return;
+      // add friend to userData state
+      setUserData((prev) => {
+        if (!prev) return;
 
-      const newFriend: Friend = {
-        userId: request.senderId,
-        name: request.senderName,
-        avatarId: request.senderAvatarId,
-      };
+        const newFriend: Friend = {
+          userId: request.senderId,
+          name: request.senderName,
+          avatarId: request.senderAvatarId,
+        };
 
-      const friends = [...prev.friends, newFriend];
+        const friends = [...prev.friends, newFriend];
 
-      return {
-        ...prev,
-        friends,
-      };
-    });
+        return {
+          ...prev,
+          friends,
+        };
+      });
+      toast.success('New friend added.');
+    } catch (err: any) {
+      toast.error(err.message);
+    }
   }
 
-  function handleRejectRequest(request: FriendRequest) {
-    rejectFriendRequest(request);
+  async function handleRejectRequest(request: FriendRequest) {
+    try {
+      await rejectFriendRequest(request);
 
-    // remove request from list
-    const newRequests = requests.filter(
-      (req) => req.senderId != request.senderId
-    );
-    setRequests(newRequests);
+      // remove request from list
+      const newRequests = requests.filter(
+        (req) => req.senderId != request.senderId
+      );
+      setRequests(newRequests);
+      toast.success('Friend request rejected.');
+    } catch (err: any) {
+      toast.error(err.message);
+    }
   }
 
   return (
