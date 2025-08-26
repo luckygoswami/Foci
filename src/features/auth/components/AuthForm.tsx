@@ -1,27 +1,20 @@
 import { useRef, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/features/auth';
 import { toast } from 'react-toastify';
 import './AuthForm.css';
 
 export function AuthForm() {
-  const navigate = useNavigate();
-  const location = useLocation();
   const container = useRef<HTMLDivElement>(null);
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   const { googleLogin, emailLogin, emailSignup } = useAuth();
 
-  const from = (location.state as any)?.from?.pathname || '/app';
-
   const handleLogin = async () => {
     setLoading(true);
     try {
       await emailLogin(email, password);
-      navigate(from, { replace: true });
     } catch (err: unknown) {
       toast.error(err instanceof Error ? err.message : 'Login failed');
     } finally {
@@ -33,7 +26,6 @@ export function AuthForm() {
     setLoading(true);
     try {
       await emailSignup(email, password);
-      navigate('/app');
     } catch (err: unknown) {
       toast.error(err instanceof Error ? err.message : 'Signup failed');
     } finally {
@@ -44,7 +36,6 @@ export function AuthForm() {
   const handleGoogleLogin = async () => {
     try {
       await googleLogin();
-      navigate(from, { replace: true });
     } catch (err: unknown) {
       toast.error(err instanceof Error ? err.message : 'Authentication failed');
     } finally {
