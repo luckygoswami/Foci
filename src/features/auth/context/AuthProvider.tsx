@@ -13,6 +13,7 @@ import {
   signOut,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
   type User,
 } from 'firebase/auth';
 import { firebaseAuth } from '@/lib/firebase-config';
@@ -23,6 +24,7 @@ type AuthContextType = {
   googleLogin: () => Promise<void>;
   emailLogin: (email: string, password: string) => Promise<void>;
   emailSignup: (email: string, password: string) => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
   logout: () => Promise<void>;
 };
 
@@ -65,6 +67,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const resetPassword = async (email: string) => {
+    try {
+      await sendPasswordResetEmail(firebaseAuth, email);
+    } catch (error) {
+      console.error('Password Reset failed:', error);
+    }
+  };
+
   const logout = async () => {
     try {
       await signOut(firebaseAuth);
@@ -80,6 +90,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       googleLogin,
       emailLogin,
       emailSignup,
+      resetPassword,
       logout,
     }),
     [user, loading]

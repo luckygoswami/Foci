@@ -9,7 +9,7 @@ export function AuthForm() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { googleLogin, emailLogin, emailSignup } = useAuth();
+  const { googleLogin, emailLogin, emailSignup, resetPassword } = useAuth();
 
   const handleLogin = async () => {
     setLoading(true);
@@ -39,6 +39,22 @@ export function AuthForm() {
     } catch (err: unknown) {
       toast.error(err instanceof Error ? err.message : 'Authentication failed');
     } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      toast.error('Enter the email first!');
+      return;
+    }
+    try {
+      await resetPassword(email);
+      toast.success('Password reset mail sent. Please check inbox or spam.');
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : 'Password Reset failed');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -61,7 +77,7 @@ export function AuthForm() {
               <div className="input-box">
                 <input
                   type="text"
-                  placeholder="Enter Username or Email"
+                  placeholder="Enter Email"
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
@@ -77,7 +93,11 @@ export function AuthForm() {
                 <i className="fa-solid fa-lock"></i>
               </div>
               <div className="forgot-link">
-                <a href="#">Forgot Password</a>
+                <button
+                  type="button"
+                  onClick={handleForgotPassword}>
+                  <a>Forgot Password?</a>
+                </button>
               </div>
               <button
                 type="submit"
@@ -108,7 +128,7 @@ export function AuthForm() {
               <div className="input-box">
                 <input
                   type="email"
-                  placeholder="Email"
+                  placeholder="Enter Email"
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
