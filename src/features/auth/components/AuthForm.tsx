@@ -8,6 +8,7 @@ export function AuthForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const { googleLogin, emailLogin, emailSignup, resetPassword } = useAuth();
 
@@ -58,6 +59,10 @@ export function AuthForm() {
     }
   };
 
+  function toggleShowPassword() {
+    setShowPassword((prev) => !prev);
+  }
+
   return (
     <main>
       <div
@@ -85,12 +90,16 @@ export function AuthForm() {
               </div>
               <div className="input-box">
                 <input
-                  type="password"
+                  type={`${!showPassword ? 'password' : 'text'}`}
                   placeholder="Enter Password"
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-                <i className="fa-solid fa-lock"></i>
+                <i
+                  onClick={toggleShowPassword}
+                  className={`fa-solid fa-${
+                    showPassword ? 'unlock' : 'lock'
+                  }`}></i>
               </div>
               <div className="forgot-link">
                 <button
@@ -136,12 +145,16 @@ export function AuthForm() {
               </div>
               <div className="input-box">
                 <input
-                  type="password"
+                  type={`${!showPassword ? 'password' : 'text'}`}
                   placeholder="Enter Password"
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-                <i className="fa-solid fa-lock"></i>
+                <i
+                  onClick={toggleShowPassword}
+                  className={`fa-solid fa-${
+                    showPassword ? 'unlock' : 'lock'
+                  }`}></i>
               </div>
               <button
                 type="submit"
