@@ -14,6 +14,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
+  sendEmailVerification,
   type User,
 } from 'firebase/auth';
 import { firebaseAuth } from '@/lib/firebase-config';
@@ -35,18 +36,45 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [sentVerification, setSentVerification] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
-      setUser(user);
-      setLoading(false);
+    const unsubscribe = onAuthStateChanged(firebaseAuth, async (user) => {
+      try {
+        setLoading(true);
+        if (!user) {
+          setUser(null);
+          return;
+        }
+
+        if (user.emailVerified) {
+          setUser(user);
+        } else {
+          setUser(null);
+          if (!sentVerification) {
+            sendEmailVerification(user, {
+              url: window.location.origin,
+            });
+            toast.success(
+              'Verification email sent. Please check the inbox or spam folder.',
+              { duration: 5000 }
+            );
+          }
+        }
+      } catch {
+        setUser(null);
+        toast.error('Unable to verify account status. Please try again.');
+      } finally {
+        setLoading(false);
+      }
     });
     return unsubscribe;
-  }, []);
+  }, [sentVerification]);
 
   const emailSignup = async (email: string, password: string) => {
     try {
       await createUserWithEmailAndPassword(firebaseAuth, email, password);
+      setSentVerification(false);
     } catch (err: any) {
       console.error('Signup failed:', err);
       throw new Error(authErrorToMessage(err.code));
@@ -56,6 +84,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const emailLogin = async (email: string, password: string) => {
     try {
       await signInWithEmailAndPassword(firebaseAuth, email, password);
+      setSentVerification(false);
     } catch (err: any) {
       console.error('Login failed:', err);
       throw new Error(authErrorToMessage(err.code));
