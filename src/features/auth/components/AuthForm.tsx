@@ -10,11 +10,10 @@ export function AuthForm() {
   const container = useRef<HTMLDivElement>(null);
 
   const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { googleLogin, emailLogin, emailSignup, user } = useAuth();
+  const { googleLogin, emailLogin, emailSignup } = useAuth();
 
   const from = (location.state as any)?.from?.pathname || '/app';
 
@@ -95,14 +94,15 @@ export function AuthForm() {
                 disabled={loading}>
                 {loading ? 'Logging in...' : 'Login'}
               </button>
-              <p>or login with social platforms</p>
+              <p>or</p>
               <div className="social-icons">
-                <i
-                  className="fa-brands fa-google"
-                  onClick={handleGoogleLogin}></i>
-                <i className="fa-brands fa-facebook"></i>
-                <i className="fa-brands fa-github"></i>
-                <i className="fa-brands fa-linkedin"></i>
+                <button
+                  type="button"
+                  onClick={handleGoogleLogin}
+                  className="flex-1">
+                  <i className="fa-brands fa-google"></i>&nbsp; Login with
+                  Google
+                </button>
               </div>
             </form>
           </div>
@@ -114,15 +114,6 @@ export function AuthForm() {
                 handleSignup();
               }}>
               <h1 className="font-bold">Sign Up</h1>
-              <div className="input-box">
-                <input
-                  type="text"
-                  placeholder="Username"
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                />
-                <i className="fa-solid fa-user"></i>
-              </div>
               <div className="input-box">
                 <input
                   type="email"
@@ -147,14 +138,15 @@ export function AuthForm() {
                 disabled={loading}>
                 {loading ? 'Signing up...' : 'Sign up'}
               </button>
-              <p>or signup with social platforms</p>
+              <p>or</p>
               <div className="social-icons">
-                <i
-                  className="fa-brands fa-google"
-                  onClick={handleGoogleLogin}></i>
-                <i className="fa-brands fa-facebook"></i>
-                <i className="fa-brands fa-github"></i>
-                <i className="fa-brands fa-linkedin"></i>
+                <button
+                  type="button"
+                  onClick={handleGoogleLogin}
+                  className="flex-1">
+                  <i className="fa-brands fa-google"></i>&nbsp; Signup with
+                  Google
+                </button>
               </div>
             </form>
           </div>
