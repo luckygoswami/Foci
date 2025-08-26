@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { useAuth } from '@/features/auth';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import './AuthForm.css';
 
 export function AuthForm() {
@@ -14,10 +14,11 @@ export function AuthForm() {
 
   const handleLogin = async () => {
     setLoading(true);
+    setPassword('');
     try {
       await emailLogin(email, password);
-    } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : 'Login failed');
+    } catch (err: any) {
+      toast.error(err.message);
     } finally {
       setLoading(false);
     }
@@ -25,10 +26,11 @@ export function AuthForm() {
 
   const handleSignup = async () => {
     setLoading(true);
+    setPassword('');
     try {
       await emailSignup(email, password);
-    } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : 'Signup failed');
+    } catch (err: any) {
+      toast.error(err.message);
     } finally {
       setLoading(false);
     }
@@ -37,8 +39,8 @@ export function AuthForm() {
   const handleGoogleLogin = async () => {
     try {
       await googleLogin();
-    } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : 'Authentication failed');
+    } catch (err: any) {
+      toast.error(err.message);
     } finally {
       setLoading(false);
     }
@@ -51,9 +53,9 @@ export function AuthForm() {
     }
     try {
       await resetPassword(email);
-      toast.success('Password reset mail sent. Please check inbox or spam.');
-    } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : 'Password Reset failed');
+      toast.success('Password reset email sent. Check inbox or spam.');
+    } catch (err: any) {
+      toast.error(err.message);
     } finally {
       setLoading(false);
     }
@@ -83,6 +85,7 @@ export function AuthForm() {
                 <input
                   type="text"
                   placeholder="Enter Email"
+                  value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
@@ -92,6 +95,7 @@ export function AuthForm() {
                 <input
                   type={`${!showPassword ? 'password' : 'text'}`}
                   placeholder="Enter Password"
+                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
@@ -138,6 +142,7 @@ export function AuthForm() {
                 <input
                   type="email"
                   placeholder="Enter Email"
+                  value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
@@ -147,6 +152,7 @@ export function AuthForm() {
                 <input
                   type={`${!showPassword ? 'password' : 'text'}`}
                   placeholder="Enter Password"
+                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />

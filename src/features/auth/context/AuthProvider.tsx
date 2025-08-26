@@ -17,6 +17,8 @@ import {
   type User,
 } from 'firebase/auth';
 import { firebaseAuth } from '@/lib/firebase-config';
+import { authErrorToMessage } from '@/constants/authErrors';
+import toast from 'react-hot-toast';
 
 type AuthContextType = {
   user: User | null;
@@ -45,16 +47,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const emailSignup = async (email: string, password: string) => {
     try {
       await createUserWithEmailAndPassword(firebaseAuth, email, password);
-    } catch (error) {
-      console.error('Signup failed:', error);
+    } catch (err: any) {
+      console.error('Signup failed:', err);
+      throw new Error(authErrorToMessage(err.code));
     }
   };
 
   const emailLogin = async (email: string, password: string) => {
     try {
       await signInWithEmailAndPassword(firebaseAuth, email, password);
-    } catch (error) {
-      console.error('Login failed:', error);
+    } catch (err: any) {
+      console.error('Login failed:', err);
+      throw new Error(authErrorToMessage(err.code));
     }
   };
 
@@ -62,24 +66,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(firebaseAuth, provider);
-    } catch (error) {
-      console.error('Login failed:', error);
+    } catch (err: any) {
+      console.error('Login failed:', err);
+      throw new Error(authErrorToMessage(err.code));
     }
   };
 
   const resetPassword = async (email: string) => {
     try {
       await sendPasswordResetEmail(firebaseAuth, email);
-    } catch (error) {
-      console.error('Password Reset failed:', error);
+    } catch (err: any) {
+      console.error('Password reset failed:', err);
+      throw new Error(authErrorToMessage(err.code));
     }
   };
 
   const logout = async () => {
     try {
       await signOut(firebaseAuth);
-    } catch (error) {
-      console.error('Logout failed:', error);
+    } catch (err: any) {
+      console.error('Logout failed:', err);
+      throw new Error(authErrorToMessage(err.code));
     }
   };
 
