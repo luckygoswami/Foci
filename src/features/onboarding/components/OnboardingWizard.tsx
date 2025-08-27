@@ -16,21 +16,22 @@ import {
   reserveUsername,
 } from '../services/onboarding';
 import { useAuth } from '@/features/auth';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 export function OnboardingWizard({ user }: { user: User }) {
   const { logout } = useAuth();
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<OnboardingState>(() => defaultState(user));
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const MAX_STEP = 3;
+  const navigate = useNavigate();
 
   const handleNext = () => setStep((s) => Math.min(MAX_STEP, s + 1));
   const handleBack = () => setStep((s) => Math.max(1, s - 1));
 
   async function handleSubmit() {
     setLoading(true);
-    setError(null);
     try {
       const now = Date.now();
       const { uid: userId, email } = user;
@@ -62,10 +63,17 @@ export function OnboardingWizard({ user }: { user: User }) {
           showOnlineStatus: true,
         },
       };
-      await setDoc(doc(db, 'users', user.uid), userDoc);
-      window.location.assign('/app/home');
-    } catch (e: any) {
-      setError(e.message || 'Failed to create profile');
+
+      try {
+        await setDoc(doc(db, 'users', user.uid), userDoc);
+      } catch {
+        throw new Error('Unable to create user. Try again later.');
+      }
+
+      // TODO: implement route redirection
+      navigate('/app/home');
+    } catch (err: any) {
+      toast.error(err.message);
     } finally {
       setLoading(false);
     }
@@ -119,7 +127,6 @@ export function OnboardingWizard({ user }: { user: User }) {
                 setForm={setForm}
               />
             )}
-            {error && <p className="mt-4 text-red-600 text-sm">{error}</p>}
             <div className="mt-6 flex justify-between">
               <button
                 onClick={handleBack}

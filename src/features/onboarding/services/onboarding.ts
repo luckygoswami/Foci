@@ -16,9 +16,19 @@ export function defaultState(user: User): OnboardingState {
 }
 
 export async function isUsernameAvailable(username: string): Promise<boolean> {
-  const ref = doc(db, 'usernames', username.toLowerCase());
-  const snap = await getDoc(ref);
-  return !snap.exists();
+  try {
+    if (!username || username.trim() === '') {
+      throw new Error('Username cannot be empty.');
+    }
+
+    const ref = doc(db, 'usernames', username.toLowerCase());
+    const snap = await getDoc(ref);
+
+    return !snap.exists();
+  } catch (err: any) {
+    console.error('Error checking username availability:', err);
+    throw new Error('Username check failed. Try again later.');
+  }
 }
 
 export function sanitiseUsername(username: string): string {
@@ -32,16 +42,22 @@ export function isValidUsername(username: string): boolean {
 export async function reserveUsername(uid: string, username: string) {
   const isValid = isValidUsername(username.toLowerCase());
   if (!isValid) {
-    throw new Error('Invalid username');
+    throw new Error('Invalid username.');
   }
 
   const usernamesRef = doc(db, 'usernames', username.toLowerCase());
-  const nameSnap = await getDoc(usernamesRef);
-  if (nameSnap.exists()) {
-    throw new Error('Username already taken');
+  try {
+    const nameSnap = await getDoc(usernamesRef);
+    if (nameSnap.exists()) {
+      throw new Error('Username already taken.');
+    }
+
+    await setDoc(usernamesRef, { uid, createdAt: Date.now() });
+    // no-op for user doc here; we will set after onboarding completes
+  } catch (err: any) {
+    console.error('Error in reserving username:', err);
+    throw new Error('Unable to get username. Try again later.');
   }
-  setDoc(usernamesRef, { uid, createdAt: Date.now() });
-  // no-op for user doc here; we will set after onboarding completes
 }
 
 export function populateUsername(

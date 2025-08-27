@@ -4,6 +4,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { OnboardingWizard } from './OnboardingWizard';
 import { LoadingScreen } from '@/components';
+import toast from 'react-hot-toast';
 
 export function OnboardingGate({ children }: { children: React.ReactNode }) {
   const { user, loading: authLoading } = useAuth();
@@ -16,8 +17,8 @@ export function OnboardingGate({ children }: { children: React.ReactNode }) {
       try {
         const userDoc = await getDoc(doc(db, 'users', user.uid));
         setNeedsOnboarding(!userDoc.exists());
-      } catch (error) {
-        console.error('Failed to check onboarding status:', error);
+      } catch {
+        toast.error('Unable to check user data. Try again later.');
         setNeedsOnboarding(true);
       }
     };

@@ -5,6 +5,7 @@ import {
   sanitiseUsername,
 } from '../services/onboarding';
 import type { OnboardingState } from '../types';
+import toast from 'react-hot-toast';
 
 const statusTypes = {
   available: {
@@ -41,8 +42,12 @@ export function StepBasics({
       return;
     }
 
-    const res = await isUsernameAvailable(username);
-    setUsernameStatus(res ? 'available' : 'unavailable');
+    try {
+      const res = await isUsernameAvailable(username);
+      setUsernameStatus(res ? 'available' : 'unavailable');
+    } catch (err: any) {
+      toast.error(err.message);
+    }
   }
 
   function handleOnChange(e: React.ChangeEvent<HTMLInputElement>): void {
