@@ -10,8 +10,8 @@ export async function getRemoteSession(
     if (!snap.exists()) return null;
     return snap.val() as CurrentSession;
   } catch (err) {
-    console.error('[getRemoteSession] Failed:', err);
-    return null;
+    console.error('Error fetching remote session:', err);
+    throw new Error('Something went wrong.');
   }
 }
 
@@ -22,8 +22,8 @@ export async function setRemoteSession(
   try {
     await set(ref(rtdb, `currentSessions/${userId}`), session);
   } catch (err) {
-    console.error('[setRemoteSession] Failed:', err);
-    throw err;
+    console.error('Error saving remote session:', err);
+    throw new Error('Something went wrong.');
   }
 }
 
@@ -31,15 +31,16 @@ export async function updateRemoteSession(
   userId: FirebaseUserId,
   sessionUpdates: Partial<CurrentSession>
 ): Promise<void> {
+  const updates = {
+    ...sessionUpdates,
+    lastUpdated: Date.now(),
+  };
+
   try {
-    const updates = {
-      ...sessionUpdates,
-      lastUpdated: Date.now(),
-    };
     await update(ref(rtdb, `currentSessions/${userId}`), updates);
   } catch (err) {
-    console.error('[updateRemoteSession] Failed:', err);
-    throw err;
+    console.error('Error updating remote session:', err);
+    throw new Error('Something went wrong.');
   }
 }
 
@@ -49,7 +50,7 @@ export async function removeRemoteSession(
   try {
     await remove(ref(rtdb, `currentSessions/${userId}`));
   } catch (err) {
-    console.error('[removeRemoteSession] Failed:', err);
-    throw err;
+    console.error('Error removing remote session:', err);
+    throw new Error('Something went wrong.');
   }
 }

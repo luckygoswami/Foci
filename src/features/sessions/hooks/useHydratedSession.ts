@@ -11,6 +11,7 @@ import {
 import type { CurrentSession } from '@/types';
 import { useAuth } from '@/features/auth';
 import { useOnlineStatus } from '@/features/connection';
+import toast from 'react-hot-toast';
 
 export type ConflictState = null | {
   local: CurrentSession;
@@ -28,33 +29,20 @@ export function useHydratedSession(
   useEffect(() => {
     const hydrateSession = async () => {
       try {
-        if (authLoading) return;
-        if (!user) {
-          setLoading(false);
-          return;
-        }
+        if (authLoading || !user) return;
         const userId = user.uid;
 
         const local = await getLocalSession();
-        // Consider offline situation as case 3B
+        // Offline case 3B
         if (!isOnline) {
-          if (local) {
-            setSession(local);
-            setLoading(false);
-            return;
-          } else {
-            setLoading(false);
-            return;
-          }
+          if (local) setSession(local);
+          return;
         }
 
         const remote = await getRemoteSession(userId);
 
         /* ------------ CASE 1 ------------ */
-        if (!local && !remote) {
-          setLoading(false);
-          return;
-        }
+        if (!local && !remote) return;
 
         /* ------------ CASE 2 ------------ */
         if (!local && remote) {
@@ -68,7 +56,6 @@ export function useHydratedSession(
           } else {
             setSession(null);
           }
-          setLoading(false);
           return;
         }
 
@@ -81,13 +68,11 @@ export function useHydratedSession(
           if (exists) {
             await removeLocalSession();
             setSession(null);
-            setLoading(false);
             return;
           }
           // not in Firestore => push to RTDB & continue
           await setRemoteSession(userId, local);
           setSession(local);
-          setLoading(false);
           return;
         }
 
@@ -105,15 +90,14 @@ export function useHydratedSession(
             setRemoteSession(userId, latest),
           ]);
           setSession(latest);
-          setLoading(false);
           return;
         }
 
         /* ------------ CASE 5 (different sessions) ------------ */
         setConflict({ local, remote });
-        setLoading(false);
-      } catch (err) {
-        console.error('[useHydratedSession] Failed to hydrate session:', err);
+      } catch (err: any) {
+        toast.error(err.message);
+      } finally {
         setLoading(false);
       }
     };
@@ -121,7 +105,7 @@ export function useHydratedSession(
     hydrateSession();
   }, [user, isOnline]);
 
-  const resolveConflict = async (choice: 'local' | 'remote' | 'end') => {
+  async function resolveConflict(choice: 'local' | 'remote' | 'end') {
     const userId = user?.uid;
 
     if (!conflict || !userId) return;
@@ -135,31 +119,35 @@ export function useHydratedSession(
       lastUpdated: Date.now(),
     };
 
-    switch (choice) {
-      case 'local':
-        await endSession(userId, remoteUpdated);
-        await Promise.all([
-          setRemoteSession(userId, localUpdated),
-          setLocalSession(localUpdated),
-        ]);
-        setSession(localUpdated);
-        break;
-      case 'remote':
-        await endSession(userId, localUpdated);
-        await Promise.all([
-          setLocalSession(remoteUpdated),
-          setRemoteSession(userId, remoteUpdated),
-        ]);
-        setSession(remoteUpdated);
-        break;
-      case 'end':
-        await endSession(userId, localUpdated);
-        await endSession(userId, remoteUpdated);
-        setSession(null);
-        break;
+    try {
+      switch (choice) {
+        case 'local':
+          await endSession(userId, remoteUpdated);
+          await Promise.all([
+            setRemoteSession(userId, localUpdated),
+            setLocalSession(localUpdated),
+          ]);
+          setSession(localUpdated);
+          break;
+        case 'remote':
+          await endSession(userId, localUpdated);
+          await Promise.all([
+            setLocalSession(remoteUpdated),
+            setRemoteSession(userId, remoteUpdated),
+          ]);
+          setSession(remoteUpdated);
+          break;
+        case 'end':
+          await endSession(userId, localUpdated);
+          await endSession(userId, remoteUpdated);
+          setSession(null);
+          break;
+      }
+    } catch (err: any) {
+      toast.error(err.message);
     }
     setConflict(null);
-  };
+  }
 
   return { loading, conflict, resolveConflict };
 }

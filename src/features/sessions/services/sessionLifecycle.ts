@@ -12,12 +12,12 @@ import {
 import { getEffectiveDuration } from './sessionUtils';
 import { saveSessionToFirestore } from './firestoreSession';
 
-export const startSession = async (
+export async function startSession(
   userId: FirebaseUserId,
   subject: string,
   groupIds?: GroupId[],
   isPublic: boolean = true
-): Promise<CurrentSession> => {
+): Promise<CurrentSession> {
   const session: CurrentSession = {
     startTime: Date.now(),
     lastUpdated: Date.now(),
@@ -28,16 +28,20 @@ export const startSession = async (
     ...(groupIds && { groupIds }),
   };
 
-  await setLocalSession(session);
-  setRemoteSession(userId, session);
+  try {
+    await setLocalSession(session);
+    setRemoteSession(userId, session);
+  } catch (err) {
+    throw new Error('Unable to start session.');
+  }
 
   return session;
-};
+}
 
-export const pauseSession = async (
+export async function pauseSession(
   userId: FirebaseUserId,
   session: CurrentSession | null
-): Promise<CurrentSession | null> => {
+): Promise<CurrentSession | null> {
   if (!session) {
     console.warn('[pauseSession] Tried to pause with null session');
     return null;
@@ -50,32 +54,38 @@ export const pauseSession = async (
     paused: true,
   };
 
-  const updatedSession = await updateLocalSession(sessionUpdate);
-  updateRemoteSession(userId, sessionUpdate);
+  try {
+    const updatedSession = await updateLocalSession(sessionUpdate);
+    updateRemoteSession(userId, sessionUpdate);
+    return updatedSession;
+  } catch (err) {
+    throw new Error('Unable to pause session.');
+  }
+}
 
-  return updatedSession;
-};
-
-export const resumeSession = async (
+export async function resumeSession(
   userId: FirebaseUserId,
   session: CurrentSession | null
-): Promise<CurrentSession | null> => {
+): Promise<CurrentSession | null> {
   const sessionUpdate: Partial<CurrentSession> = {
     ...session, // Whole session is destructured as the user can continue two different sessions independently
     paused: false,
     resumeTime: Date.now(),
   };
 
-  const updatedSession = await updateLocalSession(sessionUpdate);
-  updateRemoteSession(userId, sessionUpdate);
+  try {
+    const updatedSession = await updateLocalSession(sessionUpdate);
+    updateRemoteSession(userId, sessionUpdate);
+    return updatedSession;
+  } catch (err) {
+    throw new Error('Unable to resume session.');
+  }
+}
 
-  return updatedSession;
-};
-
-export const endSession = async (
+export async function endSession(
   userId: FirebaseUserId,
   session: CurrentSession | null
-): Promise<void> => {
+): Promise<void> {
   if (!session) return;
   const duration = Math.floor(getEffectiveDuration(session) / 60); // saving duration in minutes in firestore
 
@@ -88,10 +98,16 @@ export const endSession = async (
     ...(session.groupIds && { groupIds: session.groupIds }),
   };
 
-  await removeLocalSession();
+  let mainError: boolean = false;
+
   try {
+    await removeLocalSession();
     duration && (await saveSessionToFirestore(sessionData));
-  } finally {
-    removeRemoteSession(userId);
+  } catch (err) {
+    mainError = true;
   }
-};
+
+  removeRemoteSession(userId).catch((_) => (mainError = true));
+
+  if (mainError) throw new Error('Unable to end session.');
+}

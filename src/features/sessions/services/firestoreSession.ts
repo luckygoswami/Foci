@@ -18,14 +18,20 @@ export async function sessionExistsInFirestore(
   startTime: number
 ): Promise<boolean> {
   const sessionDocRef = doc(db, `sessions/${userId}_${startTime}`);
-  const docSnap = await getDoc(sessionDocRef);
 
-  return docSnap.exists();
+  try {
+    const docSnap = await getDoc(sessionDocRef);
+    return docSnap.exists();
+  } catch (err: any) {
+    console.error('Error fetching session existence:', err);
+    throw new Error('Something went wrong.');
+  }
 }
 
-export const saveSessionToFirestore = async (
+export async function saveSessionToFirestore(
   sessionData: Session
-): Promise<void> => {
+): Promise<void> {
+  // TODO: use runTransaction here
   try {
     await setDoc(
       doc(db, `sessions/${sessionData.userId}_${sessionData.startTime}`),
@@ -37,18 +43,24 @@ export const saveSessionToFirestore = async (
       totalStudyTime: increment(sessionData.duration),
     });
   } catch (err) {
-    console.error('[saveSessionToFirestore] Failed:', err);
-    throw err;
+    console.error('Error saving session to firestore:', err);
+    throw new Error('Unable to save session.');
   }
-};
+}
 
-export const getSessionsByUser = async (
+export async function getSessionsByUser(
   userId: FirebaseUserId
-): Promise<Session[]> => {
+): Promise<Session[]> {
   const q = query(collection(db, 'sessions'), where('userId', '==', userId));
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((doc) => doc.data() as Session);
-};
+
+  try {
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((doc) => doc.data() as Session);
+  } catch (err: any) {
+    console.error('Error fetching sessions:', err);
+    throw new Error('Unable to fetch sessions.');
+  }
+}
 
 /**
  * Fetches user sessions within a date range from Firestore
@@ -57,11 +69,11 @@ export const getSessionsByUser = async (
  * @param [tillDate] - Optional end date (inclusive)
  * @returns Promise with array of Session objects
  */
-export const getSessionsByDate = async (
+export async function getSessionsByDate(
   userId: FirebaseUserId,
   date: string,
   tillDate?: string
-): Promise<Session[]> => {
+): Promise<Session[]> {
   const { start, end } = getDayRange(date, tillDate);
 
   const q = query(
@@ -71,6 +83,11 @@ export const getSessionsByDate = async (
     where('startTime', '<=', end)
   );
 
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((doc) => doc.data() as Session);
-};
+  try {
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((doc) => doc.data() as Session);
+  } catch (err: any) {
+    console.error('Error in getting sessions by date:', err);
+    throw new Error('Something went wrong.');
+  }
+}
