@@ -3,6 +3,7 @@ import { fetchDailyGoalProgress } from '../services/charts';
 import { useEffect, useState } from 'react';
 import type { GoalProgress } from '../types';
 import type { UserData } from '@/types';
+import toast from 'react-hot-toast';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
@@ -27,8 +28,8 @@ export function DailyGoalChart({ userData }: { userData: UserData }) {
       try {
         const progress = await fetchDailyGoalProgress(userData);
         setData(progress);
-      } catch (err) {
-        console.error('Failed to load daily goal progress:', err);
+      } catch (err: any) {
+        toast.error(err.message);
       }
     };
 
@@ -55,7 +56,7 @@ export function DailyGoalChart({ userData }: { userData: UserData }) {
               outerRadius={80}
               fill="#8884d8"
               dataKey="value">
-              {data.map((entry, index) => (
+              {data.map((_, index) => (
                 <Cell
                   key={`cell-${index}`}
                   fill={COLORS[index % COLORS.length]}

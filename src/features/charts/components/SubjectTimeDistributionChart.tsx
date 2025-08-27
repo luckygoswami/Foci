@@ -10,6 +10,7 @@ import {
 import type { SubjectDuration } from '../types';
 import { fetchSubjectTimeDistribution } from '../services/charts';
 import type { FirebaseUserId } from '@/types';
+import toast from 'react-hot-toast';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
@@ -61,8 +62,8 @@ export function SubjectTimeDistributionChart({
       try {
         const progress = await fetchSubjectTimeDistribution(userId);
         setData(progress);
-      } catch (err) {
-        console.error('Failed to fetch subject distribution:', err);
+      } catch (err: any) {
+        toast.error(err.message);
       }
     };
 
@@ -95,7 +96,7 @@ export function SubjectTimeDistributionChart({
           isAnimationActive={true}
           fill="#8884d8"
           dataKey="value">
-          {data.map((entry, index) => (
+          {data.map((_, index) => (
             <Cell
               key={`cell-${index}`}
               fill={COLORS[index % COLORS.length]}

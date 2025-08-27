@@ -13,6 +13,7 @@ import type { SegmentedSubjectProgress } from '../types';
 import type { FirebaseUserId } from '@/types';
 import { getSessionsByUser } from '@/features/sessions';
 import { get7SegmentProgressForSubject } from '../services/charts';
+import toast from 'react-hot-toast';
 
 export function SubjectProgressChart({
   userId,
@@ -31,11 +32,8 @@ export function SubjectProgressChart({
         // TODO: later get the user sessions from context or cache
         const progress = get7SegmentProgressForSubject(subject, userSessions);
         setData(progress);
-      } catch (err) {
-        console.error(
-          'Failed to fetch the segmented progress of subject.',
-          err
-        );
+      } catch (err: any) {
+        toast.error(err.message);
       }
     };
 

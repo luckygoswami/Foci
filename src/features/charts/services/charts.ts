@@ -11,24 +11,30 @@ export async function fetchDailyGoalProgress(
   userData: UserData
 ): Promise<GoalProgress> {
   const date = Date.now();
-  const sessions = await getSessionsByDate(
-    userData.userId,
-    formatMediumDate(date)
-  );
 
-  const target = userData.dailyTargetMinutes;
-  const completed = sessions.reduce((acc, curr) => acc + curr.duration, 0);
-  const progress: GoalProgress = [
-    {
-      name: 'completed',
-      value: completed,
-    },
-    {
-      name: 'remaining',
-      value: Math.max(0, target - completed),
-    },
-  ];
-  return progress;
+  try {
+    const sessions = await getSessionsByDate(
+      userData.userId,
+      formatMediumDate(date)
+    );
+
+    const target = userData.dailyTargetMinutes;
+    const completed = sessions.reduce((acc, curr) => acc + curr.duration, 0);
+    const progress: GoalProgress = [
+      {
+        name: 'completed',
+        value: completed,
+      },
+      {
+        name: 'remaining',
+        value: Math.max(0, target - completed),
+      },
+    ];
+    return progress;
+  } catch (err: any) {
+    console.error('Failed to fetch daily progress:', err);
+    throw new Error('Unable to fetch progress.');
+  }
 }
 
 export async function fetchWeeklyGoalProgress(
@@ -40,54 +46,68 @@ export async function fetchWeeklyGoalProgress(
 
   const target =
     userData.weeklyTargetMinutes || userData.dailyTargetMinutes * 7;
-  const sessions = await getSessionsByDate(userData.userId, from, to);
-  const completed = sessions.reduce((acc, curr) => acc + curr.duration, 0);
-  const progress: GoalProgress = [
-    {
-      name: 'completed',
-      value: completed,
-    },
-    {
-      name: 'remaining',
-      value: Math.max(0, target - completed),
-    },
-  ];
-  return progress;
+
+  try {
+    const sessions = await getSessionsByDate(userData.userId, from, to);
+    const completed = sessions.reduce((acc, curr) => acc + curr.duration, 0);
+    const progress: GoalProgress = [
+      {
+        name: 'completed',
+        value: completed,
+      },
+      {
+        name: 'remaining',
+        value: Math.max(0, target - completed),
+      },
+    ];
+    return progress;
+  } catch (err: any) {
+    console.error('Failed to fetch weekly progress:', err);
+    throw new Error('Unable to fetch progress.');
+  }
 }
 
 export async function fetchSubjectTimeDistribution(
   userId: FirebaseUserId
 ): Promise<SubjectDuration[]> {
   const now = Date.now();
-  const sessions = await getSessionsByDate(
-    userId,
-    formatMediumDate(now - 86400000 * 6),
-    formatMediumDate(now)
-  );
 
-  const normalizedSessions = sessions.map((s) => ({
-    ...s,
-    subject: s.subject.toLowerCase(),
-  }));
+  try {
+    const sessions = await getSessionsByDate(
+      userId,
+      formatMediumDate(now - 86400000 * 6),
+      formatMediumDate(now)
+    );
 
-  const durationMap = normalizedSessions.reduce<Record<string, number>>(
-    (acc, session) => {
-      acc[session.subject] = (acc[session.subject] || 0) + session.duration;
-      return acc;
-    },
-    {}
-  );
+    const normalizedSessions = sessions.map((s) => ({
+      ...s,
+      subject: s.subject.toLowerCase(),
+    }));
 
-  const subjectsArray = [...new Set(normalizedSessions.map((s) => s.subject))];
+    const durationMap = normalizedSessions.reduce<Record<string, number>>(
+      (acc, session) => {
+        acc[session.subject] = (acc[session.subject] || 0) + session.duration;
+        return acc;
+      },
+      {}
+    );
 
-  const progress = subjectsArray
-    .map((sub) => ({
-      name: sub,
-      value: Math.max(0, durationMap[sub] || 0),
-    }))
-    .sort((a, b) => b.value - a.value);
+    const subjectsArray = [
+      ...new Set(normalizedSessions.map((s) => s.subject)),
+    ];
 
-  return progress;
+    const progress = subjectsArray
+      .map((sub) => ({
+        name: sub,
+        value: Math.max(0, durationMap[sub] || 0),
+      }))
+      .sort((a, b) => b.value - a.value);
+
+    return progress;
+  } catch (err: any) {
+    console.error('Failed to fetch subject durations:', err);
+    throw new Error('Unable to fetch progress.');
+  }
 }
 
 export function get7SegmentProgressForSubject(
