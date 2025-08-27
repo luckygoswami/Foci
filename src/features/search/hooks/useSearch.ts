@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import debounce from 'lodash.debounce';
 import { db } from '@/lib/firebase-config';
 import type { ResultsForType, SearchTypes } from '../types';
+import toast from 'react-hot-toast';
 
 export function useSearch<T extends SearchTypes>(term: string, searchFor: T) {
   const [results, setResults] = useState<ResultsForType<T>>(
@@ -36,14 +37,19 @@ export function useSearch<T extends SearchTypes>(term: string, searchFor: T) {
 
     const fetch = async () => {
       setLoading(true);
-      const snapshots = await getDocs(searchQuery);
-      setResults(
-        snapshots.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as ResultsForType<T>
-      );
-      setLoading(false);
+      try {
+        const snapshots = await getDocs(searchQuery);
+        setResults(
+          snapshots.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          })) as ResultsForType<T>
+        );
+      } catch {
+        toast.error('Unable to search.');
+      } finally {
+        setLoading(false);
+      }
     };
 
     const debounced = debounce(fetch, 300);
