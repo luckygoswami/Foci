@@ -8,6 +8,7 @@ import type { CreateGroupBottomSheetProps } from '../types';
 import { createGroup } from '../services/groupApi';
 import PrivacySelector from './PrivacySelector';
 import TagInput from './TagInput';
+import toast from 'react-hot-toast';
 
 export const CreateGroupBottomSheet: React.FC<CreateGroupBottomSheetProps> = ({
   open,
@@ -19,7 +20,6 @@ export const CreateGroupBottomSheet: React.FC<CreateGroupBottomSheetProps> = ({
   const [description, setDescription] = useState('');
   const [isPublic, setIsPublic] = useState(true);
   const [tags, setTags] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
   const [avatarId, setAvatarId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
@@ -33,18 +33,16 @@ export const CreateGroupBottomSheet: React.FC<CreateGroupBottomSheetProps> = ({
   if (!open || !userData) return null;
   const { userId, avatarId: userAvatar, name: userName } = userData;
 
-  const handleSheetClick = (e: React.MouseEvent) => {
-    // Prevent bubbling so clicks inside don't close
+  function handleSheetClick(e: React.MouseEvent) {
     e.stopPropagation();
-  };
+  }
 
-  const handleSubmit = (e: FormEvent) => {
+  function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!name.trim()) {
-      setError('Group name is required.');
+      toast.error('Group name is required.');
       return;
     }
-    setError(null);
 
     const now = Date.now();
     const newGroupData: Group = {
@@ -82,18 +80,16 @@ export const CreateGroupBottomSheet: React.FC<CreateGroupBottomSheetProps> = ({
 
     createGroup(newGroupData)
       .then((groupId) => {
-        if (groupId) {
-          onCreation({ ...newGroupData, groupId });
-        }
-        // TODO: show a success notification here
+        onCreation({ ...newGroupData, groupId });
+        toast.success('Group created successfully.');
       })
-      .catch((err) => console.error('Create Group: ', err));
+      .catch((err) => toast.error(err.message))
+      .finally(() => onClose());
 
     setName('');
     setDescription('');
     setTags('');
-    setError(null);
-  };
+  }
 
   return (
     <div
@@ -161,10 +157,7 @@ export const CreateGroupBottomSheet: React.FC<CreateGroupBottomSheetProps> = ({
             value={isPublic}
             onChange={setIsPublic}
           />
-          {
-            // TODO: show toast message for this error
-            error && <div className="text-sm text-red-600">{error}</div>
-          }
+
           <button
             type="submit"
             className="mt-5 bg-primary rounded-md py-2 text-white font-bold text-base active:scale-95 transition">

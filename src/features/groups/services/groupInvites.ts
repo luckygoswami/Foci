@@ -11,7 +11,7 @@ import { db } from '@/lib/firebase-config';
 import type { FirebaseUserId, GroupId, GroupInvite } from '@/types';
 
 // Use unique doc id: `${groupId}_${recipientId}`
-export const sendGroupInvite = async (groupInvite: GroupInvite) => {
+export async function sendGroupInvite(groupInvite: GroupInvite) {
   try {
     await setDoc(
       doc(
@@ -21,53 +21,78 @@ export const sendGroupInvite = async (groupInvite: GroupInvite) => {
       ),
       groupInvite
     );
-  } catch (err) {
-    throw new Error('Failed to send invite.');
+  } catch (err: any) {
+    console.error('Error in sending group invite:', err);
+    throw new Error('Unable to send invite.');
   }
-};
+}
 
-export const fetchGroupInvitesByRecipient = async (
+export async function fetchGroupInvitesByRecipient(
   userId: FirebaseUserId
-): Promise<GroupInvite[]> => {
+): Promise<GroupInvite[]> {
   const q = query(
     collection(db, 'groupInvites'),
     where('recipientId', '==', userId),
     where('status', '==', 'pending')
   );
-  const snapshot = await getDocs(q);
-  if (snapshot.empty) return [];
-  return snapshot.docs.map((doc) => ({ ...(doc.data() as GroupInvite) }));
-};
 
-export const fetchGroupInvitesBySender = async (
+  try {
+    const snapshot = await getDocs(q);
+    if (snapshot.empty) return [];
+    return snapshot.docs.map((doc) => ({ ...(doc.data() as GroupInvite) }));
+  } catch (err: any) {
+    console.error('Error in fetching group invites:', err);
+    throw new Error('Unable to fetch invites.');
+  }
+}
+
+export async function fetchGroupInvitesBySender(
   senderId: FirebaseUserId,
   groupId: GroupId
-): Promise<GroupInvite[]> => {
+): Promise<GroupInvite[]> {
   const q = query(
     collection(db, 'groupInvites'),
     where('senderId', '==', senderId),
     where('groupId', '==', groupId),
     where('status', '==', 'pending')
   );
-  const snapshot = await getDocs(q);
-  if (snapshot.empty) return [];
-  return snapshot.docs.map((doc) => ({ ...(doc.data() as GroupInvite) }));
-};
 
-export const acceptGroupInvite = async (invite: GroupInvite) => {
+  try {
+    const snapshot = await getDocs(q);
+    if (snapshot.empty) return [];
+    return snapshot.docs.map((doc) => ({ ...(doc.data() as GroupInvite) }));
+  } catch (err: any) {
+    console.error('Error in fetching group invites:', err);
+    throw new Error('Unable to fetch invites.');
+  }
+}
+
+export async function acceptGroupInvite(invite: GroupInvite) {
   const inviteRef = doc(
     db,
     'groupInvites',
     `${invite.groupId}_${invite.recipientId}`
   );
-  await updateDoc(inviteRef, { status: 'accepted' });
-};
 
-export const rejectGroupInvite = async (invite: GroupInvite) => {
+  try {
+    await updateDoc(inviteRef, { status: 'accepted' });
+  } catch (err: any) {
+    console.error('Error in accepting group invite:', err);
+    throw new Error('Unable to accept invite.');
+  }
+}
+
+export async function rejectGroupInvite(invite: GroupInvite) {
   const inviteRef = doc(
     db,
     'groupInvites',
     `${invite.groupId}_${invite.recipientId}`
   );
-  await updateDoc(inviteRef, { status: 'rejected' });
-};
+
+  try {
+    await updateDoc(inviteRef, { status: 'rejected' });
+  } catch (err: any) {
+    console.error('Error in rejecting group invite:', err);
+    throw new Error('Unable to reject invite');
+  }
+}

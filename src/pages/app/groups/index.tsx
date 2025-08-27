@@ -53,7 +53,6 @@ export default function GroupsDashboard() {
       if (!prev) return null;
       return [...prev, { ...newGroup }];
     });
-    setShowSheet(false);
   };
 
   const sections = [

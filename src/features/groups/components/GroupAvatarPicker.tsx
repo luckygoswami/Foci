@@ -3,10 +3,10 @@ import type { GroupAvatarPickerProps } from '../types';
 import { GROUP_AVATAR_OPTIONS } from '../groupAvatarOptions';
 import { useEffect, useMemo } from 'react';
 
-const GroupAvatarPicker: React.FC<GroupAvatarPickerProps> = ({
+export default function GroupAvatarPicker({
   value,
   onChange,
-}) => {
+}: GroupAvatarPickerProps) {
   const randomizedAvatarOptions = useMemo(
     () => shuffle(GROUP_AVATAR_OPTIONS),
     []
@@ -47,6 +47,4 @@ const GroupAvatarPicker: React.FC<GroupAvatarPickerProps> = ({
       </div>
     </div>
   );
-};
-
-export default GroupAvatarPicker;
+}

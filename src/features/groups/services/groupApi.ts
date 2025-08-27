@@ -12,53 +12,73 @@ import {
 import { db } from '@/lib/firebase-config';
 import type { Group, GroupId, FirebaseUserId } from '@/types';
 
-export const fetchGroupById = async (
-  groupId: GroupId
-): Promise<Group | null> => {
+export async function fetchGroupById(groupId: GroupId): Promise<Group | null> {
   const groupRef = doc(db, 'groups', groupId);
-  const snapshot = await getDoc(groupRef);
-  return snapshot.exists() ? (snapshot.data() as Group) : null;
-};
 
-export const fetchGroupsJoinedByUser = async (
+  try {
+    const snapshot = await getDoc(groupRef);
+    return snapshot.exists() ? (snapshot.data() as Group) : null;
+  } catch (err: any) {
+    console.error('Error fetching group:', err);
+    throw new Error('Unable to fetch group.');
+  }
+}
+
+export async function fetchGroupsJoinedByUser(
   userId: FirebaseUserId
-): Promise<(Group & { groupId: string })[]> => {
+): Promise<(Group & { groupId: string })[]> {
   const q = query(
     collection(db, 'groups'),
     where('memberIds', 'array-contains', userId)
   );
-  const snapshot = await getDocs(q);
-  if (snapshot.empty) return [];
-  return snapshot.docs.map((doc) => ({
-    groupId: doc.id,
-    ...(doc.data() as Group),
-  }));
-};
 
-export const createGroup = async (
-  groupData: Group
-): Promise<GroupId | null> => {
   try {
-    const groupId = await addDoc(collection(db, 'groups'), groupData);
-    return groupId.id;
-  } catch (err) {
-    console.error(err);
-    return null;
+    const snapshot = await getDocs(q);
+    if (snapshot.empty) return [];
+    return snapshot.docs.map((doc) => ({
+      groupId: doc.id,
+      ...(doc.data() as Group),
+    }));
+  } catch (err: any) {
+    console.error('Error fetching joined groups:', err);
+    throw new Error('Unable to fetch joined groups.');
   }
-};
+}
 
-export const updateGroup = async (
+export async function createGroup(groupData: Group): Promise<GroupId> {
+  try {
+    const group = await addDoc(collection(db, 'groups'), groupData);
+    return group.id;
+  } catch (err: any) {
+    console.error('Error creating group:', err);
+    throw new Error('Unable to create new group.');
+  }
+}
+
+export async function updateGroup(
   groupId: GroupId,
   data: Partial<Group>
-): Promise<void> => {
+): Promise<void> {
   const groupRef = doc(db, 'groups', groupId);
-  await updateDoc(groupRef, data);
-};
 
-export const deleteGroup = async (groupId: GroupId): Promise<void> => {
+  try {
+    await updateDoc(groupRef, data);
+  } catch (err: any) {
+    console.error('Error updating group:', err);
+    throw new Error('Unable to update group.');
+  }
+}
+
+export async function deleteGroup(groupId: GroupId): Promise<void> {
   const groupRef = doc(db, 'groups', groupId);
-  const groupDoc = await getDoc(groupRef);
-  if (!groupDoc.exists()) return;
-  // TODO: Clean up invites, etc.
-  await deleteDoc(groupRef);
-};
+
+  try {
+    const groupDoc = await getDoc(groupRef);
+    if (!groupDoc.exists()) return;
+    // TODO: Clean up invites, etc.
+    await deleteDoc(groupRef);
+  } catch (err: any) {
+    console.error('Error deleting group:', err);
+    throw new Error('Unable to delete group.');
+  }
+}

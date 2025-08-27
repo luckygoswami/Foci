@@ -4,6 +4,7 @@ import { useUserData } from '@/features/user';
 import type { Ref } from 'react';
 import { acceptGroupInvite, rejectGroupInvite } from '../services/groupInvites';
 import { addGroupMember } from '../services/groupMembers';
+import toast from 'react-hot-toast';
 
 export function InvitesList({
   invites,
@@ -16,23 +17,38 @@ export function InvitesList({
 }) {
   const { userData } = useUserData();
 
-  function handleAccept(invite: GroupInvite) {
+  async function handleAccept(invite: GroupInvite) {
     if (!userData) return;
     const userObj = {
       userId: userData.userId,
       name: userData.name,
       avatarId: userData.avatarId,
     };
-    acceptGroupInvite(invite);
-    const newInvites = invites!.filter((inv) => inv.groupId != invite.groupId);
-    setInvites(newInvites);
-    addGroupMember(invite.groupId, userObj);
+
+    try {
+      await acceptGroupInvite(invite);
+      const newInvites = invites!.filter(
+        (inv) => inv.groupId != invite.groupId
+      );
+      setInvites(newInvites);
+      await addGroupMember(invite.groupId, userObj);
+      toast.success('Group joined successfully.');
+    } catch (err: any) {
+      toast.error(err.message);
+    }
   }
 
   function handleReject(invite: GroupInvite) {
-    rejectGroupInvite(invite);
-    const newInvites = invites!.filter((inv) => inv.groupId != invite.groupId);
-    setInvites(newInvites);
+    try {
+      rejectGroupInvite(invite);
+      const newInvites = invites!.filter(
+        (inv) => inv.groupId != invite.groupId
+      );
+      setInvites(newInvites);
+      toast.success('Invite rejected.');
+    } catch (err: any) {
+      toast.error('Unable to reject invite.');
+    }
   }
 
   return (
