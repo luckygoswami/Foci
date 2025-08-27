@@ -8,40 +8,46 @@ export async function updateStreakIfNeeded(
   sessionStartTime: number
 ): Promise<Streak | null> {
   const userRef = doc(db, 'users', userId);
-  const userSnap = await getDoc(userRef);
-  const userData = userSnap.data();
 
-  if (!userData) return null;
+  try {
+    const userSnap = await getDoc(userRef);
+    const userData = userSnap.data();
 
-  const streak = userData.streak || {
-    current: 0,
-    longest: 0,
-    lastActivityDate: null,
-  };
+    if (!userData) return null;
 
-  const sessionDay = getStartOfDay(sessionStartTime);
-  const lastDay = streak.lastActivityDate || 0;
-  const yesterday = sessionDay - 86400000;
+    const streak = userData.streak || {
+      current: 0,
+      longest: 0,
+      lastActivityDate: null,
+    };
 
-  if (sessionDay === lastDay) return null; // Already updated for today
+    const sessionDay = getStartOfDay(sessionStartTime);
+    const lastDay = streak.lastActivityDate || 0;
+    const yesterday = sessionDay - 86400000;
 
-  const current = lastDay === yesterday ? streak.current + 1 : 1;
-  const longest = Math.max(streak.longest, current);
+    if (sessionDay === lastDay) return null; // Already updated for today
 
-  const updatedStreak = {
-    current: current,
-    longest: longest,
-    lastActivityDate: sessionDay,
-  };
+    const current = lastDay === yesterday ? streak.current + 1 : 1;
+    const longest = Math.max(streak.longest, current);
 
-  // Explicitly not using await to make this offline compatible
-  updateDoc(userRef, {
-    streak: {
-      ...updatedStreak,
-    },
-  });
+    const updatedStreak = {
+      current: current,
+      longest: longest,
+      lastActivityDate: sessionDay,
+    };
 
-  return updatedStreak;
+    // Explicitly not using await to make this offline compatible
+    updateDoc(userRef, {
+      streak: {
+        ...updatedStreak,
+      },
+    });
+
+    return updatedStreak;
+  } catch (err) {
+    console.error('Error in updating streak:', err);
+    throw new Error('Unable to update streak.');
+  }
 }
 
 /**
