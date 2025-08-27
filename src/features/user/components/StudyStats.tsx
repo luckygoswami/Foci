@@ -4,18 +4,19 @@ import {
 } from '@/features/charts';
 import type { UserData } from '@/types';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 export function StudyStats({ userData }: { userData: UserData }) {
   const [dayProgress, setDayProgress] = useState(0);
   const [weekProgress, setWeekProgress] = useState(0);
 
   useEffect(() => {
-    fetchDailyGoalProgress(userData).then((res) =>
-      setDayProgress(res[0].value)
-    );
-    fetchWeeklyGoalProgress(userData).then((res) =>
-      setWeekProgress(res[0].value)
-    );
+    fetchDailyGoalProgress(userData)
+      .then((res) => setDayProgress(res[0].value))
+      .catch((err) => toast.error(err.message));
+    fetchWeeklyGoalProgress(userData)
+      .then((res) => setWeekProgress(res[0].value))
+      .catch((err) => toast.error(err.message));
   }, []);
 
   return (
