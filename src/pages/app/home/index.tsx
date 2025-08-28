@@ -17,7 +17,7 @@ import {
   SubjectDialog,
 } from '@/features/sessions';
 import { useOnlineStatus } from '@/features/connection';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 import { useUserData } from '@/features/user';
 import { updateStreakIfNeeded } from '@/features/streaks';
 import { useAuth } from '@/features/auth';
@@ -62,7 +62,7 @@ export default function HomeDashboard() {
           if (exists) {
             setCurrentSession(null);
             removeLocalSession();
-            toast.error('This session is already ended from another device.');
+            toast.error('Session ended from another device.');
             return;
           }
         }
@@ -70,9 +70,8 @@ export default function HomeDashboard() {
         const handler = action === 'pause' ? pauseSession : resumeSession;
         const session = await handler(userId, currentSession);
         setCurrentSession(session);
-      } catch (error) {
-        toast.error(`Failed to ${action} session`);
-        console.error(error);
+      } catch (err: any) {
+        toast.error(err.message);
       }
     },
     [currentSession, isOnline, userId, setCurrentSession]
@@ -80,15 +79,15 @@ export default function HomeDashboard() {
 
   const handleStart = useCallback(async () => {
     if (!selectedSubject) {
-      toast.error('Please select the Subjetct first.');
+      toast.error('Subject not selected.');
       return;
     }
+
     try {
       const session = await startSession(userId, selectedSubject);
       setCurrentSession(session);
-    } catch (error) {
-      toast.error('Failed to start session');
-      console.error(error);
+    } catch (err: any) {
+      toast.error(err.message);
     }
   }, [userId, selectedSubject, setCurrentSession]);
 
@@ -99,28 +98,29 @@ export default function HomeDashboard() {
       endSession(userId, currentSession);
       setSelectedSubject(null);
       setCurrentSession(null);
-      toast.success('Session ended!');
-    } catch (error) {
-      toast.error('Failed to end session');
-      console.error(error);
+      toast.success('Session completed.');
+    } catch (err: any) {
+      toast.error(err.message);
     }
   }, [currentSession, userId, setCurrentSession]);
 
   function handle60sUpdate(): void {
     if (!currentSession) return;
-    updateStreakIfNeeded(userId, currentSession?.startTime).then((res) => {
-      if (res) {
-        setUserData((prev) => {
-          if (prev)
-            return {
-              ...prev,
-              streak: {
-                ...res,
-              },
-            };
-        });
-      }
-    });
+    updateStreakIfNeeded(userId, currentSession?.startTime)
+      .then((res) => {
+        if (res) {
+          setUserData((prev) => {
+            if (prev)
+              return {
+                ...prev,
+                streak: {
+                  ...res,
+                },
+              };
+          });
+        }
+      })
+      .catch((err) => toast.error(err.message));
   }
 
   return (
