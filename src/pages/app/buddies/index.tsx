@@ -9,6 +9,7 @@ import {
 import { useUserData } from '@/features/user';
 import type { FriendRequest, FirebaseUserId } from '@/types';
 import { useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
 
 export default function BuddiesDashboard() {
   const userId = useAuth().user?.uid as FirebaseUserId;
@@ -24,7 +25,9 @@ export default function BuddiesDashboard() {
       observer = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting) {
-            fetchRequestsByRecipient(userId).then(setRequests);
+            fetchRequestsByRecipient(userId)
+              .then(setRequests)
+              .catch((err) => toast.error(err.message));
             observer.disconnect();
           }
         },

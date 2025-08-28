@@ -15,6 +15,7 @@ import {
 } from '@/features/user';
 import type { FirebaseUserId, UserData } from '@/types';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 export default function UserDetailsPage() {
@@ -47,7 +48,7 @@ export default function UserDetailsPage() {
     if (!profileData) {
       fetchUserDataByUserId(userId)
         .then(setProfileData)
-        .catch((err) => console.error('Profile fetch failed:', err));
+        .catch((err) => toast.error(err.message));
     }
   }, [userId, userData, profileData]);
 
@@ -71,9 +72,7 @@ export default function UserDetailsPage() {
       status: 'pending' as const,
     };
 
-    sendFriendRequest(friendRequest).catch((err) =>
-      console.error('Send friend request failed:', err)
-    );
+    sendFriendRequest(friendRequest).catch((err) => toast.error(err.message));
     setRequestSent(true);
     // TODO: add confirmation dialog and toast
   }
@@ -83,7 +82,7 @@ export default function UserDetailsPage() {
 
     // TODO: add confirmation dialog and toast
     unfriendUser(userData.userId, profileData.userId).catch((err) =>
-      console.error('Unfriend failed:', err)
+      toast.error(err.message)
     );
     setFriendShipStatus('notFriend');
 
@@ -104,7 +103,7 @@ export default function UserDetailsPage() {
     if (!pendingRequest) return;
 
     acceptFriendRequest(pendingRequest).catch((err) =>
-      console.error('Accept request failed:', err)
+      toast.error(err.message)
     );
     setPendingRequest(null);
     setFriendShipStatus('isFriend');
@@ -131,7 +130,7 @@ export default function UserDetailsPage() {
     if (!pendingRequest) return;
 
     rejectFriendRequest(pendingRequest).catch((err) =>
-      console.error('Reject request failed:', err)
+      toast.error(err.message)
     );
     setPendingRequest(null);
     setFriendShipStatus('notFriend');
