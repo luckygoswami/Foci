@@ -11,43 +11,9 @@ import type { SubjectDuration } from '../types';
 import { fetchSubjectTimeDistribution } from '../services/charts';
 import type { FirebaseUserId } from '@/types';
 import toast from 'react-hot-toast';
+import { toTitleCase } from '@/lib/utils';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-
-const RADIAN = Math.PI / 180;
-const renderCustomizedLabel = ({
-  cx,
-  cy,
-  midAngle,
-  innerRadius,
-  outerRadius,
-  percent,
-}: {
-  cx: number;
-  cy: number;
-  midAngle: number;
-  innerRadius: number;
-  outerRadius: number;
-  percent: number;
-  index: number;
-}) => {
-  if (percent == 0) return null;
-
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  return (
-    <text
-      x={x}
-      y={y}
-      fill="white"
-      textAnchor={x > cx ? 'start' : 'end'}
-      dominantBaseline="central">
-      {`${(percent * 100).toFixed(0)}%`}
-    </text>
-  );
-};
 
 export function SubjectTimeDistributionChart({
   userId,
@@ -72,7 +38,7 @@ export function SubjectTimeDistributionChart({
 
   if (!data || !userId) return null;
 
-  // TODO: show skeleton for empty data.
+  // TODO: add loading skeleton
   if (data.length === 0) {
     return (
       <div className="text-center opacity-50">No sessions found to show.</div>
@@ -89,10 +55,8 @@ export function SubjectTimeDistributionChart({
           data={data}
           cx="50%"
           cy="50%"
-          labelLine={false}
-          label={renderCustomizedLabel}
-          cornerRadius={5}
-          outerRadius={100}
+          innerRadius={55}
+          outerRadius={80}
           isAnimationActive={true}
           fill="#8884d8"
           dataKey="value">
@@ -103,13 +67,16 @@ export function SubjectTimeDistributionChart({
             />
           ))}
         </Pie>
-        <Legend
-          align="right"
-          verticalAlign="middle"
-          layout="vertical"
-          wrapperStyle={{ right: 0 }}
-        />
         <Tooltip />
+        <Legend
+          verticalAlign="bottom"
+          iconSize={8}
+          formatter={(value) => (
+            <span className="text-muted-foreground mr-2 ml-0.5">
+              {toTitleCase(value)}
+            </span>
+          )}
+        />
       </PieChart>
     </ResponsiveContainer>
   );

@@ -1,8 +1,4 @@
-import {
-  DailyGoalChart,
-  SubjectTimeDistributionChart,
-  WeeklyGoalChart,
-} from '@/features/charts';
+import { GoalProgress, SubjectTimeDistributionChart } from '@/features/charts';
 import { TimerCard } from '@/components';
 import { useCallback, useEffect, useState } from 'react';
 import {
@@ -127,54 +123,66 @@ export default function HomeDashboard() {
     <div
       role="region"
       aria-label="Home Dashboard"
-      className="flex flex-col px-2 gap-5">
-      <div className="flex-[1] flex justify-center items-center p-2 border-x border-b border-black rounded-br-4xl rounded-bl-4xl">
-        {sessionLoading ? (
-          <span className="animate-pulse text-lg">Loading session...</span>
-        ) : (
-          <TimerCard
-            initialTime={initialTime}
-            autoStart={autoStart}
-            size="lg"
-            onStart={handleStart}
-            onPause={() => handleSessionAction('pause')}
-            onResume={() => handleSessionAction('resume')}
-            onEnd={handleEnd}
-            on60s={handle60sUpdate}
-            setSubjectDialog={setSubjectDialog}
-            selectedSubject={selectedSubject}
-            currentSession={currentSession}
-          />
-        )}
-        <SubjectDialog
-          onSelect={setSelectedSubject}
-          open={subjectDialog}
-          setOpen={setSubjectDialog}
-          subjects={userData?.subjects}
-        />
-      </div>
-      <div className="flex-[2.5] flex justify-evenly items-center p-1 flex-col border-x border-t border-black rounded-tr-4xl rounded-tl-4xl">
-        <div className="flex-[1.5] min-w-full">
-          {!userId ? (
-            <div>loading...</div>
+      className="flex flex-col">
+      <div className="flex flex-col p-5 gap-3">
+        {/* Timer */}
+        <div className="flex justify-center items-center">
+          {sessionLoading ? (
+            <span className="animate-pulse text-lg">Loading session...</span>
           ) : (
-            <SubjectTimeDistributionChart userId={userId} />
+            <TimerCard
+              initialTime={initialTime}
+              autoStart={autoStart}
+              size="lg"
+              onStart={handleStart}
+              onPause={() => handleSessionAction('pause')}
+              onResume={() => handleSessionAction('resume')}
+              onEnd={handleEnd}
+              on60s={handle60sUpdate}
+              setSubjectDialog={setSubjectDialog}
+              selectedSubject={selectedSubject}
+              currentSession={currentSession}
+            />
           )}
+          <SubjectDialog
+            onSelect={setSelectedSubject}
+            open={subjectDialog}
+            setOpen={setSubjectDialog}
+            subjects={userData?.subjects}
+          />
         </div>
-        <div className="flex-[1] flex min-w-full justify-between">
-          <div className="size-40">
-            {!userData ? (
-              <div>loading...</div>
-            ) : (
-              <DailyGoalChart userData={userData} />
-            )}
+
+        {/* Progress charts */}
+        <div className="flex items-left flex-col px-5  rounded-2xl shadow-sm">
+          <h1 className="text-2xl font-bold text-foreground mt-2">
+            Average Focus
+          </h1>
+          <div className="w-full size-56 mb-2">
+            <SubjectTimeDistributionChart userId={userId} />
           </div>
-          <div className="size-40">
-            {!userData ? (
-              <div>loading...</div>
-            ) : (
-              <WeeklyGoalChart userData={userData} />
-            )}
+          <div className="flex w-full justify-between">
+            <div className="size-40">
+              {!userData ? (
+                // TODO: add loading skeleton
+                <div>loading...</div>
+              ) : (
+                <GoalProgress
+                  target="daily"
+                  userData={userData}
+                />
+              )}
+            </div>
+            <div className="size-40">
+              {!userData ? (
+                // TODO: add loading skeleton
+                <div>loading...</div>
+              ) : (
+                <GoalProgress
+                  target="weekly"
+                  userData={userData}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>

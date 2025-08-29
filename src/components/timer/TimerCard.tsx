@@ -102,12 +102,12 @@ export function TimerCard({
   };
 
   return (
-    <div className="flex flex-col items-center justify-around w-[20rem] h-[15rem] rounded-2xl p-5 gradient-background">
+    <div className="flex flex-col items-center justify-around w-full h-[15rem] rounded-2xl p-5 gradient-background">
       <div className="font-extrabold text-6xl text-accent-foreground tracking-wide mb-3.5">
         {formatDuration(time)}
       </div>
       <p className="text-card/90 font-semibold mb-1">
-        {!sessionStarted ? 'Ready to focus' : 'Need a break'}?
+        {!isRunning ? 'Ready to focus' : 'Need a break'}?
       </p>
       {size == 'lg' && (
         // Action buttons

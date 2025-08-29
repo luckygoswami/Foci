@@ -169,3 +169,32 @@ export function get7SegmentProgressForSubject(
 
   return result;
 }
+
+export function getSafeProgress(data: GoalProgress) {
+  const completed = data[0].value;
+  const total = data[0].value + data[1].value;
+
+  const MIN_PERCENT = 0.04;
+
+  if (total <= 0) {
+    return [
+      { name: 'completed', value: 0 },
+      { name: 'remaining', value: 0 },
+    ];
+  }
+
+  // Clamp completed so it's not negative or bigger than total
+  const clamped = Math.min(Math.max(completed, 0), total);
+
+  // If > 0, enforce minimum 4% slice
+  const safeCompleted =
+    clamped === 0 ? 0 : Math.max(clamped, total * MIN_PERCENT);
+
+  // Remaining should never be negative
+  const safeRemaining = Math.max(total - clamped, 0);
+
+  return [
+    { name: 'completed', value: safeCompleted },
+    { name: 'remaining', value: safeRemaining },
+  ];
+}
