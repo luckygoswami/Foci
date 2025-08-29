@@ -1,5 +1,5 @@
 import { GoalProgress, SubjectTimeDistributionChart } from '@/features/charts';
-import { TimerCard } from '@/components';
+import { Header, TimerCard } from '@/components';
 import { useCallback, useEffect, useState } from 'react';
 import {
   endSession,
@@ -124,6 +124,7 @@ export default function HomeDashboard() {
       role="region"
       aria-label="Home Dashboard"
       className="flex flex-col">
+      <Header />
       <div className="flex flex-col p-5 gap-3">
         {/* Timer */}
         <div className="flex justify-center items-center">
