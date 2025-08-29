@@ -3,7 +3,7 @@ import {
   SubjectTimeDistributionChart,
   WeeklyGoalChart,
 } from '@/features/charts';
-import { Timer } from '@/components';
+import { TimerCard } from '@/components';
 import { useCallback, useEffect, useState } from 'react';
 import {
   endSession,
@@ -132,7 +132,7 @@ export default function HomeDashboard() {
         {sessionLoading ? (
           <span className="animate-pulse text-lg">Loading session...</span>
         ) : (
-          <Timer
+          <TimerCard
             initialTime={initialTime}
             autoStart={autoStart}
             size="lg"

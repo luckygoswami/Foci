@@ -2,6 +2,7 @@ import { getEffectiveDuration } from '@/features/sessions';
 import { formatDuration } from '@/lib/utils';
 import type { CurrentSession } from '@/types';
 import { useEffect, useRef, useState } from 'react';
+import { TimerButton } from './TimerButton';
 
 interface TimerProps {
   initialTime: number; // in seconds
@@ -17,7 +18,7 @@ interface TimerProps {
   currentSession?: CurrentSession | null;
 }
 
-export function Timer({
+export function TimerCard({
   initialTime,
   autoStart,
   size,
@@ -101,32 +102,38 @@ export function Timer({
   };
 
   return (
-    <div className="flex flex-col items-center space-y-2">
-      <div className={`${size == 'lg' && 'text-6xl'} font-extrabold jetBrains`}>
+    <div className="flex flex-col items-center justify-around w-[20rem] h-[15rem] rounded-2xl p-5 gradient-background">
+      <div className="font-extrabold text-6xl text-accent-foreground tracking-wide mb-3.5">
         {formatDuration(time)}
       </div>
+      <p className="text-card/90 font-semibold mb-1">
+        {!sessionStarted ? 'Ready to focus' : 'Need a break'}?
+      </p>
       {size == 'lg' && (
-        <div className="btn-container flex w-full space-x-2">
+        // Action buttons
+        <div className="flex flex-col gap-3">
           {/*  */}
           {isRunning ? (
-            <button
-              className="px-4 py-2 grow bg-blue-500 text-white rounded"
-              onClick={handlePause}>
-              Pause
-            </button>
+            <TimerButton
+              text="Pause"
+              clickHandler={handlePause}
+            />
+          ) : sessionStarted ? (
+            <TimerButton
+              text="Resume"
+              clickHandler={handleResume}
+            />
           ) : (
-            <button
-              className="px-4 py-2 grow bg-blue-500 text-white rounded"
-              onClick={sessionStarted ? handleResume : handleStart}>
-              {!sessionStarted ? 'Start' : 'Resume'}
-            </button>
+            <TimerButton
+              text="Start"
+              clickHandler={handleStart}
+            />
           )}
           {sessionStarted && (
-            <button
-              onClick={handleEnd}
-              className="px-4 py-2 grow bg-gray-500 text-2x text-white rounded">
-              End
-            </button>
+            <TimerButton
+              text="End"
+              clickHandler={handleEnd}
+            />
           )}
         </div>
       )}

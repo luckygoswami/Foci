@@ -41,7 +41,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-:root {
+/* :root {
   --radius: 0.625rem;
   --background: oklch(0.98 0.01 250);
   --foreground: oklch(0.18 0.01 250);
@@ -74,6 +74,53 @@
   --sidebar-accent-foreground: oklch(0.2 0.01 120);
   --sidebar-border: oklch(0.9 0.01 250);
   --sidebar-ring: oklch(0.7 0.1 260);
+} */
+
+:root {
+  --radius: 0.625rem;
+
+  /* --background: #f0f9ff; pale blue light background */
+  --background: #fff; /* pale blue light background */
+  --foreground: #1a202c; /* primary dark text */
+  --card: #ffffff; /* white cards */
+  --card-foreground: #1a202c; /* text on cards */
+  --popover: #e6fffa; /* soft teal accent background */
+  --popover-foreground: #2c7a7b; /* dark teal text */
+
+  --primary: #3182ce; /* primary blue */
+  --primary-foreground: #ffffff; /* white text on primary */
+  --secondary: #bee3f8; /* light blue pastel */
+  --secondary-foreground: #4a5568; /* muted gray text */
+
+  --muted: #edf2f7; /* very light gray background */
+  --muted-foreground: #4a5568; /* muted gray text */
+
+  --accent: #38b2ac; /* teal accent */
+  --accent-foreground: #ffffff; /* white text on accent */
+
+  --destructive: #f56565; /* error / destructive red */
+
+  --border: #cbd5e0; /* light gray border */
+  --input: #e2e8f0; /* input background */
+  --ring: #2c7a7b; /* teal focus ring */
+
+  --chart-1: #3182ce; /* blue chart color */
+  --chart-2: #38b2ac; /* teal chart color */
+  --chart-3: #63b3ed; /* lighter blue */
+  --chart-4: #81e6d9; /* light teal */
+  --chart-5: #bee3f8; /* light pastel blue */
+
+  --sidebar: #f0f9ff; /* sidebar background (same as main background) */
+  --sidebar-foreground: #1a202c; /* sidebar text */
+  --sidebar-primary: #3182ce; /* sidebar primary blue */
+  --sidebar-primary-foreground: #ffffff; /* sidebar primary text */
+  --sidebar-accent: #38b2ac; /* sidebar teal accent */
+  --sidebar-accent-foreground: #ffffff; /* sidebar accent text */
+  --sidebar-border: #cbd5e0; /* sidebar border color */
+  --sidebar-ring: #2c7a7b; /* sidebar focus ring */
+
+  --top-color: #1e90ff;
+  --bottom-color: color-mix(in oklch, #20b2aa 75%, #aaff00 25%);
 }
 
 .dark {
@@ -196,4 +243,12 @@ main {
 .recharts-legend-item {
   margin-right: 0 !important;
   margin-left: 5px;
+}
+
+.gradient-background {
+  background-image: linear-gradient(
+    to bottom right,
+    var(--top-color),
+    var(--bottom-color)
+  );
 }

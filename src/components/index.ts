@@ -1,3 +1,3 @@
 export * from './LoadingScreen';
 export * from './SnapSections';
-export * from './Timer';
+export * from './timer/TimerCard';
