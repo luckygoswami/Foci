@@ -1,14 +1,17 @@
+import { SearchBar } from '@/features/search';
 import { toTitleCase } from '@/lib/utils';
 import { useRef, useState } from 'react';
 
 export function SnapSections({
   sections,
+  includeSearch,
 }: {
   sections: {
     title: string;
     component: React.ComponentType<any>;
     props?: Record<string, any>;
   }[];
+  includeSearch?: 'groups' | 'users';
 }) {
   const titles = sections.map((section) => section.title);
   const components = sections.map((section) => {
@@ -41,11 +44,18 @@ export function SnapSections({
   };
 
   return (
-    <div className="flex-[1] flex flex-col overflow-hidden items-">
+    <div className="flex-[1] flex flex-col overflow-hidden">
       {/* Navigation Tabs with Active State */}
-      <div className=" flex justify-around my-3">
-        {/* TODO: Add expandable search button here */}
-        <div className="rounded-full bg-[#fafafa] shadow-sm">
+
+      <div
+        className={`px-5 my-3 w-full flex items-center ${
+          includeSearch ? 'justify-end' : 'justify-around'
+        }`}>
+        {includeSearch && <SearchBar targetType={includeSearch} />}
+        <div
+          className={`rounded-full bg-[#fafafa] shadow-sm ${
+            includeSearch && 'fixed'
+          }`}>
           {titles.map((title, i) => (
             <button
               key={i}

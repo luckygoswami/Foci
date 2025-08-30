@@ -7,7 +7,6 @@ import {
   GroupsList,
   InvitesList,
 } from '@/features/groups';
-import { SearchBar } from '@/features/search';
 import { useUserData } from '@/features/user';
 import type { FirebaseUserId, Group, GroupId, GroupInvite } from '@/types';
 import { PlusIcon } from 'lucide-react';
@@ -78,12 +77,11 @@ export default function GroupsDashboard() {
       role="region"
       aria-label="Groups Dashboard"
       className="flex flex-col">
-      {/* <div className="mt-2 flex items-center">
-        <SearchBar targetType="groups" />
-        <h2 className="fixed left-2/5 text-xl text-gray-600">Groups</h2>
-      </div> */}
       <Header title="Groups" />
-      <SnapSections sections={sections} />
+      <SnapSections
+        sections={sections}
+        includeSearch="groups"
+      />
 
       <button className="fixed bottom-20 right-6 bg-primary text-card p-3 rounded-full shadow-lg hover:bg-blue-700 z-3">
         <PlusIcon
