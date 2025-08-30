@@ -4,16 +4,17 @@ import {
   Line,
   XAxis,
   YAxis,
-  Tooltip,
   Legend,
   ResponsiveContainer,
   CartesianGrid,
 } from 'recharts';
-import type { SegmentedSubjectProgress } from '../types';
+import type { WeeklyProgress } from '../types';
 import type { FirebaseUserId } from '@/types';
-import { getSessionsByUser } from '@/features/sessions';
-import { get7SegmentProgressForSubject } from '../services/charts';
+import { getSessionsByDate } from '@/features/sessions';
+import { getWeeklyProgressForSubject } from '../services/charts';
 import toast from 'react-hot-toast';
+import { getLastMonthToCurrentMonthRange } from '@/lib/utils';
+import { MONTH_NAMES } from '@/constants/dateTime';
 
 export function SubjectProgressChart({
   userId,
@@ -22,15 +23,21 @@ export function SubjectProgressChart({
   userId: FirebaseUserId;
   subject: string;
 }) {
-  const [data, setData] = useState<SegmentedSubjectProgress[] | null>(null);
+  const { lastMonth, currentMonth } = getLastMonthToCurrentMonthRange();
+  const [data, setData] = useState<WeeklyProgress[] | null>(null);
   useEffect(() => {
     if (data || !userId) return;
 
     const fetch = async () => {
       try {
-        const userSessions = await getSessionsByUser(userId);
+        const userSessions = await getSessionsByDate(
+          userId,
+          lastMonth.startDate,
+          currentMonth.endDate
+        );
+
         // TODO: later get the user sessions from context or cache
-        const progress = get7SegmentProgressForSubject(subject, userSessions);
+        const progress = getWeeklyProgressForSubject(subject, userSessions);
         setData(progress);
       } catch (err: any) {
         toast.error(err.message);
@@ -48,35 +55,54 @@ export function SubjectProgressChart({
         width="100%"
         height="100%">
         <LineChart
-          width={500}
-          height={300}
           data={data}
           margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
+            top: 10,
+            right: 10,
+            bottom: 10,
+            left: -10,
           }}>
           <CartesianGrid
-            strokeDasharray="50 0"
+            strokeDasharray="3 3"
             vertical={false}
             opacity={0.5}
           />
-          <XAxis dataKey="segment" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line
-            type="monotone"
-            dataKey="lastMonth"
-            name="Last Month"
-            stroke="#8884d8"
+          <XAxis
+            tick={{ fill: '#4a5568', fontSize: 14 }}
+            tickMargin={10}
+            dataKey="week"
+            axisLine={false}
+            tickLine={false}
+            label={{ value: 'Weeks', position: 'bottom' }}
+          />
+          <YAxis
+            tick={{ fill: '#4a5568', fontSize: 14 }}
+            tickMargin={10}
+            axisLine={false}
+            tickLine={false}
+          />
+          <Legend
+            verticalAlign="bottom"
+            iconSize={8}
+            iconType="square"
+            wrapperStyle={{
+              paddingTop: 35,
+            }}
+            formatter={(value) => <span className="mr-3">{value}</span>}
           />
           <Line
             type="monotone"
-            dataKey="thisMonth"
-            name="This Month"
-            stroke="#82ca9d"
+            dataKey={MONTH_NAMES[lastMonth.monthIndex]}
+            stroke="#2d3748"
+            strokeWidth={2.5}
+            dot={{ strokeWidth: 3, r: 5 }}
+          />
+          <Line
+            type="monotone"
+            dataKey={MONTH_NAMES[currentMonth.monthIndex]}
+            stroke="#3182ce"
+            strokeWidth={2.5}
+            dot={{ strokeWidth: 3, r: 5 }}
             activeDot={{ r: 8 }}
           />
         </LineChart>

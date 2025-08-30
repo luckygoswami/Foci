@@ -212,3 +212,44 @@ export function timeAgo(timestamp: number): string {
 
   return `${years} year${years !== 1 ? 's' : ''} ago`;
 }
+
+/**
+ * Get the first date of last month and the last date of current month in (DD MMM YYYY) format.
+ */
+export function getLastMonthToCurrentMonthRange(): {
+  lastMonth: {
+    startDate: string;
+    monthIndex: number;
+  };
+  currentMonth: {
+    endDate: string;
+    monthIndex: number;
+  };
+} {
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+  const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+  const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+
+  // First day of last month
+  const firstDateOfLastMonth = new Date(lastMonthYear, lastMonth, 1).getTime();
+
+  // Last day of current month
+  const lastDateOfCurrentMonth = new Date(
+    currentYear,
+    currentMonth + 1,
+    0
+  ).getTime();
+
+  return {
+    lastMonth: {
+      startDate: formatMediumDate(firstDateOfLastMonth),
+      monthIndex: lastMonth,
+    },
+    currentMonth: {
+      endDate: formatMediumDate(lastDateOfCurrentMonth),
+      monthIndex: currentMonth,
+    },
+  };
+}
