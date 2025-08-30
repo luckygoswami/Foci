@@ -8,17 +8,15 @@ export default function ProgressDashboard() {
   const userId = userData?.userId as FirebaseUserId;
   const subjects = userData?.subjects;
 
-  // TODO: show loading skeleton here
+  // TODO: add loading skeleton
   if (!userData) return <div>Loading...</div>;
 
   return (
     <div
       role="region"
       aria-label="Progress Dashboard"
-      className="flex flex-col px-2 gap-5">
-      <div className="flex-[1] flex flex-col justify-between p-2 border-x border-b border-black rounded-br-4xl rounded-bl-4xl">
-        <Streakboard userData={userData} />
-      </div>
+      className="flex flex-col p-5 gap-5">
+      <Streakboard userData={userData} />
 
       <div className="flex-[1.5] p-2 border-x border-t border-black rounded-tr-4xl rounded-tl-4xl">
         <div className="flex space-x-4 overflow-x-auto pb-2 snap-x snap-mandatory w-full h-full">
