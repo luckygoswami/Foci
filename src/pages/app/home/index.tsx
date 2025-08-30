@@ -122,8 +122,7 @@ export default function HomeDashboard() {
   return (
     <div
       role="region"
-      aria-label="Home Dashboard"
-      className="flex flex-col">
+      aria-label="Home Dashboard">
       <Header />
       <div className="flex flex-col p-5 gap-3">
         {/* Timer */}

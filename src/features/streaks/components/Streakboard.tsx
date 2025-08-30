@@ -1,15 +1,6 @@
 import type { UserData } from '@/types';
 import { getStreakDays } from '../services/streaks';
-
-const weekDays = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-];
+import { WEEKDAY_NAMES } from '@/constants/dateTime';
 
 export function Streakboard({ userData }: { userData: UserData }) {
   const streakDays = getStreakDays(userData.streak);
@@ -30,7 +21,7 @@ export function Streakboard({ userData }: { userData: UserData }) {
 
       {/* Streak week */}
       <div className="flex justify-between text-center">
-        {weekDays.map((day, i) => (
+        {WEEKDAY_NAMES.map((day, i) => (
           <div
             key={`${day}_${i}`}
             className="flex flex-col">
@@ -42,7 +33,7 @@ export function Streakboard({ userData }: { userData: UserData }) {
             </span>
             <span
               className={`${
-                day !== weekDays[today]
+                day !== WEEKDAY_NAMES[today]
                   ? 'text-muted-foreground'
                   : 'text-[#fd8001]'
               } font-medium`}>
