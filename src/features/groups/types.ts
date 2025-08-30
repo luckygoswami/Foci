@@ -11,6 +11,7 @@ export interface GroupAvatarOption {
   id: string;
   icon: LucideIcon;
   color: string;
+  background: string;
   label: string;
 }
 
