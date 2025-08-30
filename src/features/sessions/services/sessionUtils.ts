@@ -20,7 +20,7 @@ export function getEffectiveDuration(sessionData: CurrentSession): number {
 /**
  * Returns a timestamp range (in milliseconds) covering a full day or date range.
  *
- * @param date - Start date string (e.g., "YYYY-MM-DD")
+ * @param date - Start date (YYYY-MM-DD) or (DD-MMM-YYYY)
  * @param tillDate - Optional end date string; defaults to the same day
  * @returns An object with `start` and `end` timestamps in ms
  */

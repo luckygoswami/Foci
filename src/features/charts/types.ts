@@ -13,3 +13,8 @@ export type SegmentedSubjectProgress = {
   thisMonth: number;
   lastMonth: number;
 };
+
+export type WeeklyProgress = {
+  week: string;
+  [month: string]: number | string;
+};

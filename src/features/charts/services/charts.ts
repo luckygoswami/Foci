@@ -1,11 +1,13 @@
 import { getSessionsByDate } from '@/features/sessions';
 import { formatMediumDate, getWeekBoundaries } from '@/lib/utils';
-import type { UserData, FirebaseUserId } from '@/types';
+import type { UserData, FirebaseUserId, Session } from '@/types';
 import type {
   GoalProgress,
   SegmentedSubjectProgress,
   SubjectDuration,
+  WeeklyProgress,
 } from '../types';
+import { MONTH_NAMES } from '@/constants/dateTime';
 
 export async function fetchDailyGoalProgress(
   userData: UserData
@@ -112,7 +114,7 @@ export async function fetchSubjectTimeDistribution(
 
 export function get7SegmentProgressForSubject(
   subjectName: string,
-  sessions: any[]
+  sessions: Session[]
 ): SegmentedSubjectProgress[] {
   const now = new Date();
   const currentYear = now.getFullYear();
@@ -165,6 +167,72 @@ export function get7SegmentProgressForSubject(
     segment: seg.range,
     thisMonth: seg.total,
     lastMonth: lastSegments[idx]?.total ?? 0,
+  }));
+
+  return result;
+}
+
+export function getWeeklyProgressForSubject(
+  subjectName: string,
+  sessions: Session[]
+): WeeklyProgress[] {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth();
+  const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+  const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+
+  const thisMonthName = MONTH_NAMES[currentMonth];
+  const lastMonthName = MONTH_NAMES[lastMonth];
+
+  const getDaysInMonth = (year: number, month: number) =>
+    new Date(year, month + 1, 0).getDate();
+
+  const thisMonthDays = getDaysInMonth(currentYear, currentMonth);
+  const lastMonthDays = getDaysInMonth(lastMonthYear, lastMonth);
+
+  // Always 4 weeks (1-7, 8-14, 15-21, 22-end)
+  const makeWeeks = (daysInMonth: number) => [
+    { range: [1, 7], total: 0 },
+    { range: [8, 14], total: 0 },
+    { range: [15, 21], total: 0 },
+    { range: [22, daysInMonth], total: 0 },
+  ];
+
+  const thisWeeks = makeWeeks(thisMonthDays);
+  const lastWeeks = makeWeeks(lastMonthDays);
+
+  // Fill weeks with durations
+  sessions.forEach((session) => {
+    if (session.subject?.toLowerCase() !== subjectName) return;
+
+    const date = new Date(session.startTime);
+    const day = date.getDate();
+
+    const isThisMonth =
+      date.getMonth() === currentMonth && date.getFullYear() === currentYear;
+    const isLastMonth =
+      date.getMonth() === lastMonth && date.getFullYear() === lastMonthYear;
+
+    if (isThisMonth) {
+      const weekIndex = thisWeeks.findIndex(
+        (w) => day >= w.range[0] && day <= w.range[1]
+      );
+      if (weekIndex >= 0) thisWeeks[weekIndex].total += session.duration;
+    }
+
+    if (isLastMonth) {
+      const weekIndex = lastWeeks.findIndex(
+        (w) => day >= w.range[0] && day <= w.range[1]
+      );
+      if (weekIndex >= 0) lastWeeks[weekIndex].total += session.duration;
+    }
+  });
+
+  const result: WeeklyProgress[] = thisWeeks.map((w, idx) => ({
+    week: (idx + 1).toString(),
+    [thisMonthName]: w.total,
+    [lastMonthName]: lastWeeks[idx]?.total ?? 0,
   }));
 
   return result;

@@ -65,7 +65,7 @@ export async function getSessionsByUser(
 /**
  * Fetches user sessions within a date range from Firestore
  * @param userId - User ID to filter sessions
- * @param date - Start date (YYYY-MM-DD)
+ * @param date - Start date (YYYY-MM-DD) or (DD-MMM-YYYY)
  * @param [tillDate] - Optional end date (inclusive)
  * @returns Promise with array of Session objects
  */
