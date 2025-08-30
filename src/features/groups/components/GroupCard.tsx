@@ -13,34 +13,44 @@ export default function GroupCard({
   const { name, avatarId, isPublic, members } = groupData;
   const memberCount = members.length;
 
-  const { icon: Avatar, color } =
-    GROUP_AVATAR_OPTIONS.find((avatar) => avatar.id == avatarId) ||
-    defaultAvatar;
+  const {
+    icon: Avatar,
+    color,
+    background,
+  } = GROUP_AVATAR_OPTIONS.find((avatar) => avatar.id == avatarId) ||
+  defaultAvatar;
 
   return (
     <div
-      className="p-4 flex items-start gap-3 rounded-lg bg-white shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
+      className="flex items-center gap-4 rounded-xl px-5 py-4 bg-card border border-muted-foreground/10 shadow-xs hover:shadow-md transition-shadow"
       onClick={() => navigate(`${groupId}`, { state: { groupData } })}>
-      <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center">
+      {/* Avatar container */}
+      <div
+        className={`group-avatar relative size-13 ${background} rounded-xl flex items-center justify-center`}>
         <Avatar className={`size-6 ${color}`} />
       </div>
 
+      {/* Meta container */}
       <div className="flex flex-col flex-1 min-w-0">
-        <div className="font-medium truncate text-base">{name}</div>
-        <div className="flex gap-2 items-center mt-1">
-          <span className="text-xs text-gray-400">
+        <span className="font-semibold text-foreground truncate text-lg">
+          {name}
+        </span>
+        <div className="flex gap-2 items-center">
+          <span className="text-sm font-medium text-muted-foreground">
             {memberCount} member{memberCount > 1 ? 's' : ''}
           </span>
           <span
-            className={`inline-block px-2 py-0.5 rounded text-xs ${
+            className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
               isPublic
-                ? 'bg-green-100 text-green-600'
-                : 'bg-yellow-100 text-yellow-700'
+                ? 'bg-[#d0fae4] text-[#067958]'
+                : 'bg-[#fef3c6] text-[#b65309]'
             }`}>
             {isPublic ? 'Public' : 'Private'}
           </span>
         </div>
       </div>
+
+      <span className="text-2xl text-muted-foreground">&gt;</span>
     </div>
   );
 }
