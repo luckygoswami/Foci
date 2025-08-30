@@ -85,9 +85,9 @@ export default function GroupsDashboard() {
       <Header title="Groups" />
       <SnapSections sections={sections} />
 
-      <button className="fixed bottom-20 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 z-3">
+      <button className="fixed bottom-20 right-6 bg-primary text-card p-3 rounded-full shadow-lg hover:bg-blue-700 z-3">
         <PlusIcon
-          className="size-6"
+          className="size-8 border-2 border-card rounded-full"
           onClick={() => setShowSheet(true)}
         />
       </button>
