@@ -1,4 +1,4 @@
-import { SnapSections } from '@/components';
+import { Header, SnapSections } from '@/components';
 import { useAuth } from '@/features/auth';
 import {
   CreateGroupBottomSheet,
@@ -77,12 +77,12 @@ export default function GroupsDashboard() {
     <div
       role="region"
       aria-label="Groups Dashboard"
-      className="flex flex-col px-2 gap-3">
-      <div className="mt-2 flex items-center">
+      className="flex flex-col">
+      {/* <div className="mt-2 flex items-center">
         <SearchBar targetType="groups" />
         <h2 className="fixed left-2/5 text-xl text-gray-600">Groups</h2>
-      </div>
-
+      </div> */}
+      <Header title="Groups" />
       <SnapSections sections={sections} />
 
       <button className="fixed bottom-20 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 z-3">

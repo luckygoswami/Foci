@@ -87,13 +87,13 @@
   --popover: #e6fffa; /* soft teal accent background */
   --popover-foreground: #2c7a7b; /* dark teal text */
 
-  --primary: #3182ce; /* primary blue */
+  --primary: #3c83f5; /* primary blue */
   --primary-foreground: #ffffff; /* white text on primary */
   --secondary: #bee3f8; /* light blue pastel */
   --secondary-foreground: #4a5568; /* muted gray text */
 
   --muted: #edf2f7; /* very light gray background */
-  --muted-foreground: #565d6c; /* muted gray text */
+  --muted-foreground: #565c6c; /* muted gray text */
 
   --accent: #38b2ac; /* teal accent */
   --accent-foreground: #ffffff; /* white text on accent */

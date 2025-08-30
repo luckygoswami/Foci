@@ -7,7 +7,7 @@ export function GroupsList({
   groups: (Group & { groupId: GroupId })[] | null;
 }) {
   return (
-    <div className="space-y-2 pb-20 pt-3">
+    <div className="space-y-2 pb-20">
       {!groups ? (
         // TODO: add loading skeleton
         <div>Loading...</div>

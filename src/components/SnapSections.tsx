@@ -41,39 +41,39 @@ export function SnapSections({
   };
 
   return (
-    <div className="flex-[1] flex flex-col border-x border-t rounded-tr-2xl rounded-tl-2xl px-2 border-black overflow-hidden">
+    <div className="flex-[1] flex flex-col overflow-hidden items-">
       {/* Navigation Tabs with Active State */}
-      <div className="flex border-b">
-        {titles.map((title, i) => (
-          <button
-            key={i}
-            onClick={() => scrollToSection(i)}
-            role="tab"
-            aria-selected={activeTab === i}
-            tabIndex={activeTab === i ? 0 : -1}
-            className={`px-4 py-2 font-medium transition-colors ${
-              activeTab === i
-                ? 'text-blue-600 border-b-2 border-blue-600'
-                : 'text-gray-500 hover:text-blue-600'
-            }`}>
-            {toTitleCase(title)}
-          </button>
-        ))}
+      <div className=" flex justify-around my-3">
+        {/* TODO: Add expandable search button here */}
+        <div className="rounded-full bg-[#fafafa] shadow-sm">
+          {titles.map((title, i) => (
+            <button
+              key={i}
+              onClick={() => scrollToSection(i)}
+              role="tab"
+              aria-selected={activeTab === i}
+              tabIndex={activeTab === i ? 0 : -1}
+              className={`font-medium px-8 py-3  ${
+                activeTab === i
+                  ? 'text-card bg-primary rounded-full'
+                  : 'text-muted-foreground hover:text-blue-600'
+              }`}>
+              {toTitleCase(title)}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Scrollable Sections */}
       <div
         ref={scrollContainerRef}
         onScroll={handleScroll}
-        className="flex space-x-4 overflow-x-auto snap-x snap-mandatory overflow-y-hidden scroll-smooth no-scrollbar flex-[1]">
+        className="border-t-2 border-border/20 flex space-x-4 overflow-x-auto snap-x snap-mandatory overflow-y-hidden scroll-smooth no-scrollbar flex-[1]">
         {components.map(({ component: Comp, props }, i) => (
           <div
             key={i}
-            className="flex-shrink-0 w-full snap-center overflow-y-auto">
-            <Comp
-              {...(props || {})}
-              prop={'hi'}
-            />
+            className="flex-shrink-0 w-full snap-center overflow-y-auto px-5 py-2">
+            <Comp {...(props || {})} />
           </div>
         ))}
       </div>
