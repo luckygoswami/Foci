@@ -54,7 +54,7 @@ export function InvitesList({
   return (
     <div
       ref={inviteListRef}
-      className="space-y-4 pb-20">
+      className="space-y-2 pb-20">
       {!invites ? (
         // TODO: add loading skeleton
         <div>Loading...</div>

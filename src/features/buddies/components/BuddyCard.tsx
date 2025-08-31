@@ -13,7 +13,7 @@ export default function BuddyCard({ friend }: { friend: Friend }) {
       <img
         src={`/assets/avatars/${avatarId}.svg`}
         alt={name}
-        className="size-12 rounded-full object-cover border-2 border-primary/20 px-0.5 pt-0.5"
+        className="size-13 rounded-full object-cover border-2 border-primary/20 p-0.5 pb-0"
       />
 
       {/* Meta */}

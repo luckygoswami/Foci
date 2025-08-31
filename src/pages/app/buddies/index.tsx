@@ -56,7 +56,7 @@ export default function BuddiesDashboard() {
       role="region"
       aria-label="Buddies Dashboard"
       className="flex flex-col">
-      <Header />
+      <Header title="Buddies" />
       <SnapSections
         sections={sections}
         includeSearch="users"

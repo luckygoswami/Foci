@@ -67,12 +67,12 @@ export function RequestsList({
   return (
     <div
       ref={requestListRef}
-      className="flex flex-col gap-2 p-3">
+      className="space-y-2 pb-20">
       {!requests ? (
         // TODO: add loading skeleton
         <div>loading...</div>
       ) : !requests.length ? (
-        <div>no requests yet...</div>
+        <div>No requests yet...</div>
       ) : (
         requests.map((req, i) => (
           <RequestCard
