@@ -204,7 +204,7 @@ export function getWeeklyProgressForSubject(
 
   // Fill weeks with durations
   sessions.forEach((session) => {
-    if (session.subject?.toLowerCase() !== subjectName) return;
+    if (session.subject?.toLowerCase() !== subjectName.toLowerCase()) return;
 
     const date = new Date(session.startTime);
     const day = date.getDate();

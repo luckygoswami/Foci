@@ -3,7 +3,6 @@ import { SubjectProgressChart } from '@/features/charts';
 import { useUserData } from '@/features/user';
 import type { FirebaseUserId } from '@/types';
 import { Header } from '@/components';
-import { toTitleCase } from '@/lib/utils';
 
 export default function ProgressDashboard() {
   const { userData } = useUserData();
@@ -31,7 +30,7 @@ export default function ProgressDashboard() {
                 key={`sub${ind}`}
                 className="flex-shrink-0 w-full snap-center">
                 <h2 className="text-lg font-medium text-muted-foreground mb-2">
-                  {toTitleCase(sub)}
+                  {sub}
                 </h2>
                 <div className="h-80 w-full">
                   <SubjectProgressChart

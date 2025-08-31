@@ -155,10 +155,13 @@ export default function HomeDashboard() {
         {/* Progress charts */}
         <div className="flex items-left flex-col px-5  rounded-2xl shadow-sm">
           <h1 className="text-2xl font-bold text-foreground mt-2">
-            Average Focus
+            This Week's Focus
           </h1>
           <div className="w-full size-56 mb-2">
-            <SubjectTimeDistributionChart userId={userId} />
+            <SubjectTimeDistributionChart
+              userId={userId}
+              currentSubjects={userData?.subjects}
+            />
           </div>
           <div className="flex w-full justify-between">
             <div className="size-40">

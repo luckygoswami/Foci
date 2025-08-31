@@ -11,14 +11,15 @@ import type { SubjectDuration } from '../types';
 import { fetchSubjectTimeDistribution } from '../services/charts';
 import type { FirebaseUserId } from '@/types';
 import toast from 'react-hot-toast';
-import { toTitleCase } from '@/lib/utils';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 export function SubjectTimeDistributionChart({
   userId,
+  currentSubjects = [],
 }: {
   userId: FirebaseUserId;
+  currentSubjects?: string[];
 }) {
   const [data, setData] = useState<SubjectDuration[] | null>(null);
 
@@ -71,9 +72,10 @@ export function SubjectTimeDistributionChart({
         <Legend
           verticalAlign="bottom"
           iconSize={8}
-          formatter={(value) => (
+          formatter={(subject) => (
             <span className="text-muted-foreground mr-2 ml-0.5">
-              {toTitleCase(value)}
+              {currentSubjects.find((s) => s.toLowerCase() == subject) ||
+                subject}
             </span>
           )}
         />
