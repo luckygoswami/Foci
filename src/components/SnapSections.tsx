@@ -48,7 +48,7 @@ export function SnapSections({
       {/* Navigation Tabs with Active State */}
 
       <div
-        className={`px-5 my-3 w-full flex items-center ${
+        className={`px-5 py-3 w-full flex items-center ${
           includeSearch ? 'justify-end' : 'justify-around'
         }`}>
         {includeSearch && <SearchBar targetType={includeSearch} />}

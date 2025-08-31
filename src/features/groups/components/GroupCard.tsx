@@ -24,13 +24,13 @@ export default function GroupCard({
     <div
       className="flex items-center gap-4 rounded-xl px-5 py-4 bg-card border border-muted-foreground/10 shadow-xs hover:shadow-md transition-shadow"
       onClick={() => navigate(`${groupId}`, { state: { groupData } })}>
-      {/* Avatar container */}
+      {/* Avatar */}
       <div
         className={`group-avatar relative size-13 ${background} rounded-xl flex items-center justify-center`}>
         <Avatar className={`size-6 ${color}`} />
       </div>
 
-      {/* Meta container */}
+      {/* Meta */}
       <div className="flex flex-col flex-1 min-w-0">
         <span className="font-semibold text-foreground truncate text-lg">
           {name}

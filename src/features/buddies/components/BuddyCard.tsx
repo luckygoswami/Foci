@@ -7,17 +7,23 @@ export default function BuddyCard({ friend }: { friend: Friend }) {
 
   return (
     <div
-      className="p-3 flex items-center gap-3 rounded-lg bg-white shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
+      className="flex items-center gap-4 rounded-xl px-5 py-4 bg-card border border-muted-foreground/10 shadow-xs hover:shadow-md transition-shadow"
       onClick={() => navigate(`${userId}`)}>
+      {/* Avatar */}
       <img
         src={`/assets/avatars/${avatarId}.svg`}
         alt={name}
-        className="size-12 rounded-full object-cover border-2 border-blue-100"
+        className="size-12 rounded-full object-cover border-2 border-primary/20 px-0.5 pt-0.5"
       />
 
+      {/* Meta */}
       <div className="flex flex-col flex-1 min-w-0">
-        <div className="font-medium truncate text-base">{name}</div>
-        <span className="text-sm text-gray-400">00:00:00</span>
+        <span className="font-semibold text-foreground truncate text-lg">
+          {name}
+        </span>
+        <span className="text-sm font-medium text-muted-foreground">
+          00:00:00
+        </span>
       </div>
     </div>
   );

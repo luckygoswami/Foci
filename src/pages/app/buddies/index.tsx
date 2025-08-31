@@ -1,5 +1,4 @@
-import { SearchBar } from '@/features/search';
-import { SnapSections } from '@/components';
+import { Header, SnapSections } from '@/components';
 import { useAuth } from '@/features/auth';
 import {
   BuddiesList,
@@ -56,13 +55,12 @@ export default function BuddiesDashboard() {
     <div
       role="region"
       aria-label="Buddies Dashboard"
-      className="flex flex-col px-2 gap-3">
-      <div className="mt-2 flex items-center">
-        <SearchBar targetType="users" />
-        <h2 className="fixed left-2/5 text-xl text-gray-600">Buddies</h2>
-      </div>
-
-      <SnapSections sections={sections} />
+      className="flex flex-col">
+      <Header />
+      <SnapSections
+        sections={sections}
+        includeSearch="users"
+      />
     </div>
   );
 }
