@@ -106,8 +106,11 @@ export function TimerCard({
       <div className="font-extrabold text-6xl text-accent-foreground tracking-wide mb-3.5">
         {formatDuration(time)}
       </div>
-      <p className="text-card/90 font-semibold mb-1">
-        {!isRunning ? 'Ready to focus' : 'Need a break'}?
+      <p className="text-card/90 font-semibold mb-1 truncate max-w-[90%]">
+        {!isRunning
+          ? 'Ready to focus'
+          : `Need a break from ${currentSession?.subject}`}
+        ?
       </p>
       {size == 'lg' && (
         // Action buttons

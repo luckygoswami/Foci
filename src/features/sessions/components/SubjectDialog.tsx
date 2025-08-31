@@ -5,7 +5,6 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 
 type SubjectDropdownProps = {
   subjects: string[] | undefined;
@@ -24,25 +23,36 @@ export function SubjectDialog({
     <Dialog
       open={open}
       onOpenChange={setOpen}>
-      <DialogContent className="max-w-sm">
+      <DialogContent className="max-w-sm rounded-xl">
         <DialogHeader>
-          <DialogTitle>Select a subject</DialogTitle>
-          <DialogDescription>
-            Choose the subject you want to start session for.
+          <DialogTitle className="text-foreground">
+            Select a subject
+          </DialogTitle>
+          <DialogDescription className="text-muted-foreground">
+            Select subject to start session for.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-3 pt-2">
-          {subjects?.map((subject) => (
-            <Button
-              key={subject}
-              variant="outline"
-              onClick={() => {
-                onSelect(subject);
-                setOpen(false);
-              }}>
-              {subject}
-            </Button>
-          ))}
+        {/* Subjects container */}
+        <div className="flex flex-col gap-2 p-3 max-h-60 overflow-y-auto">
+          {subjects?.length == 0 ? (
+            <span className="text-muted-foreground/50 text-center italic">
+              No subjects found!
+            </span>
+          ) : (
+            <>
+              {subjects?.map((subject) => (
+                <button
+                  key={subject}
+                  className="border border-muted py-2 text-muted-foreground rounded-full shadow-sm"
+                  onClick={() => {
+                    onSelect(subject);
+                    setOpen(false);
+                  }}>
+                  {subject}
+                </button>
+              ))}
+            </>
+          )}
         </div>
       </DialogContent>
     </Dialog>
