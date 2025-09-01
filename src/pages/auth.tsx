@@ -4,14 +4,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function AuthDashboard() {
   const { user, loading: authLoading } = useAuth();
-  const redirectTo = useLocation().state.from.pathname; // default will be '/'
+  const redirectTo = useLocation().state?.from?.pathname || '/app/home'; // default to home
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!authLoading && user) {
       navigate(redirectTo, { replace: true });
     }
-  }, [user, authLoading, navigate]);
+  }, [user, authLoading, navigate, redirectTo]);
 
   if (authLoading || user) {
     return null;
