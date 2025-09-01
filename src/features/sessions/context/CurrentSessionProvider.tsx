@@ -1,12 +1,40 @@
 import type { CurrentSession } from '@/types';
-import { useState, type ReactNode } from 'react';
+import { useState, useEffect, useRef, type ReactNode } from 'react';
 import SessionConflictDialog from '../components/SessionConflictDialog';
 import { useHydratedSession } from '../hooks/useHydratedSession';
 import { CurrentSessionContext } from './CurrentSessionContext';
+import { useAuth } from '@/features/auth';
+import { removeLocalSession } from '../services/localSession';
+import { removeRemoteSession } from '../services/remoteSession';
+import toast from 'react-hot-toast';
 
 export function CurrentSessionProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<CurrentSession | null>(null);
+  const { user } = useAuth();
   const { loading, conflict, resolveConflict } = useHydratedSession(setSession);
+  const previousUserRef = useRef<string | null>(null);
+
+  // Clear session data when user logs out
+  useEffect(() => {
+    if (user) {
+      // Store current user ID for future logout cleanup
+      previousUserRef.current = user.uid;
+    } else if (previousUserRef.current && !user) {
+      // User has logged out, clear all session data
+      const userIdToCleanup = previousUserRef.current;
+      setSession(null);
+
+      removeLocalSession().catch((err) => {
+        toast.error(err.message);
+      });
+
+      removeRemoteSession(userIdToCleanup).catch((err) => {
+        toast.error(err.message);
+      });
+
+      previousUserRef.current = null;
+    }
+  }, [user]);
 
   return (
     <CurrentSessionContext.Provider value={{ session, setSession, loading }}>
