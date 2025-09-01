@@ -120,10 +120,11 @@ describe('groupApi', () => {
     expect(result).toBe('abc123');
   });
 
-  it('createGroup returns null on failure', async () => {
+  it('createGroup throws on failure', async () => {
     vi.mocked(addDoc).mockRejectedValueOnce(new Error('fail'));
-    const result = await createGroup({} as any);
-    expect(result).toBeNull();
+    await expect(createGroup({} as any)).rejects.toThrow(
+      'Unable to create new group.'
+    );
   });
 
   it('updateGroup calls updateDoc', async () => {
