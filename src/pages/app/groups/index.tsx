@@ -28,7 +28,7 @@ export default function GroupsDashboard() {
     fetchGroupsJoinedByUser(userId)
       .then(setGroups)
       .catch((err) => toast.error(err.message));
-  }, [userData]);
+  }, [userData, invites]);
 
   useEffect(() => {
     const section = inviteListRef.current;

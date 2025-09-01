@@ -40,7 +40,10 @@ export default function InviteCard({
         {/* Action buttons */}
         <div className="flex gap-2 mt-1">
           <button
-            onClick={() => onAccept(invite)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onAccept(invite);
+            }}
             className="flex-1 flex items-center justify-center gap-1 bg-primary/90 hover:bg-[#2b6cb0] text-primary-foreground py-2 px-3 rounded-lg text-xs transition-colors">
             <Check className="size-4" />
             Accept
