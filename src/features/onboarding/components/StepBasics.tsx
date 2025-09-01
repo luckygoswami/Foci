@@ -79,7 +79,7 @@ export function StepBasics({
         </label>
         <div className="mt-1 flex gap-2">
           <input
-            className="w-full rounded border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-md border px-3 py-2"
             id="username-input"
             required
             value={username}
@@ -95,7 +95,7 @@ export function StepBasics({
             type="button"
             onClick={handleCheck}
             disabled={username.trim().length < 3 || !!usernameStatus}
-            className="px-3 py-2 rounded bg-slate-200 hover:bg-slate-300 disabled:opacity-50">
+            className="px-3 py-2 rounded-md bg-muted text-muted-foreground hover:bg-slate-300 disabled:opacity-50 shadow-sm">
             Check
           </button>
         </div>
@@ -112,7 +112,7 @@ export function StepBasics({
         </label>
         <input
           id="name-input"
-          className="mt-1 w-full rounded border px-3 py-2"
+          className="mt-1 w-full rounded-md border px-3 py-2"
           value={name}
           autoCapitalize="words"
           onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
@@ -128,7 +128,7 @@ export function StepBasics({
         </label>
         <textarea
           id="bio-input"
-          className="mt-1 w-full rounded border px-3 py-2"
+          className="mt-1 w-full rounded-md border px-3 py-2"
           value={bio}
           onChange={(e) => setForm((f) => ({ ...f, bio: e.target.value }))}
           placeholder="Tell others about yourself"

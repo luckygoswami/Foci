@@ -4,6 +4,7 @@ import { useUserData } from '@/features/user';
 import type { Friend, FriendRequest } from '@/types';
 import RequestCard from './RequestCard';
 import toast from 'react-hot-toast';
+import { EmptyData } from '@/components/EmptyData';
 
 export function RequestsList({
   requests,
@@ -72,7 +73,7 @@ export function RequestsList({
         // TODO: add loading skeleton
         <div>loading...</div>
       ) : !requests.length ? (
-        <div>No requests yet...</div>
+        <EmptyData type="requests" />
       ) : (
         requests.map((req, i) => (
           <RequestCard

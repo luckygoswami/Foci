@@ -39,47 +39,66 @@ export function SubjectTimeDistributionChart({
 
   if (!data || !userId) return null;
 
-  // TODO: add loading skeleton
-  if (data.length === 0) {
-    return (
-      <div className="text-center opacity-50">No sessions found to show.</div>
-    );
-  }
-
   return (
     <ResponsiveContainer
       width="100%"
       height="100%">
-      <PieChart>
-        <Pie
-          className="focus:outline-none"
-          data={data}
-          cx="50%"
-          cy="50%"
-          innerRadius={55}
-          outerRadius={80}
-          isAnimationActive={true}
-          fill="#8884d8"
-          dataKey="value">
-          {data.map((_, index) => (
-            <Cell
-              key={`cell-${index}`}
-              fill={COLORS[index % COLORS.length]}
-            />
-          ))}
-        </Pie>
-        <Tooltip />
-        <Legend
-          verticalAlign="bottom"
-          iconSize={8}
-          formatter={(subject) => (
-            <span className="text-muted-foreground mr-2 ml-0.5">
-              {currentSubjects.find((s) => s.toLowerCase() == subject) ||
-                subject}
-            </span>
-          )}
-        />
-      </PieChart>
+      {!data.length ? (
+        <PieChart>
+          <Pie
+            className="focus:outline-none"
+            data={[{ value: 100 }]}
+            cx="50%"
+            cy="50%"
+            innerRadius={55}
+            outerRadius={80}
+            fill="#edf2f7"
+            stroke="none"
+            dataKey="value"
+          />
+          <Legend
+            verticalAlign="bottom"
+            iconSize={0}
+            formatter={() => (
+              <span className="text-muted-foreground mr-2 ml-0.5">
+                No sessions this week.
+              </span>
+            )}
+          />
+        </PieChart>
+      ) : (
+        <PieChart>
+          <Pie
+            className="focus:outline-none"
+            data={data}
+            cx="50%"
+            cy="50%"
+            innerRadius={55}
+            outerRadius={80}
+            fill="#8884d8"
+            dataKey="duration"
+            nameKey="subject">
+            {data.map((_, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
+            ))}
+          </Pie>
+          <Tooltip />
+          <Legend
+            verticalAlign="bottom"
+            iconSize={8}
+            iconType="circle"
+            formatter={(subject) => (
+              <span className="text-muted-foreground mr-2 ml-0.5">
+                {currentSubjects.find((s) => s.toLowerCase() == subject) ||
+                  subject}
+              </span>
+            )}
+          />
+        </PieChart>
+      )}
     </ResponsiveContainer>
   );
 }

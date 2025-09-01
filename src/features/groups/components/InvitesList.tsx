@@ -5,6 +5,7 @@ import type { Ref } from 'react';
 import { acceptGroupInvite, rejectGroupInvite } from '../services/groupInvites';
 import { addGroupMember } from '../services/groupMembers';
 import toast from 'react-hot-toast';
+import { EmptyData } from '@/components/EmptyData';
 
 export function InvitesList({
   invites,
@@ -59,7 +60,7 @@ export function InvitesList({
         // TODO: add loading skeleton
         <div>Loading...</div>
       ) : !invites.length ? (
-        <div>No Invites yet..</div>
+        <EmptyData type="invites" />
       ) : (
         invites.map((invite) => (
           <InviteCard

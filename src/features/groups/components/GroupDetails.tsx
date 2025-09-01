@@ -14,10 +14,13 @@ export function GroupDetails({ group }: { group: Group }) {
 
   return (
     <div className="group-details overflow-scroll no-scrollbar flex flex-col items-center py-2">
+      {/* Group Avatar */}
       <div
-        className={`min-w-35 min-h-35 border-8 border-gray-200 rounded-full flex items-center justify-center ${color}`}>
+        className={`size-35 border-2 border-muted rounded-full flex items-center justify-center ${color}`}>
         <Avatar size={100} />
       </div>
+
+      {/* Group Name */}
       <div className="header flex items-center justify-center mt-4 mb-1 gap-1 max-w-[95%]">
         <h1 className="text-3xl font-black truncate w-full">{name}</h1>
         {!isPublic && (
@@ -27,8 +30,9 @@ export function GroupDetails({ group }: { group: Group }) {
         )}
       </div>
 
+      {/* Group Description */}
       {description && (
-        <p className="text-gray-800 text-center">{description}</p>
+        <p className="text-muted-foreground text-center mb-1">{description}</p>
       )}
 
       {tags?.length && (
@@ -46,7 +50,7 @@ export function GroupDetails({ group }: { group: Group }) {
       )}
 
       {/* Meta data */}
-      <div className="text-[15px] text-gray-500 mt-2">
+      <div className="text-[15px] text-muted-foreground/80 mt-2">
         {`${memberCount} ${memberCount > 1 ? 'members' : 'member'}`} &ndash;
         Created on {formatMediumDate(createdAt)}
       </div>

@@ -13,7 +13,7 @@ export default function UserResult({ user }: { user: IUserResult }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
       transition={{ duration: 0.25 }}
-      className="flex gap-4 px-4 py-2 hover:bg-gray-100 cursor-pointer"
+      className="flex gap-3 p-3 hover:bg-gray-100 cursor-pointer"
       onClick={
         userId != user.id
           ? () =>
@@ -25,11 +25,11 @@ export default function UserResult({ user }: { user: IUserResult }) {
       <img
         src={`/assets/avatars/${user.avatarId}.svg`}
         alt={`${user.name}_avatar`}
-        className="size-10 rounded-full object-cover border-2 border-blue-100"
+        className="size-12 rounded-full object-cover border-2 border-blue-100 p-0.75 pb-0"
       />
-      <div className="flex flex-col flex-1 min-w-0">
+      <div className="flex flex-col flex-1 min-w-0 pt-0.5">
         <div className="font-medium truncate text-base">{user.name}</div>
-        <span className="text-xs text-gray-400 leading-none">
+        <span className="text-xs text-muted-foreground/60 leading-none">
           @{user.username}
         </span>
       </div>

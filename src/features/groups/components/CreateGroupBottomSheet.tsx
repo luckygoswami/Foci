@@ -160,7 +160,7 @@ export const CreateGroupBottomSheet: React.FC<CreateGroupBottomSheetProps> = ({
 
           <button
             type="submit"
-            className="mt-5 bg-primary rounded-md py-2 text-white font-bold text-base active:scale-95 transition">
+            className="mt-5 bg-primary rounded-md py-2 text-primary-foreground font-bold text-base active:scale-95 transition">
             Create Group
           </button>
         </form>

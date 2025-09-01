@@ -89,7 +89,7 @@ export function AuthForm() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-                <i className="fa-solid fa-user"></i>
+                <i className="fa-solid fa-envelope"></i>
               </div>
               <div className="input-box">
                 <input

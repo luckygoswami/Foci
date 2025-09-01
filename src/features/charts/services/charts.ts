@@ -100,10 +100,10 @@ export async function fetchSubjectTimeDistribution(
 
     const progress = subjectsArray
       .map((sub) => ({
-        name: sub,
-        value: Math.max(0, durationMap[sub] || 0),
+        subject: sub,
+        duration: Math.max(0, durationMap[sub] || 0),
       }))
-      .sort((a, b) => b.value - a.value);
+      .sort((a, b) => b.duration - a.duration);
 
     return progress;
   } catch (err: any) {

@@ -1,5 +1,6 @@
 import type { Friend } from '@/types';
 import BuddyCard from './BuddyCard';
+import { EmptyData } from '@/components/EmptyData';
 
 export function BuddiesList({ friends }: { friends: Friend[] | null }) {
   return (
@@ -8,7 +9,7 @@ export function BuddiesList({ friends }: { friends: Friend[] | null }) {
         // TODO: add loading skeleton
         <div>loading...</div>
       ) : !friends.length ? (
-        <div>No buddies yet...</div>
+        <EmptyData type="users" />
       ) : (
         friends.map((friend, i) => (
           <BuddyCard

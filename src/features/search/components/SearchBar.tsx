@@ -24,6 +24,7 @@ export function SearchBar({ targetType }: { targetType: 'groups' | 'users' }) {
           }}
           transition={{ duration: 0.35, ease: 'easeInOut' }}
           onClick={!isOpen ? toggleSearch : undefined}
+          id="search-button"
           className="relative z-6 flex items-center bg-white shadow-md border border-gray-300 overflow-hidden h-11 rounded-full cursor-pointer">
           {/* Left icon (always visible) */}
           <Search className="size-5 ml-3 text-gray-600 flex-shrink-0" />

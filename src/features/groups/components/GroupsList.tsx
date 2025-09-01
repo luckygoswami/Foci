@@ -1,3 +1,4 @@
+import { EmptyData } from '@/components/EmptyData';
 import GroupCard from './GroupCard';
 import type { Group, GroupId } from '@/types';
 
@@ -12,7 +13,7 @@ export function GroupsList({
         // TODO: add loading skeleton
         <div>Loading...</div>
       ) : !groups.length ? (
-        <div>No groups joined yet...</div>
+        <EmptyData type="groups" />
       ) : (
         groups.map((group) => (
           <GroupCard

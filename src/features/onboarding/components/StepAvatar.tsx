@@ -30,16 +30,16 @@ export function StepAvatar({
         className="font-medium">
         Select your avatar
       </label>
-      <div className="grid grid-cols-4 gap-4 p-2 h-[400px] overflow-scroll border border-gray-200">
+      <div className="grid grid-cols-4 gap-4 p-2 h-[400px] overflow-scroll">
         {shuffledAvatars.map((avatarId, idx) => (
           <button
             key={idx}
             type="button"
             onClick={() => handleChange(avatarId)}
-            className={`rounded-lg border-2 p-1 transition ${
+            className={`rounded-lg p-1 transition ${
               form.avatarId === avatarId
-                ? 'border-blue-500 ring-2 ring-blue-300'
-                : 'border-gray-200 hover:border-gray-400'
+                ? 'ring-2 ring-ring'
+                : 'border-2 border-muted hover:border-muted-foreground'
             }`}>
             <img
               src={`/assets/avatars/${avatarId}.svg`}

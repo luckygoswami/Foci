@@ -27,39 +27,41 @@ export const FriendsInviteModal: React.FC<FriendsInviteModalProps> = ({
       onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Invite a Friend</DialogTitle>
+          <DialogTitle>Invite a Buddy</DialogTitle>
           <DialogDescription />
         </DialogHeader>
         {!friends ? (
           // TODO: add loading skeleton
           <div>Loading...</div>
         ) : (
-          <div className="py-2">
+          <div>
             {!friends.length ? (
-              <div className="text-gray-400">
-                No friends available to invite.
+              <div className="h-[100px] flex justify-center items-center gap-5">
+                <p className="text-muted-foreground/80 font-medium text-center">
+                  No-buddy here to invite.
+                </p>
               </div>
             ) : (
-              <ul className="max-h-80 overflow-y-auto divide-y divide-gray-100">
+              <ul className="max-h-90 flex flex-col overflow-y-auto w-full divide-y divide-muted">
                 {friends.map((friend) => (
                   <li
                     key={friend.userId}
-                    className="flex items-center gap-3 py-3">
+                    className="flex items-center gap-3 p-2">
                     <img
                       src={`/assets/avatars/${friend.avatarId}.svg`}
                       alt={friend.name}
-                      className="w-10 h-10 rounded-full border bg-gray-100"
+                      className="size-12 rounded-full border bg-gray-100 p-0.25 pb-0"
                     />
                     <span className="flex-1 font-medium">{friend.name}</span>
                     {friend.invited ? (
                       <button
-                        className="px-3 py-1 rounded bg-white text-blue-600 border border-blue-100"
+                        className="px-3 py-1 rounded-sm bg-muted text-muted-foreground shadow-xs"
                         disabled>
                         Invited
                       </button>
                     ) : (
                       <button
-                        className="px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 transition"
+                        className="px-4.5 py-1  rounded-sm bg-primary text-primary-foreground shadow-xs hover:bg-blue-700 transition"
                         onClick={() => onInvite(friend)}>
                         Invite
                       </button>

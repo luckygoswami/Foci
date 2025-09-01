@@ -13,11 +13,11 @@ export function GroupMembersList({ members }: { members: GroupMember[] }) {
   } = getGroupRoles(members);
 
   return (
-    <ol className="members-list h-5/12 overflow-x-hidden overflow-y-scroll py-2">
+    <ol className="members-list h-5/12 overflow-x-hidden overflow-y-scroll py-2 divide-muted divide-y-1">
       {/* creator */}
-      <li className="flex items-center mb-3">
+      <li className="flex items-center px-3 py-2">
         <div
-          className={`rounded-full size-11 overflow-hidden flex items-center justify-center mr-3`}
+          className={`rounded-full size-11 overflow-hidden flex items-center justify-center mr-3 p-0.5 pb-0`}
           style={{ backgroundColor: `#${creatorBg}` }}>
           <img
             src={`/assets/avatars/${creator.avatarId}.svg`}
@@ -29,7 +29,7 @@ export function GroupMembersList({ members }: { members: GroupMember[] }) {
           <div className="font-bold text-[17px] text-black leading-5">
             {creator.name}
           </div>
-          <div className="text-[15px] text-gray-500 -mt-1">creator</div>
+          <div className="text-[15px] text-gray-500 mt-0.25">creator</div>
         </div>
       </li>
 
@@ -37,9 +37,9 @@ export function GroupMembersList({ members }: { members: GroupMember[] }) {
       {adminsList.map((admin, i) => (
         <li
           key={`${admin.name}-${i}`}
-          className="flex items-center mb-3">
+          className="flex items-center px-3 py-2">
           <div
-            className={`rounded-full size-11 overflow-hidden flex items-center justify-center mr-3`}
+            className={`rounded-full size-11 overflow-hidden flex items-center justify-center mr-3 p-0.5 pb-0`}
             style={{ backgroundColor: `#${adminsBg[i % adminsBg.length]}` }}>
             <img
               src={`/assets/avatars/${admin.avatarId}.svg`}
@@ -51,7 +51,7 @@ export function GroupMembersList({ members }: { members: GroupMember[] }) {
             <div className="font-bold text-[17px] text-black leading-5">
               {admin.name}
             </div>
-            <div className="text-[15px] text-gray-500 -mt-1">admin</div>
+            <div className="text-[15px] text-gray-500 mt-0.25">admin</div>
           </div>
         </li>
       ))}
@@ -60,9 +60,9 @@ export function GroupMembersList({ members }: { members: GroupMember[] }) {
       {membersList.map((member, i) => (
         <li
           key={`${member.name}-${i}`}
-          className="flex items-center mb-3">
+          className="flex items-center px-3 py-2">
           <div
-            className={`rounded-full size-11 overflow-hidden flex items-center justify-center mr-3`}
+            className={`rounded-full size-11 overflow-hidden flex items-center justify-center mr-3 p-0.5 pb-0`}
             style={{ backgroundColor: `#${membersBg[i % membersBg.length]}` }}>
             <img
               src={`/assets/avatars/${member.avatarId}.svg`}
@@ -74,7 +74,7 @@ export function GroupMembersList({ members }: { members: GroupMember[] }) {
             <div className="font-bold text-[17px] text-black leading-5">
               {member.name}
             </div>
-            <div className="text-[15px] text-gray-500 -mt-1">member</div>
+            <div className="text-[15px] text-gray-500 mt-0.25">member</div>
           </div>
         </li>
       ))}

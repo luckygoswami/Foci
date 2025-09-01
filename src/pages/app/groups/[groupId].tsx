@@ -137,7 +137,7 @@ export default function GroupDetailsPage() {
     <div
       role="region"
       aria-label="Group Details"
-      className="bg-white flex flex-col justify-between px-4 py-2">
+      className="bg-white flex flex-col justify-between p-5">
       <>
         <GroupDetails group={group} />
         <GroupMembersList members={group.members} />

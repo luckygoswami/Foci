@@ -68,7 +68,7 @@ export function StepStudy({
         <div className="mt-1 flex gap-2">
           <input
             id="subjects-input"
-            className="w-full rounded border px-3 py-2"
+            className="w-full rounded-md border px-3 py-2"
             value={subjectInput}
             onChange={(e) => setSubjectInput(e.target.value)}
             placeholder="Add a subject and press Add"
@@ -76,7 +76,7 @@ export function StepStudy({
           <button
             type="button"
             onClick={addSubject}
-            className="px-3 py-2 rounded bg-slate-200">
+            className="px-3 py-2 rounded-md bg-muted text-muted-foreground shadow-sm">
             Add
           </button>
         </div>
@@ -119,7 +119,7 @@ export function StepStudy({
           step={DAILY_STEP}
           value={dailyTargetMinutes}
           onChange={handleDailyTarget}
-          className="mt-2 w-full accent-blue-600"
+          className="mt-2 w-full accent"
           aria-valuemin={DAILY_MIN}
           aria-valuemax={DAILY_MAX}
           aria-valuenow={dailyTargetMinutes}
@@ -151,7 +151,7 @@ export function StepStudy({
           step={WEEKLY_STEP}
           value={weeklyTargetMinutes}
           onChange={handleWeeklyTarget}
-          className="mt-2 w-full accent-blue-600"
+          className="mt-2 w-full accent"
           aria-valuemin={WEEKLY_MIN}
           aria-valuemax={WEEKLY_MAX}
           aria-valuenow={weeklyTargetMinutes}

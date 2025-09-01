@@ -10,7 +10,7 @@ import {
 import { Button } from '@/components/ui/button';
 import type { CurrentSession } from '@/types';
 import { XCircle, HardDrive, Cloud } from 'lucide-react';
-import { formatDuration, formatTimestamp, toTitleCase } from '@/lib/utils';
+import { formatDuration, formatTimestamp } from '@/lib/utils';
 
 type SessionChoice = 'local' | 'remote' | 'end';
 interface Props {
@@ -48,12 +48,12 @@ export default function SessionConflictDialog({
             <SessionCard
               label="this-device"
               session={local}
-              icon={<HardDrive className="w-4 h-4" />}
+              icon={<HardDrive className="size-5" />}
             />
             <SessionCard
               label="other-device"
               session={remote}
-              icon={<Cloud className="w-4 h-4" />}
+              icon={<Cloud className="size-5" />}
             />
           </div>
         </div>
@@ -63,16 +63,20 @@ export default function SessionConflictDialog({
             className="bg-white"
             variant="outline"
             onClick={() => onChoose('end')}>
-            <XCircle className="mr-1 w-4 h-4" />
+            <XCircle className="size-5" />
             End both sessions
           </Button>
           <Button
-            variant="destructive"
+            className="bg-destructive/95"
             onClick={() => onChoose('remote')}>
-            Continue {toTitleCase(remote.subject)} session
+            <Cloud className="size-5" />
+            Continue {remote.subject} session
           </Button>
-          <Button onClick={() => onChoose('local')}>
-            Continue {toTitleCase(local.subject)} session
+          <Button
+            className="bg-primary/95"
+            onClick={() => onChoose('local')}>
+            <HardDrive className="size-5" />
+            Continue {local.subject} session
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -94,9 +98,7 @@ function SessionCard({
     <div className="border rounded-xl p-3 flex items-center gap-3 bg-white">
       {icon}
       <div className="flex flex-col">
-        <span className="font-medium">{`${toTitleCase(
-          session.subject
-        )} (${label})`}</span>
+        <span className="font-medium">{`${session.subject} (${label})`}</span>
         <span className="text-xs text-muted-foreground">
           Duration &middot; {formatDuration(session.accumulatedDuration)}
           {!session.paused && <> &middot; running</>}

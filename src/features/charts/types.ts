@@ -4,8 +4,8 @@ export type GoalProgress = [
 ];
 
 export type SubjectDuration = {
-  name: string;
-  value: number;
+  subject: string;
+  duration: number;
 };
 
 export type SegmentedSubjectProgress = {

@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   height: 100%;
-  background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
+  background: linear-gradient(90deg, #e0e6dd, #b3c5ff);
 }
 
 .container {
@@ -98,7 +98,8 @@ form {
 .btn {
   width: 100%;
   height: 48px;
-  background: #7494ec;
+  background: #3c83f5;
+  opacity: 90%;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border: none;
@@ -119,7 +120,7 @@ form {
 
   button {
     border: 2px solid #ccc;
-    padding: 0.35rem;
+    padding: 0.5rem;
     border-radius: 8px;
     color: #333;
     text-decoration: none;
@@ -138,7 +139,7 @@ form {
   left: -250%;
   width: 300%;
   height: 100%;
-  background: #7494ec;
+  background: #3c83f5;
   border-radius: 150px;
   z-index: 2;
   transition: 1.8s ease-in-out;

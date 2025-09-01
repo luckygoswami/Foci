@@ -103,7 +103,7 @@ export function OnboardingWizard({ user }: { user: User }) {
               </div>
               <button
                 type="button"
-                className="text-sm text-blue-600 hover:underline"
+                className="text-sm text-primary hover:underline"
                 onClick={logout}>
                 Not you?
               </button>
@@ -132,14 +132,14 @@ export function OnboardingWizard({ user }: { user: User }) {
                 onClick={handleBack}
                 disabled={step === 1}
                 type="button"
-                className="px-4 py-2 rounded bg-slate-100 disabled:opacity-50">
+                className="px-4 py-2 rounded-md bg-muted text-muted-foreground disabled:opacity-50 shadow-sm">
                 Back
               </button>
               {step < MAX_STEP ? (
                 <button
                   onClick={handleNext}
                   type="button"
-                  className="px-4 py-2 rounded bg-blue-600 text-white">
+                  className="px-4 py-2 rounded-md bg-primary text-primary-foreground shadow-sm">
                   Next
                 </button>
               ) : (
@@ -147,7 +147,7 @@ export function OnboardingWizard({ user }: { user: User }) {
                   onClick={handleSubmit}
                   disabled={loading}
                   type="button"
-                  className="px-4 py-2 rounded bg-green-600 text-white disabled:opacity-50">
+                  className="px-4 py-2 rounded-md bg-green-600 text-white disabled:opacity-50 shadow-sm">
                   {loading ? 'Creating...' : 'Create Profile'}
                 </button>
               )}
