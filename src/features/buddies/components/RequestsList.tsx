@@ -5,6 +5,7 @@ import type { Friend, FriendRequest } from '@/types';
 import RequestCard from './RequestCard';
 import toast from 'react-hot-toast';
 import { EmptyData } from '@/components/EmptyData';
+import { RequestsListSkeleton } from '@/components';
 
 export function RequestsList({
   requests,
@@ -65,14 +66,14 @@ export function RequestsList({
     }
   }
 
+  if (!requests)
+    return <RequestsListSkeleton requestListRef={requestListRef} />;
+
   return (
     <ol
       ref={requestListRef}
       className="space-y-2 pb-20">
-      {!requests ? (
-        // TODO: add loading skeleton
-        <div>loading...</div>
-      ) : !requests.length ? (
+      {!requests.length ? (
         <EmptyData type="requests" />
       ) : (
         requests.map((req, i) => (
