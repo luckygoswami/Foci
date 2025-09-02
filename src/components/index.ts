@@ -6,3 +6,4 @@ export * from './skeletons/UserDetailsPageSkeleton';
 export * from './skeletons/GroupDetailsPageSkeleton';
 export * from './skeletons/GroupsListSkeleton';
 export * from './skeletons/InvitesListSkeleton';
+export * from './skeletons/BuddiesListSkeleton';
