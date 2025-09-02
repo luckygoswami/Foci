@@ -5,3 +5,4 @@ export * from './Header';
 export * from './skeletons/UserDetailsPageSkeleton';
 export * from './skeletons/GroupDetailsPageSkeleton';
 export * from './skeletons/GroupsListSkeleton';
+export * from './skeletons/InvitesListSkeleton';

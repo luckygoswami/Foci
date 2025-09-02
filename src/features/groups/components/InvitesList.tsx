@@ -6,6 +6,7 @@ import { acceptGroupInvite, rejectGroupInvite } from '../services/groupInvites';
 import { addGroupMember } from '../services/groupMembers';
 import toast from 'react-hot-toast';
 import { EmptyData } from '@/components/EmptyData';
+import { InvitesListSkeleton } from '@/components';
 
 export function InvitesList({
   invites,
@@ -52,14 +53,13 @@ export function InvitesList({
     }
   }
 
+  if (!invites) return <InvitesListSkeleton inviteListRef={inviteListRef} />;
+
   return (
     <ol
       ref={inviteListRef}
       className="space-y-2 pb-20">
-      {!invites ? (
-        // TODO: add loading skeleton
-        <div>Loading...</div>
-      ) : !invites.length ? (
+      {!invites.length ? (
         <EmptyData type="invites" />
       ) : (
         invites.map((invite) => (
