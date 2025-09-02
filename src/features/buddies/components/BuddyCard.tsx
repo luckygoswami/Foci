@@ -6,7 +6,7 @@ export default function BuddyCard({ friend }: { friend: Friend }) {
   const { userId, avatarId, name } = friend;
 
   return (
-    <div
+    <li
       className="flex items-center gap-4 rounded-xl px-5 py-4 bg-card border border-muted-foreground/10 shadow-xs hover:shadow-md transition-shadow"
       onClick={() => navigate(`${userId}`)}>
       {/* Avatar */}
@@ -25,6 +25,6 @@ export default function BuddyCard({ friend }: { friend: Friend }) {
           00:00:00
         </span>
       </div>
-    </div>
+    </li>
   );
 }

@@ -14,7 +14,7 @@ export function InvitesList({
 }: {
   invites: GroupInvite[] | null;
   setInvites: (invites: GroupInvite[]) => void;
-  inviteListRef: Ref<HTMLDivElement>;
+  inviteListRef: Ref<HTMLOListElement>;
 }) {
   const { userData } = useUserData();
 
@@ -53,7 +53,7 @@ export function InvitesList({
   }
 
   return (
-    <div
+    <ol
       ref={inviteListRef}
       className="space-y-2 pb-20">
       {!invites ? (
@@ -71,6 +71,6 @@ export function InvitesList({
           />
         ))
       )}
-    </div>
+    </ol>
   );
 }

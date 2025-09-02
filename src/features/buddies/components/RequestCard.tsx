@@ -16,7 +16,7 @@ export default function RequestCard({
   const navigate = useNavigate();
 
   return (
-    <div
+    <li
       className="flex items-center gap-4 rounded-xl px-5 py-3 bg-card border border-muted-foreground/10 shadow-xs hover:shadow-md transition-shadow"
       onClick={() => navigate(`${senderId}`)}>
       {/* Avatar */}
@@ -53,6 +53,6 @@ export default function RequestCard({
           </button>
         </div>
       </div>
-    </div>
+    </li>
   );
 }

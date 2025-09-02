@@ -4,7 +4,7 @@ import { EmptyData } from '@/components/EmptyData';
 
 export function BuddiesList({ friends }: { friends: Friend[] | null }) {
   return (
-    <div className="space-y-2 pb-20">
+    <ol className="space-y-2 pb-20">
       {!friends ? (
         // TODO: add loading skeleton
         <div>loading...</div>
@@ -18,6 +18,6 @@ export function BuddiesList({ friends }: { friends: Friend[] | null }) {
           />
         ))
       )}
-    </div>
+    </ol>
   );
 }

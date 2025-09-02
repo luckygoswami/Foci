@@ -13,7 +13,7 @@ export function RequestsList({
 }: {
   requests: FriendRequest[];
   setRequests: (requests: FriendRequest[]) => void;
-  requestListRef: Ref<HTMLDivElement>;
+  requestListRef: Ref<HTMLOListElement>;
 }) {
   const { setUserData } = useUserData();
 
@@ -66,7 +66,7 @@ export function RequestsList({
   }
 
   return (
-    <div
+    <ol
       ref={requestListRef}
       className="space-y-2 pb-20">
       {!requests ? (
@@ -84,6 +84,6 @@ export function RequestsList({
           />
         ))
       )}
-    </div>
+    </ol>
   );
 }

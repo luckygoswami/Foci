@@ -21,7 +21,7 @@ export default function GroupCard({
   defaultAvatar;
 
   return (
-    <div
+    <li
       className="flex items-center gap-4 rounded-xl px-5 py-4 bg-card border border-muted-foreground/10 shadow-xs hover:shadow-md transition-shadow"
       onClick={() => navigate(`${groupId}`, { state: { groupData } })}>
       {/* Avatar */}
@@ -51,6 +51,6 @@ export default function GroupCard({
       </div>
 
       <span className="text-2xl text-muted-foreground">&gt;</span>
-    </div>
+    </li>
   );
 }

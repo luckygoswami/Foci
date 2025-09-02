@@ -2,5 +2,6 @@ export * from './LoadingScreen';
 export * from './SnapSections';
 export * from './timer/TimerCard';
 export * from './Header';
-export * from './skeletons/UserProfileSkeleton';
-export * from './skeletons/GroupDetailsSkeleton';
+export * from './skeletons/UserDetailsPageSkeleton';
+export * from './skeletons/GroupDetailsPageSkeleton';
+export * from './skeletons/GroupsListSkeleton';

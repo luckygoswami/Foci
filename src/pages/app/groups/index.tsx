@@ -21,7 +21,7 @@ export default function GroupsDashboard() {
     null
   );
   const [invites, setInvites] = useState<GroupInvite[] | null>(null);
-  const inviteListRef = useRef<HTMLDivElement | null>(null);
+  const inviteListRef = useRef<HTMLOListElement | null>(null);
 
   useEffect(() => {
     if (!userData) return;

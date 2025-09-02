@@ -13,7 +13,7 @@ import toast from 'react-hot-toast';
 export default function BuddiesDashboard() {
   const userId = useAuth().user?.uid as FirebaseUserId;
   const { userData } = useUserData();
-  const requestListRef = useRef<HTMLDivElement | null>(null);
+  const requestListRef = useRef<HTMLOListElement | null>(null);
   const [requests, setRequests] = useState<FriendRequest[] | null>(null);
 
   useEffect(() => {
