@@ -1,4 +1,4 @@
-export function UserProfileSkeleton() {
+export function UserDetailsPageSkeleton() {
   return (
     <>
       {/* Profile Header */}

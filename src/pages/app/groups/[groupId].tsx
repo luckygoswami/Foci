@@ -1,3 +1,4 @@
+import { GroupDetailsPageSkeleton } from '@/components';
 import {
   addGroupMember,
   assignRole,
@@ -130,55 +131,56 @@ export default function GroupDetailsPage() {
     }));
   }
 
-  // TODO: add loading skeleton
-  if (!group || !userData) return <div>Loading...</div>;
-
   return (
     <div
       role="region"
       aria-label="Group Details"
-      className="bg-white flex flex-col justify-between p-5">
-      <>
-        <GroupDetails group={group} />
-        <GroupMembersList members={group.members} />
-        <FriendsInviteModal
-          open={showInviteModal}
-          onOpenChange={setShowInviteModal}
-          onInvite={handleInvite}
-          friends={inviteListFriends(sentInvites)}
-        />
-        {/* Actions */}
-        <div className="actions-menu h-1/12 flex gap-4 mt-2">
-          {role != 'spectator' ? (
-            <>
-              {role != 'member' && (
-                <button
-                  onClick={() => setShowInviteModal(true)}
-                  className="flex-1 py-2 rounded-xl bg-blue-200 text-blue-700 font-semibold text-xl flex items-center justify-center gap-2 hover:bg-blue-300 transition-colors">
-                  <span className="text-2xl">&#8594;</span>
-                  Invite
-                </button>
-              )}
+      className="bg-card flex flex-col justify-between p-5">
+      {!group ? (
+        <GroupDetailsPageSkeleton />
+      ) : (
+        <>
+          <GroupDetails group={group} />
+          <GroupMembersList members={group.members} />
+          <FriendsInviteModal
+            open={showInviteModal}
+            onOpenChange={setShowInviteModal}
+            onInvite={handleInvite}
+            friends={inviteListFriends(sentInvites)}
+          />
+          {/* Actions */}
+          <div className="actions-menu h-1/12 flex gap-4 mt-2">
+            {role != 'spectator' ? (
+              <>
+                {role != 'member' && (
+                  <button
+                    onClick={() => setShowInviteModal(true)}
+                    className="flex-1 py-2 rounded-xl bg-blue-200 text-blue-700 font-semibold text-xl flex items-center justify-center gap-2 hover:bg-blue-300 transition-colors">
+                    <span className="text-2xl">&#8594;</span>
+                    Invite
+                  </button>
+                )}
 
-              {role != 'creator' && (
-                <button
-                  onClick={handleLeave}
-                  className="flex-1 py-2 rounded-xl bg-red-100 text-red-400 font-semibold text-lg flex items-center justify-center gap-2 hover:bg-red-200 transition-colors">
-                  <span className="text-2xl">&#8592;</span>
-                  Leave
-                </button>
-              )}
-            </>
-          ) : (
-            <button
-              onClick={handleJoin}
-              className="flex-1 py-2 rounded-xl bg-blue-200 text-blue-700 font-semibold text-xl flex items-center justify-center gap-2 hover:bg-blue-300 transition-colors">
-              <span className="text-2xl">&#8594;</span>
-              Join
-            </button>
-          )}
-        </div>
-      </>
+                {role != 'creator' && (
+                  <button
+                    onClick={handleLeave}
+                    className="flex-1 py-2 rounded-xl bg-red-100 text-red-400 font-semibold text-lg flex items-center justify-center gap-2 hover:bg-red-200 transition-colors">
+                    <span className="text-2xl">&#8592;</span>
+                    Leave
+                  </button>
+                )}
+              </>
+            ) : (
+              <button
+                onClick={handleJoin}
+                className="flex-1 py-2 rounded-xl bg-blue-200 text-blue-700 font-semibold text-xl flex items-center justify-center gap-2 hover:bg-blue-300 transition-colors">
+                <span className="text-2xl">&#8594;</span>
+                Join
+              </button>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }
