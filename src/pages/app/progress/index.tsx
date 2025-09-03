@@ -9,9 +9,6 @@ export default function ProgressDashboard() {
   const userId = userData?.userId as FirebaseUserId;
   const subjects = userData?.subjects;
 
-  // TODO: add loading skeleton
-  if (!userData) return <div>Loading...</div>;
-
   return (
     <div
       role="region"

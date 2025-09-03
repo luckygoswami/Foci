@@ -2,7 +2,9 @@ import type { UserData } from '@/types';
 import { getStreakDays } from '../services/streaks';
 import { WEEKDAY_NAMES } from '@/constants/dateTime';
 
-export function Streakboard({ userData }: { userData: UserData }) {
+export function Streakboard({ userData }: { userData: UserData | undefined }) {
+  if (!userData) return null; // No chance of happening as page loads after the userData load
+
   const streakDays = getStreakDays(userData.streak);
   const today = new Date().getDay();
 

@@ -15,6 +15,7 @@ import { getWeeklyProgressForSubject } from '../services/charts';
 import toast from 'react-hot-toast';
 import { getLastMonthToCurrentMonthRange } from '@/lib/utils';
 import { MONTH_NAMES } from '@/constants/dateTime';
+import { SubjectProgressChartSkeleton } from '@/components';
 
 export function SubjectProgressChart({
   userId,
@@ -47,7 +48,7 @@ export function SubjectProgressChart({
     fetch();
   }, [data, userId]);
 
-  if (!data || !userId) return null;
+  if (!data || !userId) return <SubjectProgressChartSkeleton />;
 
   {
     return (

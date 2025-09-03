@@ -8,3 +8,4 @@ export * from './skeletons/GroupsListSkeleton';
 export * from './skeletons/InvitesListSkeleton';
 export * from './skeletons/BuddiesListSkeleton';
 export * from './skeletons/RequestsListSkeleton';
+export * from './skeletons/SubjectProgressChartSkeleton';
