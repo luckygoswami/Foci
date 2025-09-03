@@ -165,26 +165,16 @@ export default function HomeDashboard() {
           </div>
           <div className="flex w-full justify-between">
             <div className="size-40">
-              {!userData ? (
-                // TODO: add loading skeleton
-                <div>loading...</div>
-              ) : (
-                <GoalProgress
-                  target="daily"
-                  userData={userData}
-                />
-              )}
+              <GoalProgress
+                target="daily"
+                userData={userData}
+              />
             </div>
             <div className="size-40">
-              {!userData ? (
-                // TODO: add loading skeleton
-                <div>loading...</div>
-              ) : (
-                <GoalProgress
-                  target="weekly"
-                  userData={userData}
-                />
-              )}
+              <GoalProgress
+                target="weekly"
+                userData={userData}
+              />
             </div>
           </div>
         </div>

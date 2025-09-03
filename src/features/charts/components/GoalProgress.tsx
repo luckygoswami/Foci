@@ -26,7 +26,7 @@ export function GoalProgress({
   userData,
   target,
 }: {
-  userData: UserData;
+  userData: UserData | undefined;
   target: 'daily' | 'weekly';
 }) {
   const { title, fetchFn, color } = variants[target];
@@ -58,9 +58,16 @@ export function GoalProgress({
     );
   }
 
-  if (!userData || !data) return null;
+  function renderSkeletonLegend() {
+    return (
+      <div className="flex flex-col items-center gap-2">
+        <p className="h-6 w-18 rounded bg-skeleton-foreground animate-pulse" />
+        <p className="h-4 w-24 rounded bg-skeleton-foreground animate-pulse" />
+      </div>
+    );
+  }
 
-  {
+  if (!userData || !data)
     return (
       <ResponsiveContainer
         width="100%"
@@ -68,40 +75,69 @@ export function GoalProgress({
         <PieChart
           width={800}
           height={400}>
-          {/* Dummy full circle background ring */}
           <Pie
+            className="focus:outline-none animate-pulse"
             data={[{ value: 100 }]}
             cx="50%"
             cy="50%"
             innerRadius={55}
             outerRadius={70}
-            fill="#edf2f7"
-            stroke="none"
-            dataKey="value"
-          />
-          <Pie
-            className="focus:outline-none"
-            data={getSafeProgress(data)}
-            cx="50%"
-            cy="50%"
-            innerRadius={55}
-            outerRadius={70}
-            startAngle={0}
-            endAngle={-360}
+            fill="#e5e7eb"
             stroke=""
-            cornerRadius={40}
-            dataKey="value">
-            <Cell fill={color} />
-            <Cell fill="#00000000" />
-          </Pie>
+            dataKey="value"
+            isAnimationActive={false}
+          />
           <Legend
             align="center"
             verticalAlign="middle"
             layout="vertical"
-            content={() => renderCustomLegend(data)}
+            content={renderSkeletonLegend}
           />
         </PieChart>
       </ResponsiveContainer>
     );
-  }
+
+  return (
+    <ResponsiveContainer
+      width="100%"
+      height="100%">
+      <PieChart
+        width={800}
+        height={400}>
+        {/* Dummy full circle background ring */}
+        <Pie
+          data={[{ value: 100 }]}
+          cx="50%"
+          cy="50%"
+          innerRadius={55}
+          outerRadius={70}
+          fill="#edf2f7"
+          stroke="none"
+          dataKey="value"
+          isAnimationActive={false}
+        />
+        <Pie
+          className="focus:outline-none"
+          data={getSafeProgress(data)}
+          cx="50%"
+          cy="50%"
+          innerRadius={55}
+          outerRadius={70}
+          startAngle={0}
+          endAngle={-360}
+          stroke=""
+          cornerRadius={40}
+          dataKey="value">
+          <Cell fill={color} />
+          <Cell fill="#00000000" />
+        </Pie>
+        <Legend
+          align="center"
+          verticalAlign="middle"
+          layout="vertical"
+          content={() => renderCustomLegend(data)}
+        />
+      </PieChart>
+    </ResponsiveContainer>
+  );
 }
