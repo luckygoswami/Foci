@@ -1,6 +1,7 @@
 import type { UserData } from '@/types';
 import { getStreakDays } from '../services/streaks';
 import { WEEKDAY_NAMES } from '@/constants/dateTime';
+import { StreakFire } from '@/assets/icons';
 
 export function Streakboard({ userData }: { userData: UserData | undefined }) {
   if (!userData) return null; // No chance of happening as page loads after the userData load
@@ -18,7 +19,10 @@ export function Streakboard({ userData }: { userData: UserData | undefined }) {
         <span className="mr-1 text-foreground text-7xl">
           {userData.streak?.current || 0}
         </span>
-        <span className="text-6xl">🔥</span>
+        <StreakFire
+          variant="color"
+          className="size-15"
+        />
       </div>
 
       {/* Streak week */}
@@ -27,12 +31,10 @@ export function Streakboard({ userData }: { userData: UserData | undefined }) {
           <div
             key={`${day}_${i}`}
             className="flex flex-col">
-            <span
-              className={`${
-                !streakDays.includes(day) && 'opacity-50'
-              } text-3xl`}>
-              🔥
-            </span>
+            <StreakFire
+              variant="color"
+              className={`${!streakDays.includes(day) && 'opacity-50'} size-10`}
+            />
             <span
               className={`${
                 day !== WEEKDAY_NAMES[today]

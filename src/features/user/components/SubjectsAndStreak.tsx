@@ -1,4 +1,4 @@
-import { Fire } from '@/assets/icons';
+import { StreakFire } from '@/assets/icons';
 import { isStreakBroken } from '@/features/streaks';
 import type { UserData } from '@/types';
 
@@ -23,13 +23,13 @@ export function SubjectsAndStreak({ userData }: { userData: UserData }) {
       <div className="streak bg-white shadow rounded-2xl p-4">
         <h3 className="font-semibold mb-2">Streak</h3>
         <p
-          className={`text-2xl font-bold ${
+          className={`text-3xl font-bold ${
             !isBroken ? 'text-gray-800' : 'text-gray-400'
           } flex items-baseline`}>
           {streak.current}
-          <Fire
-            className="ml-2"
-            variant={`${isBroken ? 'bw' : 'color'}`}
+          <StreakFire
+            variant={`${isBroken ? 'muted' : 'color'}`}
+            className="ml-1 size-6.5"
           />
         </p>
       </div>
