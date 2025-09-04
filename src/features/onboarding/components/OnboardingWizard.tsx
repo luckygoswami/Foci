@@ -16,16 +16,22 @@ import {
   reserveUsername,
 } from '../services/onboarding';
 import { useAuth } from '@/features/auth';
+import { useUserData } from '@/features/user';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
 
-export function OnboardingWizard({ user }: { user: User }) {
+export function OnboardingWizard({
+  user,
+  onComplete,
+}: {
+  user: User;
+  onComplete?: () => void;
+}) {
   const { logout } = useAuth();
+  const { setUserData } = useUserData();
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<OnboardingState>(() => defaultState(user));
   const [loading, setLoading] = useState(false);
   const MAX_STEP = 3;
-  const navigate = useNavigate();
 
   const handleNext = () => setStep((s) => Math.min(MAX_STEP, s + 1));
   const handleBack = () => setStep((s) => Math.max(1, s - 1));
@@ -66,12 +72,16 @@ export function OnboardingWizard({ user }: { user: User }) {
 
       try {
         await setDoc(doc(db, 'users', user.uid), userDoc);
+        setUserData(userDoc);
+        onComplete?.();
+        toast.success(
+          <span>
+            Welcome to Foci, <strong>{name}</strong>!
+          </span>
+        );
       } catch {
         throw new Error('Unable to create user. Try again later.');
       }
-
-      // TODO: implement route redirection
-      navigate('/app/home');
     } catch (err: any) {
       toast.error(err.message);
     } finally {

@@ -31,7 +31,12 @@ export function OnboardingGate({ children }: { children: React.ReactNode }) {
   }
 
   if (needsOnboarding) {
-    return <OnboardingWizard user={user!} />;
+    return (
+      <OnboardingWizard
+        user={user!}
+        onComplete={() => setNeedsOnboarding(false)}
+      />
+    );
   }
 
   return <>{children}</>;
