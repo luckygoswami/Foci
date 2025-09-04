@@ -1,3 +1,4 @@
+import { UserDetailsPageSkeleton } from '@/components';
 import { useAuth } from '@/features/auth';
 import {
   FriendsAndJoined,
@@ -17,8 +18,7 @@ export default function AccountDashboard() {
       aria-label="Account Dashboard"
       className="bg-gray-100 grid  grid-rows-[2fr_1fr_1.2fr_1fr_0.6fr] gap-2 px-4 py-2">
       {!userData ? (
-        // TODO: add loading skeleton
-        <div>Loading...</div>
+        <UserDetailsPageSkeleton /> // No chance of reaching this point
       ) : (
         <>
           <ProfileHeader userData={userData} />

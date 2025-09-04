@@ -1,4 +1,5 @@
 export * from './BuddiesListSkeleton';
+export * from './FriendsInviteModalSkeleton';
 export * from './GoalProgressChartSkeleton';
 export * from './GroupDetailsPageSkeleton';
 export * from './GroupsListSkeleton';

@@ -7,6 +7,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import type { Friend } from '@/types';
+import { FriendsInviteModalSkeleton } from '@/components';
 
 interface FriendsInviteModalProps {
   open: boolean;
@@ -31,46 +32,41 @@ export const FriendsInviteModal: React.FC<FriendsInviteModalProps> = ({
           <DialogDescription />
         </DialogHeader>
         {!friends ? (
-          // TODO: add loading skeleton
-          <div>Loading...</div>
-        ) : (
-          <div>
-            {!friends.length ? (
-              <div className="h-[100px] flex justify-center items-center gap-5">
-                <p className="text-muted-foreground/80 font-medium text-center">
-                  No-buddy here to invite.
-                </p>
-              </div>
-            ) : (
-              <ul className="max-h-90 flex flex-col overflow-y-auto w-full divide-y divide-muted">
-                {friends.map((friend) => (
-                  <li
-                    key={friend.userId}
-                    className="flex items-center gap-3 p-2">
-                    <img
-                      src={`/assets/avatars/${friend.avatarId}.svg`}
-                      alt={friend.name}
-                      className="size-12 rounded-full border bg-gray-100 p-0.25 pb-0"
-                    />
-                    <span className="flex-1 font-medium">{friend.name}</span>
-                    {friend.invited ? (
-                      <button
-                        className="px-3 py-1 rounded-sm bg-muted text-muted-foreground shadow-xs"
-                        disabled>
-                        Invited
-                      </button>
-                    ) : (
-                      <button
-                        className="px-4.5 py-1  rounded-sm bg-primary text-primary-foreground shadow-xs hover:bg-blue-700 transition"
-                        onClick={() => onInvite(friend)}>
-                        Invite
-                      </button>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            )}
+          <FriendsInviteModalSkeleton />
+        ) : !friends.length ? (
+          <div className="h-55 flex justify-center items-center gap-5">
+            <p className="text-muted-foreground/80 font-medium text-center">
+              No-buddy here to invite.
+            </p>
           </div>
+        ) : (
+          <ol className="h-55 flex flex-col overflow-y-auto w-full divide-y divide-muted">
+            {friends.map((friend) => (
+              <li
+                key={friend.userId}
+                className="flex items-center gap-3 p-2">
+                <img
+                  src={`/assets/avatars/${friend.avatarId}.svg`}
+                  alt={friend.name}
+                  className="size-12 rounded-full border bg-gray-100 p-0.25 pb-0"
+                />
+                <span className="flex-1 font-medium">{friend.name}</span>
+                {friend.invited ? (
+                  <button
+                    className="px-3 py-1 rounded-sm bg-muted text-muted-foreground shadow-xs"
+                    disabled>
+                    Invited
+                  </button>
+                ) : (
+                  <button
+                    className="px-4.5 py-1  rounded-sm bg-primary text-primary-foreground shadow-xs hover:bg-blue-700 transition"
+                    onClick={() => onInvite(friend)}>
+                    Invite
+                  </button>
+                )}
+              </li>
+            ))}
+          </ol>
         )}
       </DialogContent>
     </Dialog>
