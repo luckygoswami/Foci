@@ -102,7 +102,7 @@ export function TimerCard({
   };
 
   return (
-    <div className="flex flex-col items-center justify-around w-full h-[15rem] rounded-2xl p-5 gradient-background">
+    <div className="flex flex-col items-center justify-around h-full w-full rounded-2xl p-5 gradient-background">
       <div className="font-extrabold text-6xl text-accent-foreground tracking-wide mb-3.5">
         {formatDuration(time)}
       </div>
@@ -114,7 +114,7 @@ export function TimerCard({
       </p>
       {size == 'lg' && (
         // Action buttons
-        <div className="flex flex-col gap-3">
+        <div className="w-[85%] flex justify-center gap-3">
           {/*  */}
           {isRunning ? (
             <TimerButton

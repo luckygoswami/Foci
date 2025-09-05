@@ -122,28 +122,25 @@ export default function HomeDashboard() {
   return (
     <div
       role="region"
-      aria-label="Home Dashboard">
+      aria-label="Home Dashboard"
+      className="flex flex-col">
       <Header />
-      <div className="flex flex-col p-5 gap-3">
+      <div className="flex-1 overflow-hidden flex flex-col p-5 gap-3">
         {/* Timer */}
-        <div className="flex justify-center items-center">
-          {sessionLoading ? (
-            <span className="animate-pulse text-lg">Loading session...</span>
-          ) : (
-            <TimerCard
-              initialTime={initialTime}
-              autoStart={autoStart}
-              size="lg"
-              onStart={handleStart}
-              onPause={() => handleSessionAction('pause')}
-              onResume={() => handleSessionAction('resume')}
-              onEnd={handleEnd}
-              on60s={handle60sUpdate}
-              setSubjectDialog={setSubjectDialog}
-              selectedSubject={selectedSubject}
-              currentSession={currentSession}
-            />
-          )}
+        <div className="flex-[1.5] w-full overflow-y-scroll">
+          <TimerCard
+            initialTime={initialTime}
+            autoStart={autoStart}
+            size="lg"
+            onStart={handleStart}
+            onPause={() => handleSessionAction('pause')}
+            onResume={() => handleSessionAction('resume')}
+            onEnd={handleEnd}
+            on60s={handle60sUpdate}
+            setSubjectDialog={setSubjectDialog}
+            selectedSubject={selectedSubject}
+            currentSession={currentSession}
+          />
           <SubjectDialog
             onSelect={setSelectedSubject}
             open={subjectDialog}
@@ -151,9 +148,8 @@ export default function HomeDashboard() {
             subjects={userData?.subjects}
           />
         </div>
-
         {/* Progress charts */}
-        <div className="flex items-left flex-col px-5  rounded-2xl shadow-sm">
+        <div className="flex-[3.25] overflow-y-scroll flex items-left flex-col px-5 rounded-2xl shadow-sm">
           <h1 className="text-2xl font-bold text-foreground mt-2">
             This Week's Focus
           </h1>

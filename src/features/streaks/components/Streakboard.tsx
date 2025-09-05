@@ -3,14 +3,21 @@ import { getStreakDays } from '../services/streaks';
 import { WEEKDAY_NAMES } from '@/constants/dateTime';
 import { StreakFire } from '@/assets/icons';
 
-export function Streakboard({ userData }: { userData: UserData | undefined }) {
+export function Streakboard({
+  userData,
+  className = '',
+}: {
+  userData: UserData | undefined;
+  className?: string;
+}) {
   if (!userData) return null; // No chance of happening as page loads after the userData load
 
   const streakDays = getStreakDays(userData.streak);
   const today = new Date().getDay();
 
   return (
-    <div className="bg-card rounded-lg p-5 shadow-sm flex flex-col gap-7">
+    <div
+      className={`${className} bg-card rounded-lg p-5 shadow-sm flex flex-col justify-between`}>
       <h1 className="font-semibold text-foreground text-3xl">Streakboard</h1>
 
       {/* Current streak */}

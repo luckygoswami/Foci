@@ -12,16 +12,21 @@ export default function ProgressDashboard() {
   return (
     <div
       role="region"
-      aria-label="Progress Dashboard">
+      aria-label="Progress Dashboard"
+      className="flex flex-col">
       <Header title="Progress" />
-      <div className="flex flex-col p-5 gap-3">
-        <Streakboard userData={userData} />
+      <div className="flex-1 flex flex-col p-5 gap-3">
+        <Streakboard
+          userData={userData}
+          className="flex-[1] overflow-hidden"
+        />
 
-        <div className="rounded-lg px-4 pt-4 shadow-md">
+        {/* Subject Progress */}
+        <div className="flex-[1.75] flex flex-col overflow-hidden rounded-lg p-4 shadow-md">
           <h1 className="text-2xl font-bold text-foreground mb-3">
             Monthly Study Progress
           </h1>
-          <div className="flex space-x-4 overflow-x-auto snap-x snap-mandatory">
+          <div className="flex-1 flex space-x-4 overflow-x-auto overflow-y-hidden snap-x snap-mandatory">
             {subjects?.map((sub, ind) => (
               <div
                 key={`sub${ind}`}
@@ -29,7 +34,7 @@ export default function ProgressDashboard() {
                 <h2 className="text-lg font-medium text-muted-foreground mb-2">
                   {sub}
                 </h2>
-                <div className="h-80 w-full">
+                <div className="h-[90%] w-full">
                   <SubjectProgressChart
                     userId={userId}
                     subject={sub}

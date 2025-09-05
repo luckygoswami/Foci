@@ -65,9 +65,7 @@ export function GoalProgress({
     <ResponsiveContainer
       width="100%"
       height="100%">
-      <PieChart
-        width={800}
-        height={400}>
+      <PieChart>
         {/* Dummy full circle background ring */}
         <Pie
           data={[{ value: 100 }]}

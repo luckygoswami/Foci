@@ -83,7 +83,7 @@ export default function GroupsDashboard() {
         includeSearch="groups"
       />
 
-      <button className="fixed bottom-20 right-6 bg-primary text-card p-3 rounded-full shadow-lg hover:bg-blue-700 z-3">
+      <button className="absolute bottom-20 right-6 bg-primary text-card p-3 rounded-full shadow-lg hover:bg-blue-700 z-3">
         <PlusIcon
           className="size-8 border-2 border-card rounded-full"
           onClick={() => setShowSheet(true)}
