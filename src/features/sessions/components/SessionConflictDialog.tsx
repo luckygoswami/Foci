@@ -29,7 +29,7 @@ export default function SessionConflictDialog({
   return (
     <Dialog open={open}>
       <DialogContent
-        className="max-w-md"
+        className="flex flex-col"
         showCloseButton={false}>
         <DialogHeader>
           <DialogTitle>Unsynced session detected</DialogTitle>
@@ -58,25 +58,25 @@ export default function SessionConflictDialog({
           </div>
         </div>
 
-        <DialogFooter className="gap-2 sm:justify-around">
+        <DialogFooter className="grid grid-cols-2">
           <Button
-            className="bg-white"
-            variant="outline"
-            onClick={() => onChoose('end')}>
-            <XCircle className="size-5" />
-            End both sessions
-          </Button>
-          <Button
-            className="bg-destructive/95"
+            className="col-span-2 md:col-span-1 bg-destructive hover:bg-destructive-hover"
             onClick={() => onChoose('remote')}>
             <Cloud className="size-5" />
             Continue {remote.subject} session
           </Button>
           <Button
-            className="bg-primary/95"
+            className="col-span-2 md:col-span-1 bg-primary hover:bg-primary-hover"
             onClick={() => onChoose('local')}>
             <HardDrive className="size-5" />
             Continue {local.subject} session
+          </Button>
+          <Button
+            className="col-span-2 bg-card hover:bg-card-hover"
+            variant="outline"
+            onClick={() => onChoose('end')}>
+            <XCircle className="size-5" />
+            End both sessions
           </Button>
         </DialogFooter>
       </DialogContent>

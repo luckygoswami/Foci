@@ -22,11 +22,8 @@ import type { FirebaseUserId } from '@/types';
 export default function HomeDashboard() {
   const { userData, setUserData } = useUserData();
   const userId = useAuth().user?.uid as FirebaseUserId; // Extracting userId from useAuth not from UserData coz application load is dependent on useAuth load, not on userData
-  const {
-    session: currentSession,
-    setSession: setCurrentSession,
-    loading: sessionLoading,
-  } = useCurrentSession();
+  const { session: currentSession, setSession: setCurrentSession } =
+    useCurrentSession();
   const [autoStart, setAutoStart] = useState(false);
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [subjectDialog, setSubjectDialog] = useState(false);
