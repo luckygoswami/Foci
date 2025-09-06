@@ -13,7 +13,7 @@ import {
   SubjectDialog,
 } from '@/features/sessions';
 import { useOnlineStatus } from '@/features/connection';
-import toast from 'react-hot-toast';
+import { feedback } from '@/lib/feedback';
 import { useUserData } from '@/features/user';
 import { updateStreakIfNeeded } from '@/features/streaks';
 import { useAuth } from '@/features/auth';
@@ -55,7 +55,7 @@ export default function HomeDashboard() {
           if (exists) {
             setCurrentSession(null);
             removeLocalSession();
-            toast.error('Session ended from another device.');
+            feedback.error('Session ended from another device.');
             return;
           }
         }
@@ -63,8 +63,9 @@ export default function HomeDashboard() {
         const handler = action === 'pause' ? pauseSession : resumeSession;
         const session = await handler(userId, currentSession);
         setCurrentSession(session);
+        feedback.success(`Session ${action}d successfully!`);
       } catch (err: any) {
-        toast.error(err.message);
+        feedback.error(err.message);
       }
     },
     [currentSession, isOnline, userId, setCurrentSession]
@@ -72,15 +73,16 @@ export default function HomeDashboard() {
 
   const handleStart = useCallback(async () => {
     if (!selectedSubject) {
-      toast.error('Subject not selected.');
+      feedback.error('Subject not selected.');
       return;
     }
 
     try {
       const session = await startSession(userId, selectedSubject);
       setCurrentSession(session);
+      feedback.success('Session started successfully!');
     } catch (err: any) {
-      toast.error(err.message);
+      feedback.error(err.message);
     }
   }, [userId, selectedSubject, setCurrentSession]);
 
@@ -91,9 +93,9 @@ export default function HomeDashboard() {
       endSession(userId, currentSession);
       setSelectedSubject(null);
       setCurrentSession(null);
-      toast.success('Session completed.');
+      feedback.success('Session completed.');
     } catch (err: any) {
-      toast.error(err.message);
+      feedback.error(err.message);
     }
   }, [currentSession, userId, setCurrentSession]);
 
@@ -111,9 +113,10 @@ export default function HomeDashboard() {
                 },
               };
           });
+          feedback.success('Streak updated!');
         }
       })
-      .catch((err) => toast.error(err.message));
+      .catch((err) => feedback.error(err.message));
   }
 
   return (
