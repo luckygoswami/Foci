@@ -1,5 +1,10 @@
 <div align="center">
-  <img src="public/icons/logo.png" alt="Foci Logo" width="120px" />
+  <picture>
+  <source media="(prefers-color-scheme: dark)" srcset="public/icons/logo-darkMode.png" width='220px'>
+  <source media="(prefers-color-scheme: light)" srcset="public/icons/logo-lightMode.png" width='220px'>
+  <img alt="Foci Logo" src="public/icons/logo-lightMode.png" width='220px'>
+</picture>
+
   <p><strong>🎯 Your Personal Focus & Accountability Partner 🎯</strong></p>
   <p><i>Ditch the procrastination gremlins and crush your goals. Foci helps you stay on track with timed focus sessions, accountability buddies, and group challenges.</i></p>
 </div>
