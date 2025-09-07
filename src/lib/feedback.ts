@@ -31,19 +31,19 @@ const defaultToastOptions: ToastOptions = {
 
 export const feedback = {
     // Basic toasts
-    success(message: string, opts?: ToastOptions) {
+    success(message: string | JSX.Element, opts?: ToastOptions) {
         return toast.success(message, {
             ...defaultToastOptions,
             ...opts,
         });
     },
-    error(message: string, opts?: ToastOptions) {
+    error(message: string | JSX.Element, opts?: ToastOptions) {
         return toast.error(message, {
             ...defaultToastOptions,
             ...opts,
         });
     },
-    info(message: string, opts?: ToastOptions) {
+    info(message: string | JSX.Element, opts?: ToastOptions) {
         return toast(message, {
             ...defaultToastOptions,
             ...opts,

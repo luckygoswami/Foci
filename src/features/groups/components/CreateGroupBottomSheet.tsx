@@ -8,7 +8,7 @@ import type { CreateGroupBottomSheetProps } from '../types';
 import { createGroup } from '../services/groupApi';
 import PrivacySelector from './PrivacySelector';
 import TagInput from './TagInput';
-import toast from 'react-hot-toast';
+import { feedback } from '@/lib/feedback';
 
 export const CreateGroupBottomSheet: React.FC<CreateGroupBottomSheetProps> = ({
   open,
@@ -40,7 +40,7 @@ export const CreateGroupBottomSheet: React.FC<CreateGroupBottomSheetProps> = ({
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!name.trim()) {
-      toast.error('Group name is required.');
+      feedback.error('Group name is required.');
       return;
     }
 
@@ -81,9 +81,9 @@ export const CreateGroupBottomSheet: React.FC<CreateGroupBottomSheetProps> = ({
     createGroup(newGroupData)
       .then((groupId) => {
         onCreation({ ...newGroupData, groupId });
-        toast.success('Group created successfully.');
+        feedback.success('Group created successfully.');
       })
-      .catch((err) => toast.error(err.message))
+      .catch((err) => feedback.error(err.message))
       .finally(() => onClose());
 
     setName('');

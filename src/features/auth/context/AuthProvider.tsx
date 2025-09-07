@@ -19,7 +19,7 @@ import {
 } from 'firebase/auth';
 import { firebaseAuth } from '@/lib/firebase-config';
 import { authErrorToMessage } from '@/constants/authErrors';
-import toast from 'react-hot-toast';
+import { feedback } from '@/lib/feedback';
 
 type AuthContextType = {
   user: User | null;
@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             sendEmailVerification(user, {
               url: window.location.origin,
             });
-            toast.success(
+            feedback.success(
               'Verification email sent. Please check the inbox or spam folder.',
               { duration: 5000 }
             );
@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
       } catch {
         setUser(null);
-        toast.error('Unable to verify account status. Please try again.');
+        feedback.error('Unable to verify account status. Please try again.');
       } finally {
         setLoading(false);
       }

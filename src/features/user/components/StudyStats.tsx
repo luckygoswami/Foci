@@ -4,7 +4,7 @@ import {
 } from '@/features/charts';
 import type { UserData } from '@/types';
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { feedback } from '@/lib/feedback';
 
 export function StudyStats({ userData }: { userData: UserData }) {
   const [dayProgress, setDayProgress] = useState(0);
@@ -13,10 +13,10 @@ export function StudyStats({ userData }: { userData: UserData }) {
   useEffect(() => {
     fetchDailyGoalProgress(userData)
       .then((res) => setDayProgress(res[0].value))
-      .catch((err) => toast.error(err.message));
+      .catch((err) => feedback.error(err.message));
     fetchWeeklyGoalProgress(userData)
       .then((res) => setWeekProgress(res[0].value))
-      .catch((err) => toast.error(err.message));
+      .catch((err) => feedback.error(err.message));
   }, []);
 
   return (

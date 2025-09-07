@@ -1,4 +1,4 @@
-import toast from 'react-hot-toast';
+import { feedback } from '@/lib/feedback';
 import { useOnlineStatus } from '../context/OnlineStatusProvider';
 import { useCallback } from 'react';
 
@@ -13,7 +13,7 @@ export function useOnlineAction() {
     <T extends any[], R>(fn: (...args: T) => R) => {
       return (...args: T): R | void => {
         if (!isOnline) {
-          toast.error('No internet connection.');
+          feedback.error('No internet connection.');
           return;
         }
         return fn(...args);

@@ -13,7 +13,7 @@ import {
 import { useUserData } from '@/features/user';
 import type { Friend, Group, GroupId, GroupInvite } from '@/types';
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { feedback } from '@/lib/feedback';
 import { useLocation, useParams } from 'react-router-dom';
 
 export default function GroupDetailsPage() {
@@ -32,7 +32,7 @@ export default function GroupDetailsPage() {
     if (!showInviteModal || !userData || !groupId || sentInvites) return;
     fetchGroupInvitesBySender(userData.userId, groupId)
       .then(setSentInvites)
-      .catch((err) => toast.error(err.message));
+      .catch((err) => feedback.error(err.message));
   }, [showInviteModal]);
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function GroupDetailsPage() {
     if (!group) {
       fetchGroupById(groupId)
         .then(setGroup)
-        .catch((err) => toast.error(err.message));
+        .catch((err) => feedback.error(err.message));
     } else {
       setRole(assignRole(group, userData.userId));
     }
@@ -84,7 +84,7 @@ export default function GroupDetailsPage() {
       status: 'pending',
     };
 
-    sendGroupInvite(newInvite).catch((err) => toast.error(err.message));
+    sendGroupInvite(newInvite).catch((err) => feedback.error(err.message));
     setSentInvites((prev) => [...prev!, newInvite]);
   }
 
@@ -96,7 +96,7 @@ export default function GroupDetailsPage() {
       avatarId: userData.avatarId,
     };
 
-    addGroupMember(groupId, userObj).catch((err) => toast.error(err.message));
+    addGroupMember(groupId, userObj).catch((err) => feedback.error(err.message));
 
     setRole('member');
     setGroup((prev) => ({
@@ -116,7 +116,7 @@ export default function GroupDetailsPage() {
     );
 
     removeGroupMember(groupId, memberObj!).catch((err) =>
-      toast.error(err.message)
+      feedback.error(err.message)
     );
 
     setRole('spectator');

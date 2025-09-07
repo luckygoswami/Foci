@@ -3,7 +3,7 @@ import { acceptFriendRequest, rejectFriendRequest } from '../services/friends';
 import { useUserData } from '@/features/user';
 import type { Friend, FriendRequest } from '@/types';
 import RequestCard from './RequestCard';
-import toast from 'react-hot-toast';
+import { feedback } from '@/lib/feedback';
 import { EmptyData } from '@/components/EmptyData';
 import { RequestsListSkeleton } from '@/components';
 
@@ -45,9 +45,9 @@ export function RequestsList({
           friends,
         };
       });
-      toast.success('New friend added.');
+      feedback.success('New friend added.');
     } catch (err: any) {
-      toast.error(err.message);
+      feedback.error(err.message);
     }
   }
 
@@ -60,9 +60,9 @@ export function RequestsList({
         (req) => req.senderId != request.senderId
       );
       setRequests(newRequests);
-      toast.success('Friend request rejected.');
+      feedback.success('Friend request rejected.');
     } catch (err: any) {
-      toast.error(err.message);
+      feedback.error(err.message);
     }
   }
 

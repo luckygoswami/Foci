@@ -6,7 +6,7 @@ import { CurrentSessionContext } from './CurrentSessionContext';
 import { useAuth } from '@/features/auth';
 import { removeLocalSession } from '../services/localSession';
 import { removeRemoteSession } from '../services/remoteSession';
-import toast from 'react-hot-toast';
+import { feedback } from '@/lib/feedback';
 
 export function CurrentSessionProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<CurrentSession | null>(null);
@@ -25,11 +25,11 @@ export function CurrentSessionProvider({ children }: { children: ReactNode }) {
       setSession(null);
 
       removeLocalSession().catch((err) => {
-        toast.error(err.message);
+        feedback.error(err.message);
       });
 
       removeRemoteSession(userIdToCleanup).catch((err) => {
-        toast.error(err.message);
+        feedback.error(err.message);
       });
 
       previousUserRef.current = null;

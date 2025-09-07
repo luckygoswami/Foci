@@ -4,7 +4,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { OnboardingWizard } from './OnboardingWizard';
 import { LoadingScreen } from '@/components';
-import toast from 'react-hot-toast';
+import { feedback } from '@/lib/feedback';
 
 export function OnboardingGate({ children }: { children: React.ReactNode }) {
   const { user, loading: authLoading } = useAuth();
@@ -18,7 +18,7 @@ export function OnboardingGate({ children }: { children: React.ReactNode }) {
         const userDoc = await getDoc(doc(db, 'users', user.uid));
         setNeedsOnboarding(!userDoc.exists());
       } catch {
-        toast.error('Unable to check user data. Try again later.');
+        feedback.error('Unable to check user data. Try again later.');
         setNeedsOnboarding(true);
       }
     };
