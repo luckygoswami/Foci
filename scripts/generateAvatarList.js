@@ -1,7 +1,7 @@
 import { mkdirSync, readdirSync, writeFileSync } from 'fs';
 import { join, parse } from 'path';
 
-const avatarsDir = join(process.cwd(), 'public/assets/avatars');
+const avatarsDir = join(process.cwd(), 'public/avatars');
 const outputDir = join(process.cwd(), 'src/constants');
 const outputFile = join(outputDir, 'avatars.ts');
 
