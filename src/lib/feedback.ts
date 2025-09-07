@@ -25,7 +25,6 @@ const defaultToastOptions: ToastOptions = {
     style: {
         borderRadius: '8px',
         padding: '16px',
-        color: '#FFFFFF', 
     },
 };
 
