@@ -44,15 +44,26 @@ export const feedback = {
         });
     },
     info(message: string, opts?: ToastOptions) {
-        return toast(message, opts);
+        return toast(message, {
+            ...defaultToastOptions,
+            ...opts,
+        });
     },
     loading(message: string, opts?: ToastOptions) {
-        return toast.loading(message, opts);
+        return toast.loading(message, {
+            ...defaultToastOptions,
+            ...opts,
+        });
     },
 
     // Promise wrapper with consistent loading/success/error
     promise<T>(p: Promise<T>, msgs: PromiseMessages<T>, opts?: PromiseOptions) {
-        return toast.promise<T>(p, msgs, opts);
+        const mergedOpts: PromiseOptions = {
+            loading: opts?.loading ? { ...defaultToastOptions, ...opts.loading } : defaultToastOptions,
+            success: opts?.success ? { ...defaultToastOptions, ...opts.success } : defaultToastOptions,
+            error: opts?.error ? { ...defaultToastOptions, ...opts.error } : defaultToastOptions,
+        };
+        return toast.promise<T>(p, msgs, mergedOpts);
     },
 
     // Programmatic controls
