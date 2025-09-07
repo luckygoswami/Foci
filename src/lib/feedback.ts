@@ -19,13 +19,29 @@ type PromiseOptions = {
     error?: ToastOptions;
 };
 
+const defaultToastOptions: ToastOptions = {
+    duration: 4000,
+    position: 'top-center',
+    style: {
+        borderRadius: '8px',
+        padding: '16px',
+        color: '#FFFFFF', 
+    },
+};
+
 export const feedback = {
     // Basic toasts
     success(message: string, opts?: ToastOptions) {
-        return toast.success(message, opts);
+        return toast.success(message, {
+            ...defaultToastOptions,
+            ...opts,
+        });
     },
     error(message: string, opts?: ToastOptions) {
-        return toast.error(message, opts);
+        return toast.error(message, {
+            ...defaultToastOptions,
+            ...opts,
+        });
     },
     info(message: string, opts?: ToastOptions) {
         return toast(message, opts);
