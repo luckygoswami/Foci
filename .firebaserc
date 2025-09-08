@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "foci-focusmeter"
+  },
+  "targets": {
+    "foci-focusmeter": {
+      "hosting": {
+        "prod": [
+          "foci"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

@@ -1,0 +1,40 @@
+{
+  "rules": {
+    "currentSessions": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid",
+        ".validate": "newData.hasChildren(['startTime', 'lastUpdated', 'accumulatedDuration', 'paused', 'subject', 'isPublic'])",
+        "startTime": {
+          ".validate": "newData.isNumber()"
+        },
+        "resumeTime": {
+          ".validate": "newData.isNumber()"
+        },
+        "lastUpdated": {
+          ".validate": "newData.isNumber()"
+        },
+        "accumulatedDuration": {
+          ".validate": "newData.isNumber()"
+        },
+        "paused": {
+          ".validate": "newData.isBoolean()"
+        },
+        "subject": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+        },
+        "groupIds": {
+          "$groupId": {
+            ".validate": "newData.isString()"
+          }
+        },
+        "isPublic": {
+          ".validate": "newData.isBoolean()"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    }
+  }
+}

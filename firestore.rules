@@ -32,7 +32,8 @@ service cloud.firestore {
     // Users: only allow reading and updating own profile and streak
     match /users/{userId} {
       allow read: if request.auth != null
-      allow update: if request.auth != null && request.auth.uid == userId && isValidUserUpdate();
+      // allow update: if request.auth != null && request.auth.uid == userId && isValidUserUpdate();
+      allow update: if request.auth != null;
       allow create: if request.auth != null && request.auth.uid == userId;
       allow delete: if false;
 
@@ -79,9 +80,23 @@ service cloud.firestore {
                     request.auth.uid == request.resource.data.senderId;
       allow read: if request.auth.uid == resource.data.recipientId ||
                   request.auth.uid == resource.data.senderId;
-      allow update: if (request.auth.uid == resource.data.recipientId || request.auth.uid == resource.data.senderId);
-      allow delete: if request.auth.uid == resource.data.creatorId;
+      allow update: if request.auth.uid == resource.data.recipientId || 
+                    request.auth.uid == resource.data.senderId;
+      allow delete: if request.auth.uid == resource.data.senderId;
   }
+
+    match /friendRequests/{requestId} {
+      allow create: if request.auth != null &&
+                    request.auth.uid == request.resource.data.senderId;
+      allow read: if (request.auth != null) ;
+      allow update: if request.auth.uid == resource.data.recipientId || 
+                    request.auth.uid == resource.data.senderId;
+      allow delete: if request.auth.uid == resource.data.senderId;
+  }
+
+    match /usernames/{username} {
+      allow create, read, update, delete: if request.auth.uid != null;
+    }
 
   // Deny everything else
   match /{document=**} {
