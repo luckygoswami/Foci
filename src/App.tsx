@@ -3,7 +3,7 @@ import { Suspense, useMemo } from 'react';
 // @ts-ignore
 import routes from '~react-pages';
 import { wrapWithAuthGuard } from '@/lib/withAuthGuard';
-import { LoadingScreen } from '@/components';
+import { InstallPrompt, LoadingScreen } from '@/components';
 import { Toaster } from 'react-hot-toast';
 
 function App() {
@@ -18,6 +18,7 @@ function App() {
     <Suspense fallback={fallback}>
       {useRoutes(guardedRoutes)}
       <Toaster reverseOrder={true} />
+      <InstallPrompt />
     </Suspense>
   );
 }
