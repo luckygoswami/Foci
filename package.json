@@ -1,7 +1,7 @@
 {
   "name": "foci",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.8.0",
   "type": "module",
   "scripts": {
     "dev": "node scripts/generateAvatarList.js && vite",
