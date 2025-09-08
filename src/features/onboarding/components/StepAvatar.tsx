@@ -42,7 +42,7 @@ export function StepAvatar({
                 : 'border-2 border-muted hover:border-muted-foreground'
             }`}>
             <img
-              src={`/assets/avatars/${avatarId}.svg`}
+              src={`/avatars/${avatarId}.svg`}
               alt={`Avatar ${idx + 1}`}
               className="h-16 w-16 rounded object-contain"
             />

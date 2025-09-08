@@ -23,7 +23,7 @@ export default function UserResult({ user }: { user: IUserResult }) {
           : () => navigate('/app/account')
       }>
       <img
-        src={`/assets/avatars/${user.avatarId}.svg`}
+        src={`/avatars/${user.avatarId}.svg`}
         alt={`${user.name}_avatar`}
         className="size-12 rounded-full object-cover border-2 border-blue-100 p-0.75 pb-0"
       />

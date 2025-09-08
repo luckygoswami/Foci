@@ -46,7 +46,7 @@ export const FriendsInviteModal: React.FC<FriendsInviteModalProps> = ({
                 key={friend.userId}
                 className="flex items-center gap-3 p-2">
                 <img
-                  src={`/assets/avatars/${friend.avatarId}.svg`}
+                  src={`/avatars/${friend.avatarId}.svg`}
                   alt={friend.name}
                   className="size-12 rounded-full border bg-gray-100 p-0.25 pb-0"
                 />

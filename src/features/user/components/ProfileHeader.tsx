@@ -6,7 +6,7 @@ export function ProfileHeader({ userData }: { userData: UserData }) {
   return (
     <div className="rounded-2xl bg-card shadow p-6 text-center">
       <img
-        src={`/assets/avatars/${avatarId}.svg`}
+        src={`/avatars/${avatarId}.svg`}
         alt={`${name}-Avatar`}
         className="size-40 mx-auto rounded-full border mb-4 bg-gray-50 p-2 pb-0"
       />

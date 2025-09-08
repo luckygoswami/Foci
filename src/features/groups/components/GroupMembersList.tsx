@@ -20,7 +20,7 @@ export function GroupMembersList({ members }: { members: GroupMember[] }) {
           className={`rounded-full size-11 overflow-hidden flex items-center justify-center mr-3 p-0.5 pb-0`}
           style={{ backgroundColor: `#${creatorBg}` }}>
           <img
-            src={`/assets/avatars/${creator.avatarId}.svg`}
+            src={`/avatars/${creator.avatarId}.svg`}
             alt={`${creator.name}_avatar`}
             className="object-cover"
           />
@@ -42,7 +42,7 @@ export function GroupMembersList({ members }: { members: GroupMember[] }) {
             className={`rounded-full size-11 overflow-hidden flex items-center justify-center mr-3 p-0.5 pb-0`}
             style={{ backgroundColor: `#${adminsBg[i % adminsBg.length]}` }}>
             <img
-              src={`/assets/avatars/${admin.avatarId}.svg`}
+              src={`/avatars/${admin.avatarId}.svg`}
               alt={`${admin.name}_avatar`}
               className="object-cover"
             />
@@ -65,7 +65,7 @@ export function GroupMembersList({ members }: { members: GroupMember[] }) {
             className={`rounded-full size-11 overflow-hidden flex items-center justify-center mr-3 p-0.5 pb-0`}
             style={{ backgroundColor: `#${membersBg[i % membersBg.length]}` }}>
             <img
-              src={`/assets/avatars/${member.avatarId}.svg`}
+              src={`/avatars/${member.avatarId}.svg`}
               alt={`${member.name}_avatar`}
               className="object-cover"
             />

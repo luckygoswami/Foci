@@ -15,7 +15,7 @@ export function FriendsAndJoined({ userData }: { userData: UserData }) {
             friends.map((friend, i) => (
               <img
                 key={i}
-                src={`/assets/avatars/${friend.avatarId}.svg`}
+                src={`/avatars/${friend.avatarId}.svg`}
                 alt="Friend Avatar"
                 className="size-8 rounded-full border-2 border-card bg-gray-300 p-0.25 pb-0"
               />

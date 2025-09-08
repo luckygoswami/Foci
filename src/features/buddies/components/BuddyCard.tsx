@@ -11,7 +11,7 @@ export default function BuddyCard({ friend }: { friend: Friend }) {
       onClick={() => navigate(`${userId}`)}>
       {/* Avatar */}
       <img
-        src={`/assets/avatars/${avatarId}.svg`}
+        src={`/avatars/${avatarId}.svg`}
         alt={name}
         className="size-13 rounded-full object-cover border-2 border-primary/20 p-0.5 pb-0"
       />

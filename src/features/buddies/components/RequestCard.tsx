@@ -21,7 +21,7 @@ export default function RequestCard({
       onClick={() => navigate(`${senderId}`)}>
       {/* Avatar */}
       <img
-        src={`/assets/avatars/${senderAvatarId}.svg`}
+        src={`/avatars/${senderAvatarId}.svg`}
         alt={senderName}
         className="size-20 rounded-full object-cover border-2 border-blue-100 p-1 pb-0"
       />
