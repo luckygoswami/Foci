@@ -1,36 +1,22 @@
 import { Header } from '@/components';
-import { PersonalInformation, TargetGoals } from '@/features/settings';
-import { useUserData } from '@/features/user';
+import {
+  PersonalInformation,
+  Subjects,
+  TargetGoals,
+} from '@/features/settings';
 
 export default function SettingsPage() {
-  const { userData } = useUserData();
-  const {
-    name,
-    username,
-    email,
-    bio,
-    dailyTargetMinutes,
-    weeklyTargetMinutes,
-  } = userData!; // No chance of reaching here without userData
-
   return (
     <div
       role="region"
-      aria-label="Settings">
+      aria-label="Settings"
+      className="flex flex-col">
       <Header title="Account" />
 
-      <div className="p-5 space-y-5">
-        <PersonalInformation
-          name={name}
-          username={username}
-          email={email}
-          bio={bio}
-        />
-
-        <TargetGoals
-          dailyTargetMinutes={dailyTargetMinutes}
-          weeklyTargetMinutes={weeklyTargetMinutes}
-        />
+      <div className="p-5 space-y-5 overflow-scroll">
+        <PersonalInformation />
+        <TargetGoals />
+        <Subjects />
       </div>
     </div>
   );

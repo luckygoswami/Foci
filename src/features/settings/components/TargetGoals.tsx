@@ -1,15 +1,10 @@
-import { useAuth } from '@/features/auth';
-import type { FirebaseUserId, UserData } from '@/types';
 import { useState } from 'react';
 import { DailyTargetDialog, WeeklyTargetDialog } from './TargetUpdateDialog';
 import { useUserData } from '@/features/user';
 
-export function TargetGoals({
-  dailyTargetMinutes,
-  weeklyTargetMinutes,
-}: Pick<UserData, 'dailyTargetMinutes' | 'weeklyTargetMinutes'>) {
-  const { setUserData } = useUserData();
-  const userId = useAuth().user?.uid as FirebaseUserId;
+export function TargetGoals() {
+  const { userData, setUserData } = useUserData();
+  const { userId, dailyTargetMinutes, weeklyTargetMinutes } = userData!;
   const [dialogOpen, setDialogOpen] = useState<'daily' | 'weekly' | false>(
     false
   );

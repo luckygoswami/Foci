@@ -1,16 +1,10 @@
-import type { UserData } from '@/types';
 import { useState } from 'react';
 import { BioUpdateDialog } from './PersonalInfoUpdateDialog';
 import { useUserData } from '@/features/user';
 
-export function PersonalInformation({
-  name,
-  email,
-  username,
-  bio,
-}: Pick<UserData, 'name' | 'username' | 'email' | 'bio'>) {
+export function PersonalInformation() {
   const { userData, setUserData } = useUserData();
-  const { userId } = userData!;
+  const { userId, name, username, email, bio } = userData!;
   const [dialogOpen, setDialogOpen] = useState<'bio' | false>(false);
 
   function handleBioUpdate(newBio: string) {

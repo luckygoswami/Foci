@@ -23,7 +23,7 @@ export function BioUpdateDialog({
   onClose: () => void;
   currentBio?: string;
   userId: FirebaseUserId;
-  onSuccess: (target: string) => void;
+  onSuccess: (bio: string) => void;
 }) {
   const [newBio, setNewBio] = useState(currentBio);
 
