@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { OnboardingState } from '../types';
+import { formatDurationHM } from '@/lib/utils';
 
 export function StepStudy({
   form,
@@ -39,14 +40,6 @@ export function StepStudy({
       weeklyTargetMinutes: target,
     }));
   }
-
-  const fmt = (min: number) => {
-    const h = Math.floor(min / 60);
-    const m = min % 60;
-    if (h > 0 && m > 0) return `${h}h ${m}m`;
-    if (h > 0) return `${h}h`;
-    return `${m}m`;
-  };
 
   const DAILY_MIN = 15;
   const DAILY_MAX = 1200;
@@ -108,7 +101,8 @@ export function StepStudy({
             Daily Target
           </label>
           <span className="text-sm text-slate-600 tabular-nums">
-            {fmt(form.dailyTargetMinutes)} ({form.dailyTargetMinutes} min)
+            {formatDurationHM(form.dailyTargetMinutes)} (
+            {form.dailyTargetMinutes} min)
           </span>
         </div>
         <input
@@ -126,8 +120,8 @@ export function StepStudy({
           aria-label="Daily study target in minutes"
         />
         <div className="mt-1 flex justify-between text-xs text-slate-500">
-          <span>{fmt(DAILY_MIN)}</span>
-          <span>{fmt(DAILY_MAX)}</span>
+          <span>{formatDurationHM(DAILY_MIN)}</span>
+          <span>{formatDurationHM(DAILY_MAX)}</span>
         </div>
       </div>
 
@@ -140,7 +134,7 @@ export function StepStudy({
             Weekly Target
           </label>
           <span className="text-sm text-slate-600 tabular-nums">
-            {fmt(weeklyTargetMinutes)} ({weeklyTargetMinutes} min)
+            {formatDurationHM(weeklyTargetMinutes)} ({weeklyTargetMinutes} min)
           </span>
         </div>
         <input
@@ -158,8 +152,8 @@ export function StepStudy({
           aria-label="Weekly study target in minutes"
         />
         <div className="mt-1 flex justify-between text-xs text-slate-500">
-          <span>{fmt(WEEKLY_MIN)}</span>
-          <span>{fmt(WEEKLY_MAX)}</span>
+          <span>{formatDurationHM(WEEKLY_MIN)}</span>
+          <span>{formatDurationHM(WEEKLY_MAX)}</span>
         </div>
       </div>
     </div>

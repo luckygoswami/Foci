@@ -253,3 +253,17 @@ export function getLastMonthToCurrentMonthRange(): {
     },
   };
 }
+
+/**
+ * Format a duration given in minutes into a string with hours and minutes.
+ *
+ * @param {number} min - The total duration in minutes.
+ * @returns {string} The formatted duration string, e.g. "1h 30m", "2h", or "45m".
+ */
+export const formatDurationHM = (min: number) => {
+  const h = Math.floor(min / 60);
+  const m = min % 60;
+  if (h > 0 && m > 0) return `${h}h ${m}m`;
+  if (h > 0) return `${h}h`;
+  return `${m}m`;
+};
