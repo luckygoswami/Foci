@@ -71,6 +71,7 @@ export function StepBasics({
 
   return (
     <div className="space-y-4">
+      {/* Username */}
       <div className="mb-4">
         <label
           htmlFor="username-input"
@@ -104,6 +105,7 @@ export function StepBasics({
         )}
       </div>
 
+      {/* Name */}
       <div>
         <label
           htmlFor="name-input"
@@ -120,6 +122,7 @@ export function StepBasics({
         />
       </div>
 
+      {/* Bio */}
       <div>
         <label
           htmlFor="bio-input"

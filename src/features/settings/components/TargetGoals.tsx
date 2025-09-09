@@ -42,6 +42,7 @@ export function TargetGoals({
           </p>
         </div>
         <div className="divide-y-1 divide-muted">
+          {/* Daily Target */}
           <div className="flex justify-between py-3 text-lg">
             <label className="font-medium">Daily</label>
             <div
@@ -51,6 +52,8 @@ export function TargetGoals({
               <span className="text-2xl">&nbsp;&gt;</span>
             </div>
           </div>
+
+          {/* Weekly Target */}
           <div className="flex justify-between py-3 text-lg">
             <label className="font-medium">Weekly</label>
             <div
@@ -62,6 +65,7 @@ export function TargetGoals({
           </div>
         </div>
       </div>
+
       <DailyTargetDialog
         isOpen={dialogOpen == 'daily'}
         onClose={() => setDialogOpen(false)}
