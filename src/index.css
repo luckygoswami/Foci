@@ -219,6 +219,10 @@
   font-display: optional;
 }
 
+html {
+  overscroll-behavior: none;
+}
+
 body {
   font-family: 'Poppins', sans-serif;
   height: 100dvh;
