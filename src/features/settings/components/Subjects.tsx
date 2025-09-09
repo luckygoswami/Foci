@@ -18,10 +18,10 @@ export function Subjects() {
 
   return (
     <>
-      <div className="bg-card rounded-md shadow-sm p-5">
+      <div className="bg-card rounded-md shadow-sm p-4">
         <div className="px-2 mb-4">
-          <h1 className="font-semibold text-2xl">Subjects</h1>
-          <p className="text-muted-foreground">Change your subjects</p>
+          <h1 className="font-semibold text-xl">Subjects</h1>
+          <p className="text-muted-foreground text-sm">Change your subjects</p>
         </div>
 
         <div

@@ -29,16 +29,16 @@ export function TargetGoals() {
 
   return (
     <>
-      <div className="rounded-md bg-card shadow-sm p-5 text-foreground">
+      <div className="rounded-md bg-card shadow-sm p-4 text-foreground">
         <div className="px-2 mb-4">
-          <h1 className="font-semibold text-2xl">Goals</h1>
-          <p className="text-muted-foreground">
-            Set your daily and weekly study targets
+          <h1 className="font-semibold text-xl">Goals</h1>
+          <p className="text-muted-foreground text-sm">
+            Set your daily and weekly targets
           </p>
         </div>
         <div className="divide-y-1 divide-muted">
           {/* Daily Target */}
-          <div className="flex justify-between py-3 text-lg">
+          <div className="flex justify-between items-center py-2">
             <label className="font-medium">Daily</label>
             <div
               className="flex items-center text-muted-foreground max-w-[65%] truncate"
@@ -49,7 +49,7 @@ export function TargetGoals() {
           </div>
 
           {/* Weekly Target */}
-          <div className="flex justify-between py-3 text-lg">
+          <div className="flex justify-between items-center py-2">
             <label className="font-medium">Weekly</label>
             <div
               className="flex items-center text-muted-foreground max-w-[65%] truncate"

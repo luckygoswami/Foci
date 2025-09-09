@@ -1,4 +1,6 @@
 import { Header } from '@/components';
+import { Button } from '@/components/ui/button';
+import { useAuth } from '@/features/auth';
 import {
   PersonalInformation,
   Subjects,
@@ -6,6 +8,8 @@ import {
 } from '@/features/settings';
 
 export default function SettingsPage() {
+  const { logout } = useAuth();
+
   return (
     <div
       role="region"
@@ -17,6 +21,12 @@ export default function SettingsPage() {
         <PersonalInformation />
         <TargetGoals />
         <Subjects />
+        <Button
+          variant="destructive"
+          className="w-full h-10"
+          onClick={logout}>
+          Logout
+        </Button>
       </div>
     </div>
   );
