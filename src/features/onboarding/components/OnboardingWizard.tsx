@@ -17,7 +17,7 @@ import {
 } from '../services/onboarding';
 import { useAuth } from '@/features/auth';
 import { useUserData } from '@/features/user';
-import toast from 'react-hot-toast';
+import { feedback } from '@/lib/feedback';
 
 export function OnboardingWizard({
   user,
@@ -74,7 +74,7 @@ export function OnboardingWizard({
         await setDoc(doc(db, 'users', user.uid), userDoc);
         setUserData(userDoc);
         onComplete?.();
-        toast.success(
+        feedback.success(
           <span>
             Welcome to Foci, <strong>{name}</strong>!
           </span>
@@ -83,7 +83,7 @@ export function OnboardingWizard({
         throw new Error('Unable to create user. Try again later.');
       }
     } catch (err: any) {
-      toast.error(err.message);
+      feedback.error(err.message);
     } finally {
       setLoading(false);
     }

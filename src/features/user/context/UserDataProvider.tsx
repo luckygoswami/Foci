@@ -10,7 +10,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import toast from 'react-hot-toast';
+import { feedback } from '@/lib/feedback';
 
 type UserDataContextType = {
   userData: UserData | undefined;
@@ -43,7 +43,7 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
         }
       } catch (err) {
         console.error('Error fetching user data:', err);
-        toast.error('Someting went wrong.');
+        feedback.error('Something went wrong.');
       } finally {
         setLoading(false);
       }

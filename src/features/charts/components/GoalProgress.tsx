@@ -7,7 +7,7 @@ import {
   fetchWeeklyGoalProgress,
   getSafeProgress,
 } from '../services/charts';
-import toast from 'react-hot-toast';
+import { feedback } from '@/lib/feedback';
 import { GoalProgressChartSkeleton } from '@/components';
 
 const variants = {
@@ -40,7 +40,7 @@ export function GoalProgress({
         const progress = await fetchFn(userData);
         setData(progress);
       } catch (err: any) {
-        toast.error(err.message);
+        feedback.error(err.message);
       }
     };
 

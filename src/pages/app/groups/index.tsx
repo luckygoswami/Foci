@@ -11,7 +11,7 @@ import { useUserData } from '@/features/user';
 import type { FirebaseUserId, Group, GroupId, GroupInvite } from '@/types';
 import { PlusIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
+import { feedback } from '@/lib/feedback';
 
 export default function GroupsDashboard() {
   const userId = useAuth().user?.uid as FirebaseUserId;
@@ -27,7 +27,7 @@ export default function GroupsDashboard() {
     if (!userData) return;
     fetchGroupsJoinedByUser(userId)
       .then(setGroups)
-      .catch((err) => toast.error(err.message));
+      .catch((err) => feedback.error(err.message));
   }, [userData, invites]);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export default function GroupsDashboard() {
           if (entries[0].isIntersecting) {
             fetchGroupInvitesByRecipient(userId)
               .then(setInvites)
-              .catch((err) => toast.error(err.message));
+              .catch((err) => feedback.error(err.message));
             observer.disconnect();
           }
         },

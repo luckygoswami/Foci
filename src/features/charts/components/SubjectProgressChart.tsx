@@ -12,7 +12,7 @@ import type { WeeklyProgress } from '../types';
 import type { FirebaseUserId } from '@/types';
 import { getSessionsByDate } from '@/features/sessions';
 import { getWeeklyProgressForSubject } from '../services/charts';
-import toast from 'react-hot-toast';
+import { feedback } from '@/lib/feedback';
 import { getLastMonthToCurrentMonthRange } from '@/lib/utils';
 import { MONTH_NAMES } from '@/constants/dateTime';
 import { SubjectProgressChartSkeleton } from '@/components';
@@ -41,7 +41,7 @@ export function SubjectProgressChart({
         const progress = getWeeklyProgressForSubject(subject, userSessions);
         setData(progress);
       } catch (err: any) {
-        toast.error(err.message);
+        feedback.error(err.message);
       }
     };
 

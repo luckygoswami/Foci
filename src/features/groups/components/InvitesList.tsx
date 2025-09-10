@@ -4,7 +4,7 @@ import { useUserData } from '@/features/user';
 import type { Ref } from 'react';
 import { acceptGroupInvite, rejectGroupInvite } from '../services/groupInvites';
 import { addGroupMember } from '../services/groupMembers';
-import toast from 'react-hot-toast';
+import { feedback } from '@/lib/feedback';
 import { EmptyData } from '@/components/EmptyData';
 import { InvitesListSkeleton } from '@/components';
 
@@ -34,9 +34,9 @@ export function InvitesList({
       );
       setInvites(newInvites);
       await addGroupMember(invite.groupId, userObj);
-      toast.success('Group joined successfully.');
+      feedback.success('Group joined successfully.');
     } catch (err: any) {
-      toast.error(err.message);
+      feedback.error(err.message);
     }
   }
 
@@ -47,9 +47,9 @@ export function InvitesList({
         (inv) => inv.groupId != invite.groupId
       );
       setInvites(newInvites);
-      toast.success('Invite rejected.');
+      feedback.success('Invite rejected.');
     } catch (err: any) {
-      toast.error('Unable to reject invite.');
+      feedback.error('Unable to reject invite.');
     }
   }
 

@@ -11,7 +11,7 @@ import {
 import type { CurrentSession } from '@/types';
 import { useAuth } from '@/features/auth';
 import { useOnlineStatus } from '@/features/connection';
-import toast from 'react-hot-toast';
+import { feedback } from '@/lib/feedback';
 
 export type ConflictState = null | {
   local: CurrentSession;
@@ -96,7 +96,7 @@ export function useHydratedSession(
         /* ------------ CASE 5 (different sessions) ------------ */
         setConflict({ local, remote });
       } catch (err: any) {
-        toast.error(err.message);
+        feedback.error(err.message);
       } finally {
         setLoading(false);
       }
@@ -144,7 +144,7 @@ export function useHydratedSession(
           break;
       }
     } catch (err: any) {
-      toast.error(err.message);
+      feedback.error(err.message);
     }
     setConflict(null);
   }

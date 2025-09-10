@@ -1,7 +1,7 @@
 import type { FriendRequest, UserData } from '@/types';
 import { useEffect, useState } from 'react';
 import { hasSentFriendRequest } from '../services/friends';
-import toast from 'react-hot-toast';
+import { feedback } from '@/lib/feedback';
 
 export function useFriendshipStatus(
   loggedInUser: UserData | undefined,
@@ -46,7 +46,7 @@ export function useFriendshipStatus(
           setStatus('notFriend');
         }
       })
-      .catch((err) => toast.error(err.message))
+      .catch((err) => feedback.error(err.message))
       .finally(() => setLoading(false));
   }, [loggedInUser, profileUser]);
 

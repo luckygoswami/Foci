@@ -10,7 +10,7 @@ import {
 import type { SubjectDuration } from '../types';
 import { fetchSubjectTimeDistribution } from '../services/charts';
 import type { FirebaseUserId } from '@/types';
-import toast from 'react-hot-toast';
+import { feedback } from '@/lib/feedback';
 import { SubjectTimeDistributionChartSkeleton } from '@/components';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
@@ -31,7 +31,7 @@ export function SubjectTimeDistributionChart({
         const progress = await fetchSubjectTimeDistribution(userId);
         setData(progress);
       } catch (err: any) {
-        toast.error(err.message);
+        feedback.error(err.message);
       }
     };
 

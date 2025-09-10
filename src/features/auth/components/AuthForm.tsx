@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { useAuth } from '@/features/auth';
-import { toast } from 'react-hot-toast';
+import { feedback } from '@/lib/feedback';
 import './AuthForm.css';
 
 export function AuthForm() {
@@ -17,8 +17,9 @@ export function AuthForm() {
     setPassword('');
     try {
       await emailLogin(email, password);
+      feedback.success('Logged in successfully!');
     } catch (err: any) {
-      toast.error(err.message);
+      feedback.error(err.message);
     } finally {
       setLoading(false);
     }
@@ -29,8 +30,9 @@ export function AuthForm() {
     setPassword('');
     try {
       await emailSignup(email, password);
+      feedback.success('Account created successfully!');
     } catch (err: any) {
-      toast.error(err.message);
+      feedback.error(err.message);
     } finally {
       setLoading(false);
     }
@@ -39,8 +41,9 @@ export function AuthForm() {
   async function handleGoogleLogin() {
     try {
       await googleLogin();
+      feedback.success('Logged in with Google successfully!');
     } catch (err: any) {
-      toast.error(err.message);
+      feedback.error(err.message);
     } finally {
       setLoading(false);
     }
@@ -48,14 +51,14 @@ export function AuthForm() {
 
   async function handleForgotPassword() {
     if (!email) {
-      toast.error('Enter the email first!');
+      feedback.error('Enter the email first!');
       return;
     }
     try {
       await resetPassword(email);
-      toast.success('Password reset email sent. Check inbox or spam.');
+      feedback.success('Password reset email sent. Check inbox or spam.');
     } catch (err: any) {
-      toast.error(err.message);
+      feedback.error(err.message);
     } finally {
       setLoading(false);
     }
