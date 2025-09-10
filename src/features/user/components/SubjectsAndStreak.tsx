@@ -11,11 +11,11 @@ export function SubjectsAndStreak({ userData }: { userData: UserData }) {
       <div className="subjects bg-white shadow rounded-2xl p-4 overflow-hidden">
         <h3 className="font-semibold mb-2">Subjects</h3>
         <div className="flex gap-2 overflow-x-auto no-scrollbar">
-          {subjects.map((subject) => (
+          {subjects.map((sub, idx) => (
             <span
-              key={subject}
-              className="bg-gray-100 text-sm px-3 py-1 rounded-full text-gray-700">
-              {subject}
+              key={`${sub}-${idx}`}
+              className="bg-gray-100 text-sm px-3 py-1 rounded-full text-gray-700 text-nowrap">
+              {sub}
             </span>
           ))}
         </div>
