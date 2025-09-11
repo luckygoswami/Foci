@@ -17,9 +17,8 @@ const {
   VITE_FIREBASE_APP_ID,
   VITE_FIREBASE_MEASUREMENT_ID,
   VITE_FIREBASE_DATABASE_URL,
-  VITE_FIRESTORE_EMULATOR_HOST,
-  VITE_DATABASE_EMULATOR_HOST,
-  VITE_AUTH_EMULATOR_HOST,
+  VITE_USE_EMULATOR,
+  VITE_EMULATOR_HOST,
 } = import.meta.env;
 
 const firebaseConfig = {
@@ -44,10 +43,10 @@ const db = initializeFirestore(app, {
 
 const rtdb = getDatabase(app);
 
-if (import.meta.env.DEV) {
-  connectFirestoreEmulator(db, `${VITE_FIRESTORE_EMULATOR_HOST}`, 8080);
-  connectDatabaseEmulator(rtdb, `${VITE_DATABASE_EMULATOR_HOST}`, 9000);
-  connectAuthEmulator(firebaseAuth, `http://${VITE_AUTH_EMULATOR_HOST}:9099`, {
+if (import.meta.env.DEV && VITE_USE_EMULATOR) {
+  connectFirestoreEmulator(db, VITE_EMULATOR_HOST, 8080);
+  connectDatabaseEmulator(rtdb, VITE_EMULATOR_HOST, 9000);
+  connectAuthEmulator(firebaseAuth, `http://${VITE_EMULATOR_HOST}:9099`, {
     disableWarnings: true,
   });
 }

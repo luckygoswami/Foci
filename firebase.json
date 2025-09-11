@@ -25,9 +25,11 @@
       "port": 9000,
       "host": "0.0.0.0"
     },
-    "hosting": {
-      "port": 5000,
-      "host": "0.0.0.0"
+    "apphosting": {
+      "port": 5173,
+      "host": "0.0.0.0",
+      "rootDirectory": "./",
+      "startCommand": "vite --host"
     }
   },
   "hosting": {

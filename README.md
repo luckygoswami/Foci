@@ -9,10 +9,11 @@
   <p><i>Ditch the procrastination gremlins and crush your goals. Foci helps you stay on track with timed focus sessions, accountability buddies, and group challenges.</i></p>
 </div>
 
-<!-- [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Deploy to Firebase Hosting on merge](https://github.com/luckygoswami/Foci/actions/workflows/firebase-hosting-merge.yml/badge.svg)](https://github.com/luckygoswami/Foci/actions/workflows/firebase-hosting-merge.yml)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![pnpm](https://img.shields.io/badge/maintained%20with-pnpm-yellow.svg)](https://pnpm.io/) -->
+[![pnpm](https://img.shields.io/badge/maintained%20with-pnpm-yellow.svg)](https://pnpm.io/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/luckygoswami/foci)](https://github.com/luckygoswami/foci/releases/latest)
 
 ---
 
@@ -55,7 +56,7 @@ Ready to jump in? Follow these steps to get the development environment up and r
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) (v18 or higher)
-- [pnpm](https://pnpm.io/installation)
+- [pnpm](https://pnpm.io/installation) (recommended) or npm
 - A [Firebase](https://firebase.google.com/) project.
 
 ### Installation & Setup
@@ -73,15 +74,19 @@ Ready to jump in? Follow these steps to get the development environment up and r
     pnpm install
     ```
 
-3.  **Set up Firebase:**
+3.  **Configure Firebase:**
+
+    You have two distinct workflows for local development.
+
+    #### Option 1: Using a Real Firebase Project
 
     - Create a new project on the [Firebase Console](https://console.firebase.google.com/).
     - Create a new Web App in your Firebase project.
     - Copy the Firebase configuration object.
-    - Create a `.env.local` file in the root of the project and paste your config there:
+    - Create a `.env` file in the root of the project and paste your config there:
 
     ```env
-    # .env.local
+    # .env
 
     VITE_FIREBASE_API_KEY="your-api-key"
     VITE_FIREBASE_AUTH_DOMAIN="your-auth-domain"
@@ -92,16 +97,22 @@ Ready to jump in? Follow these steps to get the development environment up and r
     VITE_FIREBASE_APP_ID="your-app-id"
     ```
 
-4.  **Run the development server:**
-    ```bash
-    pnpm dev
-    ```
+    #### Option 2: Using the Firebase Emulator Suite (Recommended)
 
-The app should now be running on `http://localhost:5173` (or another port if 5173 is busy).
+    - No `.env` file or Firebase project is required for this option. All services run locally.
+    - The `dev.js` script will automatically create a mock configuration and handle all emulator setup.
 
 ### Available Scripts
 
-- `pnpm dev`: Starts the development server with hot-reloading.
+- `pnpm dev`:
+  - **Runs the development server without emulators.** It connects to your real Firebase project using the configurations from your `.env` file.
+  - This command will throw an error if the `.env` file is missing or incomplete.
+- `pnpm dev --emulators`:
+  - **Runs the development server with the Firebase Emulator Suite.** This is the recommended local development workflow as it requires no internet connection and no real Firebase project.
+  - It automatically starts the following emulators: Auth, Firestore, Realtime Database, and App Hosting.
+  - The emulator host is set to your machine's local IPv4 address, allowing other devices on your network to connect.
+- `pnpm dev --emulators --import <path>`:
+  - Starts the emulators and imports data from the specified local path. This is ideal for testing with pre-existing data.
 - `pnpm build`: Bundles the app for production.
 - `pnpm preview`: Serves the production build locally.
 - `pnpm lint`: Lints the codebase using ESLint.
@@ -121,5 +132,5 @@ This project is distributed under the MIT License. See [LICENSE](LICENSE) for mo
 ---
 
 <div align="center">
-  <code>> Compiled with focus by Deepak Goswami.</code>
+  <code>> Engineered by Deepak Goswami.</code>
 </div>
