@@ -30,8 +30,8 @@ export default function BottomNav() {
           </NavLink>
         ))}
         <NavLink
-          key={'/app/settings'}
-          to={'/app/settings'}
+          key={'/app/account'}
+          to={'/app/account'}
           className={({ isActive }) =>
             `flex flex-col items-center text-xs ${
               isActive ? 'text-primary' : 'text-gray-500'

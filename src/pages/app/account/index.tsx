@@ -21,7 +21,10 @@ export default function AccountDashboard() {
         <UserDetailsPageSkeleton /> // No chance of reaching this point
       ) : (
         <>
-          <ProfileHeader userData={userData} />
+          <ProfileHeader
+            userData={userData}
+            settings
+          />
           <SubjectsAndStreak userData={userData} />
           <StudyStats userData={userData} />
           <FriendsAndJoined userData={userData} />
