@@ -10,19 +10,6 @@ import {
 import toast from 'react-hot-toast';
 import { GoalProgressChartSkeleton } from '@/components';
 
-const variants = {
-  daily: {
-    title: 'Daily Goal',
-    fetchFn: fetchDailyGoalProgress,
-    color: '#274754',
-  },
-  weekly: {
-    title: 'Weekly Goal',
-    fetchFn: fetchWeeklyGoalProgress,
-    color: '#e7c468',
-  },
-};
-
 export function GoalProgress({
   userData,
   target,
@@ -30,7 +17,22 @@ export function GoalProgress({
   userData: UserData | undefined;
   target: 'daily' | 'weekly';
 }) {
-  const { title, fetchFn, color } = variants[target];
+  const variants = {
+    daily: {
+      title: 'Day Goal',
+      fetchFn: fetchDailyGoalProgress,
+      targetMinutes: userData!.dailyTargetMinutes,
+      color: '#274754',
+    },
+    weekly: {
+      title: 'Week Goal',
+      fetchFn: fetchWeeklyGoalProgress,
+      targetMinutes: userData!.weeklyTargetMinutes,
+      color: '#e7c468',
+    },
+  };
+
+  const { title, fetchFn, color, targetMinutes } = variants[target];
   const [data, setData] = useState<GoalProgress | null>(null);
 
   useEffect(() => {
@@ -50,9 +52,12 @@ export function GoalProgress({
   function renderCustomLegend(data: GoalProgress) {
     return (
       <div className="flex flex-col text-center">
-        <div className="flex justify-center font-bold text-2xl text-foreground">
-          <span className="opacity-65">{`${data[0].value}`}</span>
-          <span>{`/${data[1].value + data[0].value}`}</span>
+        <div className="flex justify-center font-bold text-lg text-foreground">
+          <span className="opacity-65">{`${Math.min(
+            data[0].value,
+            targetMinutes
+          )}`}</span>
+          <span>{`/${targetMinutes}`}</span>
         </div>
         <p className="text-muted-foreground font-semibold">{title}</p>
       </div>
