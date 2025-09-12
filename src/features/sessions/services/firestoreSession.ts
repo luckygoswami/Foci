@@ -7,8 +7,7 @@ import {
   getDocs,
   increment,
   query,
-  setDoc,
-  updateDoc,
+  runTransaction,
   where,
 } from 'firebase/firestore';
 import { getDayRange } from './sessionUtils';
@@ -31,16 +30,19 @@ export async function sessionExistsInFirestore(
 export async function saveSessionToFirestore(
   sessionData: Session
 ): Promise<void> {
-  // TODO: use runTransaction here
   try {
-    await setDoc(
-      doc(db, `sessions/${sessionData.userId}_${sessionData.startTime}`),
-      sessionData
+    const userRef = doc(db, 'users', sessionData.userId);
+    const sessionRef = doc(
+      db,
+      'sessions',
+      `${sessionData.userId}_${sessionData.startTime}`
     );
 
-    const userRef = doc(db, 'users', sessionData.userId);
-    await updateDoc(userRef, {
-      totalStudyTime: increment(sessionData.duration),
+    await runTransaction(db, async (tx) => {
+      tx.update(userRef, {
+        totalStudyTime: increment(sessionData.duration),
+      });
+      tx.set(sessionRef, sessionData);
     });
   } catch (err) {
     console.error('Error saving session to firestore:', err);
