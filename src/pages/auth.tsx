@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function AuthDashboard() {
   const { user, loading: authLoading } = useAuth();
-  const redirectTo = useLocation().state.from.pathname; // default will be '/'
+  const redirectTo = useLocation().state?.from?.pathname || '/';
   const navigate = useNavigate();
 
   useEffect(() => {
