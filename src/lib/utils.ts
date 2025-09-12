@@ -87,10 +87,10 @@ export function formatMediumDate(timestamp: number): string {
  * Calculates the start and end dates of the week containing the given timestamp.
  * Week is considered to run from Sunday 00:00:00 to Saturday 23:59:59.999.
  *
- * @param {number} timestamp - Unix timestamp in milliseconds
- * @returns {Object} Week boundaries
- * @returns {Date} return.firstDay - Start of week (Sunday 00:00:00)
- * @returns {Date} return.lastDay - End of week (Saturday 23:59:59.999)
+ * @param timestamp - Unix timestamp in milliseconds
+ * @returns  Week boundaries
+ * @returns return.firstDay - Start of week (Sunday 00:00:00)
+ * @returns return.lastDay - End of week (Saturday 23:59:59.999)
  */
 export function getWeekBoundaries(timestamp: number): {
   firstDay: Date;
@@ -257,13 +257,22 @@ export function getLastMonthToCurrentMonthRange(): {
 /**
  * Format a duration given in minutes into a string with hours and minutes.
  *
- * @param {number} min - The total duration in minutes.
- * @returns {string} The formatted duration string, e.g. "1h 30m", "2h", or "45m".
+ * @param min - The total duration in minutes.
+ * @param  dec - Whether to format as decimal hours (default false).
+ * @returns The formatted duration string, e.g. "1h 30m", "2h", "45m", or "1.25h".
  */
-export const formatDurationHM = (min: number) => {
+export function formatDurationHM(min: number, dec = false): string {
+  if (!min) return '0m';
+
+  if (dec) {
+    const hoursDecimal = Math.round((min / 60) * 100) / 100;
+    return `${hoursDecimal}h`;
+  }
+
   const h = Math.floor(min / 60);
   const m = min % 60;
+
   if (h > 0 && m > 0) return `${h}h ${m}m`;
   if (h > 0) return `${h}h`;
   return `${m}m`;
-};
+}

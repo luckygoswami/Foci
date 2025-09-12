@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { DailyTargetDialog, WeeklyTargetDialog } from './TargetUpdateDialog';
 import { useUserData } from '@/features/user';
+import { formatDurationHM } from '@/lib/utils';
 
 export function TargetGoals() {
   const { userData, setUserData } = useUserData();
@@ -43,7 +44,7 @@ export function TargetGoals() {
             <div
               className="flex items-center text-muted-foreground max-w-[65%] truncate"
               onClick={() => setDialogOpen('daily')}>
-              <p>{dailyTargetMinutes} minutes</p>
+              <p>{formatDurationHM(dailyTargetMinutes)}</p>
               <span className="text-2xl">&nbsp;&gt;</span>
             </div>
           </div>
@@ -54,7 +55,7 @@ export function TargetGoals() {
             <div
               className="flex items-center text-muted-foreground max-w-[65%] truncate"
               onClick={() => setDialogOpen('weekly')}>
-              <p>{weeklyTargetMinutes} minutes</p>
+              <p>{formatDurationHM(weeklyTargetMinutes)}</p>
               <span className="text-2xl">&nbsp;&gt;</span>
             </div>
           </div>

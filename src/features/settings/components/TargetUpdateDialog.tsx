@@ -70,7 +70,7 @@ export function DailyTargetDialog({
               Daily Target
             </label>
             <span className="text-sm text-slate-600 tabular-nums">
-              {formatDurationHM(newTarget)} ({newTarget} min)
+              {formatDurationHM(newTarget)}
             </span>
           </div>
           <input
@@ -163,7 +163,7 @@ export function WeeklyTargetDialog({
               Weekly Target
             </label>
             <span className="text-sm text-slate-600 tabular-nums">
-              {formatDurationHM(newTarget)} ({newTarget} min)
+              {formatDurationHM(newTarget)}
             </span>
           </div>
           <input

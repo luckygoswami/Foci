@@ -101,8 +101,7 @@ export function StepStudy({
             Daily Target
           </label>
           <span className="text-sm text-slate-600 tabular-nums">
-            {formatDurationHM(form.dailyTargetMinutes)} (
-            {form.dailyTargetMinutes} min)
+            {formatDurationHM(dailyTargetMinutes)}
           </span>
         </div>
         <input
@@ -134,7 +133,7 @@ export function StepStudy({
             Weekly Target
           </label>
           <span className="text-sm text-slate-600 tabular-nums">
-            {formatDurationHM(weeklyTargetMinutes)} ({weeklyTargetMinutes} min)
+            {formatDurationHM(weeklyTargetMinutes)}
           </span>
         </div>
         <input

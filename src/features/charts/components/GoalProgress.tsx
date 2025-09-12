@@ -9,6 +9,7 @@ import {
 } from '../services/charts';
 import toast from 'react-hot-toast';
 import { GoalProgressChartSkeleton } from '@/components';
+import { formatDurationHM } from '@/lib/utils';
 
 export function GoalProgress({
   userData,
@@ -19,13 +20,13 @@ export function GoalProgress({
 }) {
   const variants = {
     daily: {
-      title: 'Day Goal',
+      title: 'Daily Goal',
       fetchFn: fetchDailyGoalProgress,
       targetMinutes: userData!.dailyTargetMinutes,
       color: '#274754',
     },
     weekly: {
-      title: 'Week Goal',
+      title: 'Weekly Goal',
       fetchFn: fetchWeeklyGoalProgress,
       targetMinutes: userData!.weeklyTargetMinutes,
       color: '#e7c468',
@@ -52,12 +53,12 @@ export function GoalProgress({
   function renderCustomLegend(data: GoalProgress) {
     return (
       <div className="flex flex-col text-center">
-        <div className="flex justify-center font-bold text-lg text-foreground">
-          <span className="opacity-65">{`${Math.min(
-            data[0].value,
-            targetMinutes
+        <div className="flex justify-center font-bold text-sm text-foreground">
+          <span className="opacity-65">{`${formatDurationHM(
+            Math.min(data[0].value, targetMinutes),
+            true
           )}`}</span>
-          <span>{`/${targetMinutes}`}</span>
+          <span>{`/${formatDurationHM(targetMinutes, true)}`}</span>
         </div>
         <p className="text-muted-foreground font-semibold">{title}</p>
       </div>
