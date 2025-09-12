@@ -262,7 +262,7 @@ export function getLastMonthToCurrentMonthRange(): {
  * @returns The formatted duration string, e.g. "1h 30m", "2h", "45m", or "1.25h".
  */
 export function formatDurationHM(min: number, dec = false): string {
-  if (!min) return '0m';
+  if (min < 60) return `${min}m`;
 
   if (dec) {
     const hoursDecimal = Math.round((min / 60) * 100) / 100;

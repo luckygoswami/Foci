@@ -13,7 +13,7 @@ import type { FirebaseUserId } from '@/types';
 import { getSessionsByDate } from '@/features/sessions';
 import { getWeeklyProgressForSubject } from '../services/charts';
 import toast from 'react-hot-toast';
-import { getLastMonthToCurrentMonthRange } from '@/lib/utils';
+import { formatDurationHM, getLastMonthToCurrentMonthRange } from '@/lib/utils';
 import { MONTH_NAMES } from '@/constants/dateTime';
 import { SubjectProgressChartSkeleton } from '@/components';
 
@@ -61,7 +61,7 @@ export function SubjectProgressChart({
             top: 10,
             right: 10,
             bottom: 10,
-            left: -10,
+            left: 11,
           }}>
           <CartesianGrid
             strokeDasharray="3 3"
@@ -81,6 +81,7 @@ export function SubjectProgressChart({
             tickMargin={10}
             axisLine={false}
             tickLine={false}
+            tickFormatter={(min) => `${formatDurationHM(min, true)}`}
           />
           <Legend
             verticalAlign="bottom"
