@@ -13,7 +13,7 @@ export function GroupDetails({ group }: { group: Group }) {
   const memberCount = memberIds.length;
 
   return (
-    <div className="group-details overflow-scroll no-scrollbar flex flex-col items-center py-2">
+    <div className="group-details overflow-scroll no-scrollbar flex flex-col items-center py-2 shadow-sm rounded-lg">
       {/* Group Avatar */}
       <div
         className={`size-35 border-2 border-muted rounded-full flex items-center justify-center ${color}`}>

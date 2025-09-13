@@ -1,5 +1,6 @@
 import type { GroupMember } from '@/types';
 import { getGroupRoles } from '../services/groupRoles';
+import { useNavigate } from 'react-router-dom';
 
 const creatorBg = 'a7c7e7';
 const adminsBg = ['a8e6cf', 'ffb7b2', 'c3b1e1', 'fff5ba'];
@@ -12,10 +13,14 @@ export function GroupMembersList({ members }: { members: GroupMember[] }) {
     members: membersList,
   } = getGroupRoles(members);
 
+  const navigate = useNavigate();
+
   return (
-    <ol className="members-list h-5/12 overflow-x-hidden overflow-y-scroll py-2 divide-muted divide-y-1">
+    <ol className="members-list h-5/12 overflow-x-hidden overflow-y-scroll p-1 divide-muted divide-y-1 rounded-lg shadow-sm">
       {/* creator */}
-      <li className="flex items-center px-3 py-2">
+      <li
+        onClick={() => navigate(`/app/buddies/${creator.userId}`)}
+        className="flex items-center px-3 py-2 rounded-lg hover:shadow-sm">
         <div
           className={`rounded-full size-11 overflow-hidden flex items-center justify-center mr-3 p-0.5 pb-0`}
           style={{ backgroundColor: `#${creatorBg}` }}>
@@ -37,7 +42,8 @@ export function GroupMembersList({ members }: { members: GroupMember[] }) {
       {adminsList.map((admin, i) => (
         <li
           key={`${admin.name}-${i}`}
-          className="flex items-center px-3 py-2">
+          onClick={() => navigate(`/app/buddies/${admin.userId}`)}
+          className="flex items-center px-3 py-2 rounded-lg hover:shadow-sm">
           <div
             className={`rounded-full size-11 overflow-hidden flex items-center justify-center mr-3 p-0.5 pb-0`}
             style={{ backgroundColor: `#${adminsBg[i % adminsBg.length]}` }}>
@@ -60,7 +66,8 @@ export function GroupMembersList({ members }: { members: GroupMember[] }) {
       {membersList.map((member, i) => (
         <li
           key={`${member.name}-${i}`}
-          className="flex items-center px-3 py-2">
+          onClick={() => navigate(`/app/buddies/${member.userId}`)}
+          className="flex items-center px-3 py-2 rounded-lg hover:shadow-sm">
           <div
             className={`rounded-full size-11 overflow-hidden flex items-center justify-center mr-3 p-0.5 pb-0`}
             style={{ backgroundColor: `#${membersBg[i % membersBg.length]}` }}>
