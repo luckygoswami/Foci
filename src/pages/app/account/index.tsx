@@ -23,7 +23,7 @@ export default function AccountDashboard() {
         <>
           <ProfileHeader
             userData={userData}
-            settings
+            personal
           />
           <SubjectsAndStreak userData={userData} />
           <StudyStats userData={userData} />

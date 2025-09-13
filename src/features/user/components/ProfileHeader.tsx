@@ -4,22 +4,22 @@ import { useNavigate } from 'react-router-dom';
 
 export function ProfileHeader({
   userData,
-  settings = false,
+  personal = false,
 }: {
   userData: UserData;
-  settings?: boolean;
+  personal?: boolean;
 }) {
   const { avatarId, username, name, bio } = userData;
   const navigate = useNavigate();
 
   return (
     <div className="rounded-2xl bg-card shadow p-6 text-center relative">
-      {settings && (
-        <Settings
-          onClick={() => navigate('settings')}
-          size={26}
+      {personal && (
+        <button
           className="absolute top-0 right-0 m-4 text-muted-foreground"
-        />
+          onClick={() => navigate('settings')}>
+          <Settings size={26} />
+        </button>
       )}
       <img
         src={`/avatars/${avatarId}.svg`}
