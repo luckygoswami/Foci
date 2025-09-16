@@ -1,4 +1,4 @@
-import type { FirebaseUserId, Streak } from './core';
+import type { FirebaseUserId, Streak, Subject } from './core';
 import type { Friend } from './friend';
 
 export interface UserData {
@@ -8,7 +8,7 @@ export interface UserData {
   name: string;
   avatarId: string;
   bio?: string;
-  subjects: string[];
+  subjects: Subject[];
   dailyTargetMinutes: number;
   weeklyTargetMinutes: number;
   totalStudyTime: number; // in minutes

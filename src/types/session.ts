@@ -6,6 +6,7 @@ export interface Session {
   endTime: number;
   duration: number; // in minutes
   subject: string;
+  subjectId: string;
   groupIds?: GroupId[];
 }
 
@@ -16,6 +17,7 @@ export interface CurrentSession {
   accumulatedDuration: number; // in seconds
   paused: boolean;
   subject: string;
+  subjectId: string;
   groupIds?: GroupId[];
   isPublic: boolean;
 }
