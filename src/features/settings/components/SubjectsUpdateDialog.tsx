@@ -49,8 +49,8 @@ export function SubjectsUpdateDialog({
   }
 
   function addSubject() {
-    let isDefault = subjectInput.toLowerCase() == 'study';
-    let isDuplicate = newSubjects.find(
+    const isDefault = subjectInput.toLowerCase() == 'study';
+    const isDuplicate = newSubjects.find(
       (s) => s.toLowerCase() == subjectInput.toLowerCase()
     );
 

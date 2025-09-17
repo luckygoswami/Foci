@@ -103,7 +103,7 @@ export function useHydratedSession(
     };
 
     hydrateSession();
-  }, [user, isOnline]);
+  }, [user, isOnline, authLoading, setSession]);
 
   async function resolveConflict(choice: 'local' | 'remote' | 'end') {
     const userId = user?.uid;

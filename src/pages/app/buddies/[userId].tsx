@@ -51,7 +51,7 @@ export default function UserDetailsPage() {
         .then(setProfileData)
         .catch((err) => toast.error(err.message));
     }
-  }, [userId, userData, profileData]);
+  }, [userId, userData, profileData, navigate]);
 
   function handleAddFriend() {
     if (!userData || !profileData) return;

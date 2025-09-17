@@ -36,7 +36,7 @@ export default function BuddiesDashboard() {
     }
 
     return () => observer && observer.disconnect();
-  }, [requests]);
+  }, [userId, requests]);
 
   const sections = [
     {

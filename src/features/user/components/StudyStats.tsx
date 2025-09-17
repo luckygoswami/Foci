@@ -18,7 +18,7 @@ export function StudyStats({ userData }: { userData: UserData }) {
     fetchWeeklyGoalProgress(userData)
       .then((res) => setWeekProgress(res[0].value))
       .catch((err) => toast.error(err.message));
-  }, []);
+  }, [userData]);
 
   return (
     <div className="study-stats bg-white shadow rounded-2xl p-4">

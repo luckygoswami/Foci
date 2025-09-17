@@ -28,7 +28,7 @@ export default function GroupsDashboard() {
     fetchGroupsJoinedByUser(userId)
       .then(setGroups)
       .catch((err) => toast.error(err.message));
-  }, [userData, invites]);
+  }, [userId, userData, invites]);
 
   useEffect(() => {
     const section = inviteListRef.current;
@@ -50,7 +50,7 @@ export default function GroupsDashboard() {
     }
 
     return () => observer && observer.disconnect();
-  }, [invites]);
+  }, [userId, invites]);
 
   const handleCreation = (newGroup: Group & { groupId: GroupId }) => {
     setGroups((prev) => {

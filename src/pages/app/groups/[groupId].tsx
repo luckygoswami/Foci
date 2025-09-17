@@ -33,7 +33,7 @@ export default function GroupDetailsPage() {
     fetchGroupInvitesBySender(userData.userId, groupId)
       .then(setSentInvites)
       .catch((err) => toast.error(err.message));
-  }, [showInviteModal]);
+  }, [groupId, showInviteModal]);
 
   useEffect(() => {
     if (!groupId || !userData) return;

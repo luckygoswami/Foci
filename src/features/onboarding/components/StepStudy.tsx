@@ -24,7 +24,7 @@ export function StepStudy({
   }
 
   function handleDailyTarget(e: React.ChangeEvent<HTMLInputElement>) {
-    let target = Number(e.target.value);
+    const target = Number(e.target.value);
 
     setForm((f) => ({
       ...f,
@@ -33,7 +33,7 @@ export function StepStudy({
   }
 
   function handleWeeklyTarget(e: React.ChangeEvent<HTMLInputElement>) {
-    let target = Number(e.target.value);
+    const target = Number(e.target.value);
 
     setForm((f) => ({
       ...f,

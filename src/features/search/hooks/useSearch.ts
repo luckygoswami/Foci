@@ -55,7 +55,7 @@ export function useSearch<T extends SearchTypes>(term: string, searchFor: T) {
     const debounced = debounce(fetch, 300);
     debounced();
     return () => debounced.cancel();
-  }, [term, searchFor]);
+  }, [term, searchFor, searchQuery]);
 
   return { results, loading };
 }
