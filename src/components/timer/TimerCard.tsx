@@ -1,6 +1,6 @@
 import { getEffectiveDuration } from '@/features/sessions';
 import { formatDuration } from '@/lib/utils';
-import type { CurrentSession } from '@/types';
+import type { CurrentSession, Subject } from '@/types';
 import { useEffect, useRef, useState } from 'react';
 import { TimerButton } from './TimerButton';
 
@@ -14,7 +14,7 @@ interface TimerProps {
   onEnd?: () => void;
   on60s?: () => void;
   setSubjectDialog?: (s: boolean) => void;
-  selectedSubject?: string | null;
+  selectedSubject?: Subject | null;
   currentSession?: CurrentSession | null;
 }
 

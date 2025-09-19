@@ -1,13 +1,11 @@
 import { Streakboard } from '@/features/streaks';
 import { SubjectProgressChart } from '@/features/charts';
 import { useUserData } from '@/features/user';
-import type { FirebaseUserId } from '@/types';
 import { Header } from '@/components';
 
 export default function ProgressDashboard() {
   const { userData } = useUserData();
-  const userId = userData?.userId as FirebaseUserId;
-  const subjects = userData?.subjects;
+  const { userId, subjects } = userData!;
 
   return (
     <div
@@ -27,21 +25,23 @@ export default function ProgressDashboard() {
             Monthly Study Progress
           </h1>
           <div className="flex-1 flex space-x-4 overflow-x-auto overflow-y-hidden snap-x snap-mandatory">
-            {subjects?.map((sub, ind) => (
-              <div
-                key={`sub${ind}`}
-                className="flex-shrink-0 w-full snap-center">
-                <h2 className="text-lg font-medium text-muted-foreground mb-2">
-                  {sub}
-                </h2>
-                <div className="h-[90%] w-full">
-                  <SubjectProgressChart
-                    userId={userId}
-                    subject={sub}
-                  />
+            {subjects
+              .filter((s) => s.isActive)
+              .map((sub, ind) => (
+                <div
+                  key={`${sub.subjectId}-${ind}`}
+                  className="flex-shrink-0 w-full snap-center">
+                  <h2 className="text-lg font-medium text-muted-foreground mb-2">
+                    {sub.name}
+                  </h2>
+                  <div className="h-[90%] w-full">
+                    <SubjectProgressChart
+                      userId={userId}
+                      subject={sub}
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       </div>

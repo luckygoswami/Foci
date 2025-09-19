@@ -9,7 +9,7 @@ import {
   CartesianGrid,
 } from 'recharts';
 import type { WeeklyProgress } from '../types';
-import type { FirebaseUserId } from '@/types';
+import type { FirebaseUserId, Subject } from '@/types';
 import { getSessionsByDate } from '@/features/sessions';
 import { getWeeklyProgressForSubject } from '../services/charts';
 import toast from 'react-hot-toast';
@@ -22,7 +22,7 @@ export function SubjectProgressChart({
   subject,
 }: {
   userId: FirebaseUserId;
-  subject: string;
+  subject: Subject;
 }) {
   const { lastMonth, currentMonth } = getLastMonthToCurrentMonthRange();
   const [data, setData] = useState<WeeklyProgress[] | null>(null);
@@ -31,6 +31,7 @@ export function SubjectProgressChart({
 
     const fetch = async () => {
       try {
+        // TODO: get only sessions of a respective subject using queries
         const userSessions = await getSessionsByDate(
           userId,
           lastMonth.startDate,

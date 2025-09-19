@@ -1,13 +1,14 @@
 import { useUserData } from '@/features/user';
 import { SubjectsUpdateDialog } from './SubjectsUpdateDialog';
 import { useState } from 'react';
+import type { Subject } from '@/types';
 
 export function Subjects() {
   const { userData, setUserData } = useUserData();
   const { userId, subjects } = userData!;
   const [dialogOpen, setdialogOpen] = useState(false);
 
-  function handleSubjectsUpdate(newSubjects: string[]) {
+  function handleSubjectsUpdate(newSubjects: Subject[]) {
     setUserData((prev) => {
       return {
         ...prev!,
@@ -28,13 +29,15 @@ export function Subjects() {
           className="flex justify-between"
           onClick={() => setdialogOpen(true)}>
           <div className="flex gap-2 overflow-x-auto no-scrollbar">
-            {subjects.map((sub, idx) => (
-              <span
-                key={`${sub}-${idx}`}
-                className="bg-gray-100 text-sm px-3 py-1 rounded-full text-gray-700 text-nowrap">
-                {sub}
-              </span>
-            ))}
+            {subjects
+              .filter((s) => s.isActive)
+              .map((sub, idx) => (
+                <span
+                  key={`${sub.subjectId}-${idx}`}
+                  className="bg-gray-100 text-sm px-3 py-1 rounded-full text-gray-700 text-nowrap">
+                  {sub.name}
+                </span>
+              ))}
           </div>
           <span className="text-2xl">&nbsp;&gt;</span>
         </div>

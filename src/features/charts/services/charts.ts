@@ -1,6 +1,6 @@
 import { getSessionsByDate } from '@/features/sessions';
 import { formatMediumDate, getWeekBoundaries } from '@/lib/utils';
-import type { UserData, FirebaseUserId, Session } from '@/types';
+import type { UserData, FirebaseUserId, Session, Subject } from '@/types';
 import type {
   GoalProgress,
   SegmentedSubjectProgress,
@@ -81,26 +81,20 @@ export async function fetchSubjectTimeDistribution(
       formatMediumDate(now)
     );
 
-    const normalizedSessions = sessions.map((s) => ({
-      ...s,
-      subject: s.subject.toLowerCase(),
-    }));
-
-    const durationMap = normalizedSessions.reduce<Record<string, number>>(
+    const durationMap = sessions.reduce<Record<string, number>>(
       (acc, session) => {
-        acc[session.subject] = (acc[session.subject] || 0) + session.duration;
+        acc[session.subjectId] =
+          (acc[session.subjectId] || 0) + session.duration;
         return acc;
       },
       {}
     );
 
-    const subjectsArray = [
-      ...new Set(normalizedSessions.map((s) => s.subject)),
-    ];
+    const subjectsArray = [...new Set(sessions.map((s) => s.subjectId))];
 
     const progress = subjectsArray
       .map((sub) => ({
-        subject: sub,
+        subjectId: sub,
         duration: Math.max(0, durationMap[sub] || 0),
       }))
       .sort((a, b) => b.duration - a.duration);
@@ -173,7 +167,7 @@ export function get7SegmentProgressForSubject(
 }
 
 export function getWeeklyProgressForSubject(
-  subjectName: string,
+  subject: Subject,
   sessions: Session[]
 ): WeeklyProgress[] {
   const now = new Date();
@@ -204,7 +198,7 @@ export function getWeeklyProgressForSubject(
 
   // Fill weeks with durations
   sessions.forEach((session) => {
-    if (session.subject?.toLowerCase() !== subjectName.toLowerCase()) return;
+    if (session.subjectId !== subject.subjectId) return;
 
     const date = new Date(session.startTime);
     const day = date.getDate();

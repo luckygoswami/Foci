@@ -4,7 +4,7 @@ export type GoalProgress = [
 ];
 
 export type SubjectDuration = {
-  subject: string;
+  subjectId: string;
   duration: number;
 };
 

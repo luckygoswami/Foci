@@ -2,7 +2,8 @@ import type { User } from 'firebase/auth';
 import type { OnboardingState } from '../types';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase-config';
-import type { FirebaseUserId } from '@/types';
+import type { FirebaseUserId, Subject } from '@/types';
+import { newId } from '@/lib/utils';
 
 export function defaultState(user: User): OnboardingState {
   return {
@@ -76,13 +77,23 @@ export function populateUsername(
   return username.toLowerCase();
 }
 
-export function populateSubjects(form: OnboardingState): string[] {
+export function populateSubjects(form: OnboardingState): Subject[] {
   const { subjects } = form;
   if (subjects.length) {
     return subjects;
   }
 
-  return ['study'];
+  const now = Date.now();
+
+  return [
+    {
+      name: 'study',
+      subjectId: newId(),
+      isActive: true,
+      createdAt: now,
+      updatedAt: now,
+    },
+  ];
 }
 
 export function populateName(userId: FirebaseUserId, form: OnboardingState) {

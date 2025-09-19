@@ -5,12 +5,13 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
+import type { Subject } from '@/types';
 
 type SubjectDropdownProps = {
-  subjects: string[] | undefined;
+  subjects: Subject[];
   open: boolean;
   setOpen: (open: boolean) => void;
-  onSelect: (subject: string) => void;
+  onSelect: (sub: Subject) => void;
 };
 
 export function SubjectDialog({
@@ -40,17 +41,19 @@ export function SubjectDialog({
             </span>
           ) : (
             <>
-              {subjects?.map((subject) => (
-                <button
-                  key={subject}
-                  className="border border-muted py-2 text-muted-foreground rounded-full shadow-sm"
-                  onClick={() => {
-                    onSelect(subject);
-                    setOpen(false);
-                  }}>
-                  {subject}
-                </button>
-              ))}
+              {subjects
+                .filter((s) => s.isActive)
+                .map((subject) => (
+                  <button
+                    key={subject.subjectId}
+                    className="border border-muted py-2 text-muted-foreground rounded-full shadow-sm"
+                    onClick={() => {
+                      onSelect(subject);
+                      setOpen(false);
+                    }}>
+                    {subject.name}
+                  </button>
+                ))}
             </>
           )}
         </div>

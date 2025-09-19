@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { customAlphabet } from 'nanoid';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -275,4 +276,24 @@ export function formatDurationHM(min: number, dec = false): string {
   if (h > 0 && m > 0) return `${h}h ${m}m`;
   if (h > 0) return `${h}h`;
   return `${m}m`;
+}
+
+/**
+ * Generates a unique ID using NanoID with a custom alphabet.
+ *
+ * The generated ID is a random string using both uppercase and lowercase letters,
+ * as well as digits. This function provides strong uniqueness and compactness for
+ * identifiers in Firestore, databases, or client-side models.
+ *
+ * @returns {string} A unique ID, e.g. 'aQ3rT1bL39hS6pE2ZxKf'
+ *
+ * @example
+ * const subjectId = newId();
+ * // Use subjectId to uniquely identify a subject in your model or database
+ */
+export function newId(): string {
+  const allowedChars =
+    'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const nanoid = customAlphabet(allowedChars);
+  return nanoid();
 }

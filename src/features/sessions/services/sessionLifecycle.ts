@@ -1,4 +1,10 @@
-import type { CurrentSession, FirebaseUserId, GroupId, Session } from '@/types';
+import type {
+  CurrentSession,
+  FirebaseUserId,
+  GroupId,
+  Session,
+  Subject,
+} from '@/types';
 import {
   removeLocalSession,
   setLocalSession,
@@ -14,16 +20,19 @@ import { saveSessionToFirestore } from './firestoreSession';
 
 export async function startSession(
   userId: FirebaseUserId,
-  subject: string,
+  subject: Subject,
   groupIds?: GroupId[],
   isPublic: boolean = true
 ): Promise<CurrentSession> {
+  const { name, subjectId } = subject;
+
   const session: CurrentSession = {
     startTime: Date.now(),
     lastUpdated: Date.now(),
     accumulatedDuration: 0,
     paused: false,
-    subject,
+    subject: name,
+    subjectId,
     isPublic,
     ...(groupIds && { groupIds }),
   };
@@ -31,7 +40,7 @@ export async function startSession(
   try {
     await setLocalSession(session);
     setRemoteSession(userId, session);
-  } catch (err) {
+  } catch {
     throw new Error('Unable to start session.');
   }
 
@@ -58,7 +67,7 @@ export async function pauseSession(
     const updatedSession = await updateLocalSession(sessionUpdate);
     updateRemoteSession(userId, sessionUpdate);
     return updatedSession;
-  } catch (err) {
+  } catch {
     throw new Error('Unable to pause session.');
   }
 }
@@ -77,7 +86,7 @@ export async function resumeSession(
     const updatedSession = await updateLocalSession(sessionUpdate);
     updateRemoteSession(userId, sessionUpdate);
     return updatedSession;
-  } catch (err) {
+  } catch {
     throw new Error('Unable to resume session.');
   }
 }
@@ -87,14 +96,16 @@ export async function endSession(
   session: CurrentSession | null
 ): Promise<void> {
   if (!session) return;
+  const { startTime, subject, subjectId } = session;
   const duration = Math.floor(getEffectiveDuration(session) / 60); // saving duration in minutes in firestore
 
   const sessionData: Session = {
     userId,
-    startTime: session.startTime,
+    startTime,
     endTime: Date.now(),
     duration,
-    subject: session.subject,
+    subject,
+    subjectId,
     ...(session.groupIds && { groupIds: session.groupIds }),
   };
 
@@ -103,7 +114,7 @@ export async function endSession(
   try {
     await removeLocalSession();
     duration && (await saveSessionToFirestore(sessionData));
-  } catch (err) {
+  } catch {
     mainError = true;
   }
 

@@ -84,7 +84,6 @@
 :root {
   --radius: 0.625rem;
 
-  /* --background: #f0f9ff; pale blue light background */
   --background: #fff; /* pale blue light background */
   --foreground: #1a202c; /* primary dark text */
   --card: #ffffff; /* white cards */

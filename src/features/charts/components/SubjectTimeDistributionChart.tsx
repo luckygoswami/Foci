@@ -9,7 +9,7 @@ import {
 } from 'recharts';
 import type { SubjectDuration } from '../types';
 import { fetchSubjectTimeDistribution } from '../services/charts';
-import type { FirebaseUserId } from '@/types';
+import type { FirebaseUserId, Subject } from '@/types';
 import toast from 'react-hot-toast';
 import { SubjectTimeDistributionChartSkeleton } from '@/components';
 
@@ -17,10 +17,10 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 export function SubjectTimeDistributionChart({
   userId,
-  currentSubjects = [],
+  subjects = [],
 }: {
   userId: FirebaseUserId;
-  currentSubjects?: string[];
+  subjects?: Subject[];
 }) {
   const [data, setData] = useState<SubjectDuration[] | null>(null);
 
@@ -78,7 +78,7 @@ export function SubjectTimeDistributionChart({
             outerRadius={80}
             fill="#8884d8"
             dataKey="duration"
-            nameKey="subject">
+            nameKey="subjectId">
             {data.map((_, index) => (
               <Cell
                 key={`cell-${index}`}
@@ -86,15 +86,19 @@ export function SubjectTimeDistributionChart({
               />
             ))}
           </Pie>
-          <Tooltip />
+          <Tooltip
+            formatter={(duration, subjectId) => [
+              duration,
+              subjects.find((s) => s.subjectId == subjectId)?.name,
+            ]}
+          />
           <Legend
             verticalAlign="bottom"
             iconSize={8}
             iconType="circle"
-            formatter={(subject) => (
+            formatter={(subjectId) => (
               <span className="text-muted-foreground mr-2 ml-0.5">
-                {currentSubjects.find((s) => s.toLowerCase() == subject) ||
-                  subject}
+                {subjects.find((s) => s.subjectId == subjectId)?.name}
               </span>
             )}
           />

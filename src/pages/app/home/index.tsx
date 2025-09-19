@@ -16,16 +16,15 @@ import { useOnlineStatus } from '@/features/connection';
 import toast from 'react-hot-toast';
 import { useUserData } from '@/features/user';
 import { updateStreakIfNeeded } from '@/features/streaks';
-import { useAuth } from '@/features/auth';
-import type { FirebaseUserId } from '@/types';
+import type { Subject } from '@/types';
 
 export default function HomeDashboard() {
   const { userData, setUserData } = useUserData();
-  const userId = useAuth().user?.uid as FirebaseUserId; // Extracting userId from useAuth not from UserData coz application load is dependent on useAuth load, not on userData
+  const { userId, subjects } = userData!;
   const { session: currentSession, setSession: setCurrentSession } =
     useCurrentSession();
   const [autoStart, setAutoStart] = useState(false);
-  const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
+  const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
   const [subjectDialog, setSubjectDialog] = useState(false);
   const [initialTime, setInitialTime] = useState(0);
   const isOnline = useOnlineStatus();
@@ -142,7 +141,7 @@ export default function HomeDashboard() {
             onSelect={setSelectedSubject}
             open={subjectDialog}
             setOpen={setSubjectDialog}
-            subjects={userData?.subjects}
+            subjects={subjects}
           />
         </div>
         {/* Progress charts */}
@@ -153,7 +152,7 @@ export default function HomeDashboard() {
           <div className="w-full size-56 mb-2">
             <SubjectTimeDistributionChart
               userId={userId}
-              currentSubjects={userData?.subjects}
+              subjects={subjects}
             />
           </div>
           <div className="flex w-full justify-between">

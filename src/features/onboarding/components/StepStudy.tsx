@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { OnboardingState } from '../types';
-import { formatDurationHM } from '@/lib/utils';
+import { formatDurationHM, newId } from '@/lib/utils';
+import type { Subject } from '@/types';
 
 export function StepStudy({
   form,
@@ -11,16 +12,30 @@ export function StepStudy({
 }) {
   const { subjects, dailyTargetMinutes, weeklyTargetMinutes } = form;
   const [subjectInput, setSubjectInput] = useState('');
+
   function addSubject() {
     const s = subjectInput.trim();
     if (!s) return;
-    if (!subjects.includes(s)) {
-      setForm((f) => ({ ...f, subjects: [...f.subjects, s] }));
+    if (!subjects.find((x) => x.name.toLowerCase() == s.toLowerCase())) {
+      const now = Date.now();
+      const subject = {
+        name: s,
+        subjectId: newId(),
+        isActive: true,
+        createdAt: now,
+        updatedAt: now,
+      };
+      const subjects = [...form.subjects, subject];
+      setForm((f) => ({ ...f, subjects }));
     }
     setSubjectInput('');
   }
-  function removeSubject(s: string) {
-    setForm((f) => ({ ...f, subjects: f.subjects.filter((x) => x !== s) }));
+
+  function removeSubject(s: Subject) {
+    setForm((f) => ({
+      ...f,
+      subjects: f.subjects.filter((x) => x.subjectId !== s.subjectId),
+    }));
   }
 
   function handleDailyTarget(e: React.ChangeEvent<HTMLInputElement>) {
@@ -73,12 +88,14 @@ export function StepStudy({
             Add
           </button>
         </div>
+
+        {/* Subjects container */}
         <div className="mt-2 flex flex-wrap gap-2">
-          {subjects.map((s) => (
+          {subjects.map((s, idx) => (
             <span
-              key={s}
+              key={`${s.subjectId}-${idx}`}
               className="px-2 py-1 rounded-full bg-slate-100 text-sm">
-              {s}
+              {s.name}
               <button
                 className="ml-2 text-slate-500"
                 onClick={() => removeSubject(s)}>

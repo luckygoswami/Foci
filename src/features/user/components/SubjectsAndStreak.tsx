@@ -11,13 +11,15 @@ export function SubjectsAndStreak({ userData }: { userData: UserData }) {
       <div className="subjects bg-white shadow rounded-2xl p-4 overflow-hidden">
         <h3 className="font-semibold mb-2">Subjects</h3>
         <div className="flex gap-2 overflow-x-auto no-scrollbar">
-          {subjects.map((sub, idx) => (
-            <span
-              key={`${sub}-${idx}`}
-              className="bg-gray-100 text-sm px-3 py-1 rounded-full text-gray-700 text-nowrap">
-              {sub}
-            </span>
-          ))}
+          {subjects
+            .filter((s) => s.isActive)
+            .map((sub, idx) => (
+              <span
+                key={`${sub.subjectId}-${idx}`}
+                className="bg-gray-100 text-sm px-3 py-1 rounded-full text-gray-700 text-nowrap">
+                {sub.name}
+              </span>
+            ))}
         </div>
       </div>
       <div className="streak bg-white shadow rounded-2xl p-4">
