@@ -14,6 +14,17 @@ type SubjectDropdownProps = {
   onSelect: (sub: Subject) => void;
 };
 
+const subjectColors = [
+  '#ed8e4a',
+  '#3e8bd3',
+  '#855aad',
+  '#79bd6b',
+  '#47aeab',
+  '#ae47a4',
+  '#475dae',
+  '#ae476b',
+];
+
 export function SubjectDialog({
   subjects,
   open,
@@ -34,7 +45,7 @@ export function SubjectDialog({
           </DialogDescription>
         </DialogHeader>
         {/* Subjects container */}
-        <div className="flex flex-col gap-2 p-3 max-h-60 overflow-y-auto">
+        <div className="flex flex-wrap gap-2 p-3 max-h-60 overflow-y-auto">
           {subjects?.length == 0 ? (
             <span className="text-muted-foreground/50 text-center italic">
               No subjects found!
@@ -43,15 +54,19 @@ export function SubjectDialog({
             <>
               {subjects
                 .filter((s) => s.isActive)
-                .map((subject) => (
+                .map((sub, idx) => (
                   <button
-                    key={subject.subjectId}
-                    className="border border-muted py-2 text-muted-foreground rounded-full shadow-sm"
+                    key={`${sub.subjectId}-${idx}`}
+                    style={{
+                      backgroundColor:
+                        subjectColors[idx % subjectColors.length],
+                    }}
+                    className="border border-muted py-2 px-3 flex-1 text-nowrap text-card rounded-full shadow-sm"
                     onClick={() => {
-                      onSelect(subject);
+                      onSelect(sub);
                       setOpen(false);
                     }}>
-                    {subject.name}
+                    {sub.name}
                   </button>
                 ))}
             </>
