@@ -113,6 +113,7 @@ Ready to jump in? Follow these steps to get the development environment up and r
   - The emulator host is set to your machine's local IPv4 address, allowing other devices on your network to connect.
 - `pnpm dev --emulators --import <path>`:
   - Starts the emulators and imports data from the specified local path. This is ideal for testing with pre-existing data.
+  - Saves the emulator data to the `<path>` directory on exiting emulator.
 - `pnpm build`: Bundles the app for production.
 - `pnpm preview`: Serves the production build locally.
 - `pnpm lint`: Lints the codebase using ESLint.

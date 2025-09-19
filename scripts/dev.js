@@ -107,7 +107,7 @@ function runEmulators() {
   let emulatorCommand = `firebase emulators:start --project ${projectId} --only auth,firestore,database,apphosting`;
 
   if (argv.import) {
-    emulatorCommand += ` --import "${argv.import}"`;
+    emulatorCommand += ` --import=${argv.import} --export-on-exit=${argv.import}`;
   }
 
   process.env.VITE_USE_EMULATOR = 'true';
