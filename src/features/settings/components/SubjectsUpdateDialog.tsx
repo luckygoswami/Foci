@@ -48,7 +48,7 @@ export function SubjectsUpdateDialog({
       const updatedSubjects = prev.map((s) =>
         s.subjectId != sub.subjectId
           ? s
-          : { ...s, name: e.target.value.trimStart() }
+          : { ...s, name: e.target.value.trimStart(), updatedAt: Date.now() }
       );
       return updatedSubjects;
     });
@@ -81,7 +81,9 @@ export function SubjectsUpdateDialog({
   function handleActive(sub: Subject) {
     setNewSubjects((prev) => {
       const updatedSubjects = prev.map((s) =>
-        s.subjectId != sub.subjectId ? s : { ...s, isActive: true }
+        s.subjectId != sub.subjectId
+          ? s
+          : { ...s, isActive: true, updatedAt: Date.now() }
       );
       return updatedSubjects;
     });
@@ -97,7 +99,9 @@ export function SubjectsUpdateDialog({
 
     setNewSubjects((prev) => {
       const updatedSubjects = prev.map((s) =>
-        s.subjectId != sub.subjectId ? s : { ...s, isActive: false }
+        s.subjectId != sub.subjectId
+          ? s
+          : { ...s, isActive: false, updatedAt: Date.now() }
       );
       return updatedSubjects;
     });
