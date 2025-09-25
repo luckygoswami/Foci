@@ -297,3 +297,39 @@ export function newId(): string {
   const nanoid = customAlphabet(allowedChars);
   return nanoid();
 }
+
+/**
+ * Converts a timestamp into a short time string in `HH:MM` format,
+ * with an uppercase AM/PM indicator if available.
+ *
+ * @param timestamp - The timestamp in milliseconds since the Unix epoch.
+ * @returns A formatted time string (e.g., `"10:45 AM"` or `"14:30"` depending on locale).
+ *
+ * @example
+ * ```ts
+ * getShortTime(Date.now()); // "3:27 PM"
+ * ```
+ */
+export function getShortTime(timestamp: number): string {
+  const [time, period] = new Date(timestamp).toLocaleTimeString().split(' ');
+  const [hr, min] = time.split(':');
+
+  if (!period) return `${hr}:${min}`;
+  return `${hr}:${min} ${period.toUpperCase()}`;
+}
+
+/**
+ * Converts a timestamp into a short date string in `DD Mon` format.
+ *
+ * @param timestamp - The timestamp in milliseconds since the Unix epoch.
+ * @returns A formatted date string (e.g., `"25 Sep"`).
+ *
+ * @example
+ * ```ts
+ * getShortDate(Date.now()); // "25 Sep"
+ * ```
+ */
+export function getShortDate(timestamp: number): string {
+  const [, month, date] = new Date(timestamp).toDateString().split(' ');
+  return `${date} ${month}`;
+}

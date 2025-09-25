@@ -5,6 +5,8 @@ export interface Session {
   startTime: number;
   endTime: number;
   duration: number; // in minutes
+  updatedDuration?: number;
+  updatedAt?: number;
   subject: string;
   subjectId: string;
   groupIds?: GroupId[];
