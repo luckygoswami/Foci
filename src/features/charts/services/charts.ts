@@ -21,7 +21,10 @@ export async function fetchDailyGoalProgress(
     );
 
     const target = userData.dailyTargetMinutes;
-    const completed = sessions.reduce((acc, curr) => acc + curr.duration, 0);
+    const completed = sessions.reduce(
+      (acc, curr) => acc + (curr.updatedDuration || curr.duration),
+      0
+    );
     const progress: GoalProgress = [
       {
         name: 'completed',
@@ -51,7 +54,10 @@ export async function fetchWeeklyGoalProgress(
 
   try {
     const sessions = await getSessionsByDate(userData.userId, from, to);
-    const completed = sessions.reduce((acc, curr) => acc + curr.duration, 0);
+    const completed = sessions.reduce(
+      (acc, curr) => acc + (curr.updatedDuration || curr.duration),
+      0
+    );
     const progress: GoalProgress = [
       {
         name: 'completed',
@@ -84,7 +90,8 @@ export async function fetchSubjectTimeDistribution(
     const durationMap = sessions.reduce<Record<string, number>>(
       (acc, session) => {
         acc[session.subjectId] =
-          (acc[session.subjectId] || 0) + session.duration;
+          (acc[session.subjectId] || 0) +
+          (session.updatedDuration || session.duration);
         return acc;
       },
       {}
@@ -153,8 +160,12 @@ export function get7SegmentProgressForSubject(
     const days = isThisMonth ? thisMonthDays : lastMonthDays;
     const segmentIndex = Math.floor((day - 1) / Math.ceil(days / 7));
 
-    if (isThisMonth) thisSegments[segmentIndex].total += session.duration;
-    if (isLastMonth) lastSegments[segmentIndex].total += session.duration;
+    if (isThisMonth)
+      thisSegments[segmentIndex].total +=
+        session.updatedDuration || session.duration;
+    if (isLastMonth)
+      lastSegments[segmentIndex].total +=
+        session.updatedDuration || session.duration;
   });
 
   const result: SegmentedSubjectProgress[] = thisSegments.map((seg, idx) => ({
@@ -212,14 +223,18 @@ export function getWeeklyProgressForSubject(
       const weekIndex = thisWeeks.findIndex(
         (w) => day >= w.range[0] && day <= w.range[1]
       );
-      if (weekIndex >= 0) thisWeeks[weekIndex].total += session.duration;
+      if (weekIndex >= 0)
+        thisWeeks[weekIndex].total +=
+          session.updatedDuration || session.duration;
     }
 
     if (isLastMonth) {
       const weekIndex = lastWeeks.findIndex(
         (w) => day >= w.range[0] && day <= w.range[1]
       );
-      if (weekIndex >= 0) lastWeeks[weekIndex].total += session.duration;
+      if (weekIndex >= 0)
+        lastWeeks[weekIndex].total +=
+          session.updatedDuration || session.duration;
     }
   });
 

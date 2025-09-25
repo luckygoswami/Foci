@@ -6,6 +6,7 @@ import {
   getDoc,
   getDocs,
   increment,
+  orderBy,
   query,
   runTransaction,
   where,
@@ -53,7 +54,11 @@ export async function saveSessionToFirestore(
 export async function getSessionsByUser(
   userId: FirebaseUserId
 ): Promise<Session[]> {
-  const q = query(collection(db, 'sessions'), where('userId', '==', userId));
+  const q = query(
+    collection(db, 'sessions'),
+    where('userId', '==', userId),
+    orderBy('startTime', 'desc')
+  );
 
   try {
     const snapshot = await getDocs(q);
@@ -91,5 +96,44 @@ export async function getSessionsByDate(
   } catch (err: any) {
     console.error('Error in getting sessions by date:', err);
     throw new Error('Something went wrong.');
+  }
+}
+
+export async function updateDuration(session: Session, newDuration: number) {
+  const { userId, startTime, duration, updatedDuration } = session;
+  const userRef = doc(db, 'users', userId);
+  const sessionRef = doc(db, 'sessions', `${userId}_${startTime}`);
+
+  try {
+    await runTransaction(db, async (tx) => {
+      tx.update(sessionRef, {
+        updatedDuration: newDuration,
+        updatedAt: Date.now(),
+      });
+      tx.update(userRef, {
+        totalStudyTime: increment(newDuration - (updatedDuration || duration)),
+      });
+    });
+  } catch (err) {
+    console.error('Error updating session to firestore:', err);
+    throw new Error('Unable to update duration.');
+  }
+}
+
+export async function deleteSession(session: Session) {
+  const { userId, startTime, duration, updatedDuration } = session;
+  const userRef = doc(db, 'users', userId);
+  const sessionRef = doc(db, 'sessions', `${userId}_${startTime}`);
+
+  try {
+    await runTransaction(db, async (tx) => {
+      tx.delete(sessionRef);
+      tx.update(userRef, {
+        totalStudyTime: increment(-(updatedDuration || duration)),
+      });
+    });
+  } catch (err) {
+    console.error('Error deleting session from firestore:', err);
+    throw new Error('Unable to delete session.');
   }
 }
