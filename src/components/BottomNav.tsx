@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Users, BarChart, Handshake } from 'lucide-react';
+import { Home, Users, BarChart, Handshake, Code } from 'lucide-react';
 import { useUserData } from '@/features/user';
+import { envConfig } from '@/constants/envConfig';
 
 const navItems = [
   { to: '/app/home', icon: Home, label: 'Home' },
@@ -43,6 +44,19 @@ export default function BottomNav() {
           />
           <span>Account</span>
         </NavLink>
+        {!envConfig.disableDevNav && (
+          <NavLink
+            key={'/dev'}
+            to={'/dev'}
+            className={({ isActive }) =>
+              `flex flex-col items-center text-xs ${
+                isActive ? 'text-primary' : 'text-gray-500'
+              }`
+            }>
+            <Code size={24} />
+            <span>Dev Page</span>
+          </NavLink>
+        )}
       </div>
     </nav>
   );
