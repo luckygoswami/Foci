@@ -17,6 +17,7 @@ import toast from 'react-hot-toast';
 import { useUserData } from '@/features/user';
 import { updateStreakIfNeeded } from '@/features/streaks';
 import type { Subject } from '@/types';
+import { Link } from 'react-router-dom';
 
 export default function HomeDashboard() {
   const { userData, setUserData } = useUserData();
@@ -146,9 +147,16 @@ export default function HomeDashboard() {
         </div>
         {/* Progress charts */}
         <div className="flex-[3.25] overflow-y-scroll flex items-left flex-col px-5 rounded-2xl shadow-sm">
-          <h1 className="text-2xl font-bold text-foreground mt-2">
-            This Week's Focus
-          </h1>
+          <div className="flex items-baseline justify-between">
+            <h1 className="text-2xl font-bold text-foreground mt-2">
+              Activity Trends
+            </h1>
+            <Link
+              to="/app/progress/insights"
+              className="text-primary font-semibold text-lg cursor-pointer">
+              Insights&gt;
+            </Link>
+          </div>
           <div className="w-full size-56 mb-2">
             <SubjectTimeDistributionChart
               userId={userId}

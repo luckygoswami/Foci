@@ -22,7 +22,7 @@ export default function ProgressDashboard() {
         {/* Subject Progress */}
         <div className="flex-[1.75] flex flex-col overflow-hidden rounded-lg p-4 shadow-md">
           <h1 className="text-2xl font-bold text-foreground mb-3">
-            Monthly Study Progress
+            Monthly Progress
           </h1>
           <div className="flex-1 flex space-x-4 overflow-x-auto overflow-y-hidden snap-x snap-mandatory">
             {subjects
