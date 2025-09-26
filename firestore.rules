@@ -8,7 +8,7 @@ service cloud.firestore {
       allow create: if isValidNewSession();
       allow update: if isSessionOwner() && isValidSessionUpdate();
       allow read: if request.auth.uid != null;
-      allow delete: if false;
+      allow delete: if isSessionOwner();
 
       function isSessionOwner() {
         return request.auth != null &&

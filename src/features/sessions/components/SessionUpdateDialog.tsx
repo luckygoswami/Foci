@@ -15,7 +15,7 @@ import toast from 'react-hot-toast';
 
 interface ISessionUpdateDialog {
   session: Session | null;
-  setSessions: React.Dispatch<React.SetStateAction<Session[]>>;
+  setSessions: React.Dispatch<React.SetStateAction<Session[] | null>>;
   onClose: () => void;
 }
 
@@ -49,6 +49,7 @@ export function SessionUpdateDialog({
       await updateDuration(session, newDuration);
 
       setSessions((prev) => {
+        if (!prev) return prev;
         const idx = prev.findIndex((s) => s.startTime == session.startTime);
         prev[idx] = {
           ...prev[idx],
@@ -71,6 +72,7 @@ export function SessionUpdateDialog({
       await deleteSession(session);
 
       setSessions((prev) => {
+        if (!prev) return prev;
         const idx = prev.findIndex((s) => s.startTime == session.startTime);
         prev.splice(idx, 1);
         return prev;

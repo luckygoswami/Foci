@@ -1,4 +1,4 @@
-import { Header } from '@/components';
+import { Header, InsightsSkeleton } from '@/components';
 import { useEffect, useState } from 'react';
 import { useUserData } from '@/features/user';
 import type { Session } from '@/types';
@@ -10,7 +10,7 @@ import { getSessionsByUser, SessionUpdateDialog } from '@/features/sessions';
 export default function Insights() {
   const { userData } = useUserData();
   const { userId } = userData!;
-  const [sessions, setSessions] = useState<Session[]>([]);
+  const [sessions, setSessions] = useState<Session[] | null>(null);
   const [editSession, setEditSession] = useState<Session | null>(null);
 
   useEffect(() => {
@@ -54,33 +54,37 @@ export default function Insights() {
                 </th>
               </tr>
             </thead>
-            <tbody>
-              {sessions.map((session, idx) => (
-                <tr key={idx}>
-                  <td className="px-3 border-y">{session.subject}</td>
-                  <td className="border-y">
-                    <div className="flex items-center gap-1">
-                      {formatDurationHM(
-                        session.updatedDuration || session.duration
-                      )}
-                      <Pencil
-                        onClick={() => setEditSession(session)}
-                        size={14}
-                        className="cursor-pointer"
-                      />
-                    </div>
-                  </td>
-                  <td
-                    className="px-1 py-2 border-y"
-                    align="right">
-                    {getShortTime(session.startTime)}
-                  </td>
-                  <td className="px-1 py-2 border-y">
-                    {getShortDate(session.startTime)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+            {!sessions ? (
+              <InsightsSkeleton />
+            ) : (
+              <tbody>
+                {sessions.map((session, idx) => (
+                  <tr key={idx}>
+                    <td className="px-3 border-y">{session.subject}</td>
+                    <td className="border-y">
+                      <div className="flex items-center gap-1">
+                        {formatDurationHM(
+                          session.updatedDuration || session.duration
+                        )}
+                        <Pencil
+                          onClick={() => setEditSession(session)}
+                          size={14}
+                          className="cursor-pointer"
+                        />
+                      </div>
+                    </td>
+                    <td
+                      className="px-1 py-2 border-y"
+                      align="right">
+                      {getShortTime(session.startTime)}
+                    </td>
+                    <td className="px-1 py-2 border-y">
+                      {getShortDate(session.startTime)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            )}
           </table>
         </div>
       </div>
