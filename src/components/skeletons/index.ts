@@ -8,3 +8,4 @@ export * from './RequestsListSkeleton';
 export * from './SubjectProgressChartSkeleton';
 export * from './SubjectTimeDistributionChartSkeleton';
 export * from './UserDetailsPageSkeleton';
+export * from './InsightsSkeleton';

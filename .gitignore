@@ -28,4 +28,4 @@ admin/
 firebase-export*
 .firebase
 src/constants/avatars.ts
-src/pages/dev
+src/pages/app/dev

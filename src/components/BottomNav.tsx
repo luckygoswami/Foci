@@ -46,8 +46,8 @@ export default function BottomNav() {
         </NavLink>
         {!envConfig.disableDevNav && (
           <NavLink
-            key={'/dev'}
-            to={'/dev'}
+            key={'/app/dev'}
+            to={'/app/dev'}
             className={({ isActive }) =>
               `flex flex-col items-center text-xs ${
                 isActive ? 'text-primary' : 'text-gray-500'
