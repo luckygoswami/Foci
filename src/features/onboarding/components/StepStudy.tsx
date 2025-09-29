@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { OnboardingState } from '../types';
 import { formatDurationHM, newId } from '@/lib/utils';
 import type { Subject } from '@/types';
+import { RangeSlider } from '@/components';
 
 export function StepStudy({
   form,
@@ -38,8 +39,8 @@ export function StepStudy({
     }));
   }
 
-  function handleDailyTarget(e: React.ChangeEvent<HTMLInputElement>) {
-    const target = Number(e.target.value);
+  function handleDailyTarget(_: Event, value: number | number[]) {
+    const target = Number(value);
 
     setForm((f) => ({
       ...f,
@@ -47,8 +48,8 @@ export function StepStudy({
     }));
   }
 
-  function handleWeeklyTarget(e: React.ChangeEvent<HTMLInputElement>) {
-    const target = Number(e.target.value);
+  function handleWeeklyTarget(_: Event, value: number | number[]) {
+    const target = Number(value);
 
     setForm((f) => ({
       ...f,
@@ -121,21 +122,20 @@ export function StepStudy({
             {formatDurationHM(dailyTargetMinutes)}
           </span>
         </div>
-        <input
+        <RangeSlider
           id="dailyTarget-input"
-          type="range"
+          valueLabelDisplay="auto"
           min={DAILY_MIN}
           max={DAILY_MAX}
           step={DAILY_STEP}
           value={dailyTargetMinutes}
           onChange={handleDailyTarget}
-          className="mt-2 w-full accent"
           aria-valuemin={DAILY_MIN}
           aria-valuemax={DAILY_MAX}
           aria-valuenow={dailyTargetMinutes}
           aria-label="Daily study target in minutes"
         />
-        <div className="mt-1 flex justify-between text-xs text-slate-500">
+        <div className="flex justify-between text-xs text-slate-500">
           <span>{formatDurationHM(DAILY_MIN)}</span>
           <span>{formatDurationHM(DAILY_MAX)}</span>
         </div>
@@ -153,21 +153,20 @@ export function StepStudy({
             {formatDurationHM(weeklyTargetMinutes)}
           </span>
         </div>
-        <input
+        <RangeSlider
           id="weeklyTarget-input"
-          type="range"
+          valueLabelDisplay="auto"
           min={WEEKLY_MIN}
           max={WEEKLY_MAX}
           step={WEEKLY_STEP}
           value={weeklyTargetMinutes}
           onChange={handleWeeklyTarget}
-          className="mt-2 w-full accent"
           aria-valuemin={WEEKLY_MIN}
           aria-valuemax={WEEKLY_MAX}
           aria-valuenow={weeklyTargetMinutes}
           aria-label="Weekly study target in minutes"
         />
-        <div className="mt-1 flex justify-between text-xs text-slate-500">
+        <div className="flex justify-between text-xs text-slate-500">
           <span>{formatDurationHM(WEEKLY_MIN)}</span>
           <span>{formatDurationHM(WEEKLY_MAX)}</span>
         </div>
