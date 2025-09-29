@@ -50,13 +50,12 @@ export function SessionUpdateDialog({
 
       setSessions((prev) => {
         if (!prev) return prev;
-        const idx = prev.findIndex((s) => s.startTime == session.startTime);
-        prev[idx] = {
-          ...prev[idx],
-          updatedDuration: newDuration,
-          updatedAt: Date.now(),
-        };
-        return prev;
+        const newSessions = prev.map((s) =>
+          s.startTime == session.startTime
+            ? { ...s, updatedDuration: newDuration, updatedAt: Date.now() }
+            : s
+        );
+        return newSessions;
       });
 
       toast.success('Duration updated successfully.');
@@ -71,12 +70,13 @@ export function SessionUpdateDialog({
     try {
       await deleteSession(session);
 
-      setSessions((prev) => {
-        if (!prev) return prev;
-        const idx = prev.findIndex((s) => s.startTime == session.startTime);
-        prev.splice(idx, 1);
-        return prev;
-      });
+        setSessions((prev) => {
+          if (!prev) return prev;
+          const newSessions = prev.filter(
+            (s) => s.startTime != session.startTime
+          );
+          return newSessions;
+        });
 
       toast.success('Session deleted successfully.');
     } catch (err: any) {
