@@ -14,6 +14,7 @@ import {
   fetchUserDataByUserId,
   useUserData,
 } from '@/features/user';
+import { useConfirm } from '@/providers/ConfirmationContext';
 import type { FirebaseUserId, UserData } from '@/types';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -28,6 +29,7 @@ export default function UserDetailsPage() {
   const [profileData, setProfileData] = useState<UserData | undefined>(
     selectedUser || undefined
   );
+  const confirm = useConfirm();
 
   const {
     status: friendshipStatus,
@@ -79,25 +81,32 @@ export default function UserDetailsPage() {
   }
 
   function removeFriend() {
-    if (!userData || !profileData) return;
+    const handler = () => {
+      if (!userData || !profileData) return;
 
-    // TODO: add confirmation dialog and toast
-    unfriendUser(userData.userId, profileData.userId).catch((err) =>
-      toast.error(err.message)
-    );
-    setFriendShipStatus('notFriend');
+      // TODO: add confirmation dialog and toast
+      unfriendUser(userData.userId, profileData.userId).catch((err) =>
+        toast.error(err.message)
+      );
+      setFriendShipStatus('notFriend');
 
-    // remove friend from userData state
-    setUserData((prev) =>
-      prev
-        ? {
-            ...prev,
-            friends: prev.friends.filter(
-              (f) => f.userId !== profileData.userId
-            ),
-          }
-        : prev
-    );
+      // remove friend from userData state
+      setUserData((prev) =>
+        prev
+          ? {
+              ...prev,
+              friends: prev.friends.filter(
+                (f) => f.userId !== profileData.userId
+              ),
+            }
+          : prev
+      );
+    };
+
+    confirm(handler, {
+      message: 'Do you really want to unfriend?',
+      variant: 'destructive',
+    });
   }
 
   function handleAcceptRequest() {

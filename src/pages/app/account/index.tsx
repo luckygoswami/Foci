@@ -7,10 +7,19 @@ import {
   SubjectsAndStreak,
   useUserData,
 } from '@/features/user';
+import { useConfirm } from '@/providers/ConfirmationContext';
 
 export default function AccountDashboard() {
   const { userData } = useUserData();
   const { logout } = useAuth();
+  const confirm = useConfirm();
+
+  function handleLogout() {
+    confirm(logout, {
+      message: 'Do you really want to logout?',
+      variant: 'destructive',
+    });
+  }
 
   return (
     <div
@@ -31,8 +40,7 @@ export default function AccountDashboard() {
 
           <button
             className="flex-1 py-2 rounded-xl bg-red-200 text-red-700 font-semibold text-xl flex items-center justify-center gap-2 hover:bg-red-300 transition-colors"
-            // TODO: add confirmation dialog
-            onClick={logout}>
+            onClick={handleLogout}>
             Logout
           </button>
         </>

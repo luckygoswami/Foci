@@ -6,9 +6,18 @@ import {
   Subjects,
   TargetGoals,
 } from '@/features/settings';
+import { useConfirm } from '@/providers/ConfirmationContext';
 
 export default function SettingsPage() {
   const { logout } = useAuth();
+  const confirm = useConfirm();
+
+  function handleLogout() {
+    confirm(logout, {
+      message: 'Do you really want to logout?',
+      variant: 'destructive',
+    });
+  }
 
   return (
     <div
@@ -24,7 +33,7 @@ export default function SettingsPage() {
         <Button
           variant="destructive"
           className="w-full h-10"
-          onClick={logout}>
+          onClick={handleLogout}>
           Logout
         </Button>
       </div>

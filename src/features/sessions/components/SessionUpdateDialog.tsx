@@ -12,6 +12,7 @@ import type { Session } from '@/types';
 import React, { useState } from 'react';
 import { deleteSession, updateDuration } from '../services/firestoreSession';
 import toast from 'react-hot-toast';
+import { useConfirm } from '@/providers/ConfirmationContext';
 
 interface ISessionUpdateDialog {
   session: Session | null;
@@ -38,6 +39,7 @@ export function SessionUpdateDialog({
   const [newDuration, setNewDuration] = useState(
     session.updatedDuration || session.duration
   );
+  const confirm = useConfirm();
 
   function handleChange(_: Event, value: number | number[]): void {
     setNewDuration(Number(value));
@@ -65,10 +67,12 @@ export function SessionUpdateDialog({
       onClose();
     }
   }
-  async function handleDelete() {
-    if (!session) return;
-    try {
-      await deleteSession(session);
+
+  function handleDelete() {
+    const handler = async () => {
+      if (!session) return;
+      try {
+        await deleteSession(session);
 
         setSessions((prev) => {
           if (!prev) return prev;
@@ -78,12 +82,18 @@ export function SessionUpdateDialog({
           return newSessions;
         });
 
-      toast.success('Session deleted successfully.');
-    } catch (err: any) {
-      toast.error(err.message);
-    } finally {
-      onClose();
-    }
+        toast.success('Session deleted successfully.');
+      } catch (err: any) {
+        toast.error(err.message);
+      } finally {
+        onClose();
+      }
+    };
+
+    confirm(handler, {
+      message: 'This session will not be recovered after this action.',
+      variant: 'destructive',
+    });
   }
 
   return (

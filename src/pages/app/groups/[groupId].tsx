@@ -11,6 +11,7 @@ import {
   sendGroupInvite,
 } from '@/features/groups';
 import { useUserData } from '@/features/user';
+import { useConfirm } from '@/providers/ConfirmationContext';
 import type { Friend, Group, GroupId, GroupInvite } from '@/types';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -27,6 +28,7 @@ export default function GroupDetailsPage() {
   const [role, setRole] = useState<
     'admin' | 'creator' | 'member' | 'spectator'
   >('spectator');
+  const confirm = useConfirm();
 
   useEffect(() => {
     if (!showInviteModal || !userData || !groupId || sentInvites) return;
@@ -110,25 +112,32 @@ export default function GroupDetailsPage() {
   }
 
   function handleLeave() {
-    if (!groupId || !userData) return;
-    const memberObj = group?.members.find(
-      (mem) => mem.userId == userData.userId
-    );
+    const handler = () => {
+      if (!groupId || !userData) return;
+      const memberObj = group?.members.find(
+        (mem) => mem.userId == userData.userId
+      );
 
-    removeGroupMember(groupId, memberObj!).catch((err) =>
-      toast.error(err.message)
-    );
+      removeGroupMember(groupId, memberObj!).catch((err) =>
+        toast.error(err.message)
+      );
 
-    setRole('spectator');
-    const memberIds = group!.memberIds.filter((id) => id != userData.userId);
-    const members = group!.members.filter(
-      (mem) => mem.userId != userData.userId
-    );
-    setGroup((prev) => ({
-      ...prev!,
-      memberIds,
-      members,
-    }));
+      setRole('spectator');
+      const memberIds = group!.memberIds.filter((id) => id != userData.userId);
+      const members = group!.members.filter(
+        (mem) => mem.userId != userData.userId
+      );
+      setGroup((prev) => ({
+        ...prev!,
+        memberIds,
+        members,
+      }));
+    };
+
+    confirm(handler, {
+      message: `Do you really want to leave ${group?.name}?`,
+      variant: 'destructive',
+    });
   }
 
   return (
