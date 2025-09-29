@@ -6,12 +6,12 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { updateUser } from '@/features/user';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
 import type { FirebaseUserId } from '@/types';
 import { formatDurationHM } from '@/lib/utils';
+import { RangeSlider } from '@/components';
 
 const DAILY_MIN = 15;
 const DAILY_MAX = 1200;
@@ -34,8 +34,8 @@ export function DailyTargetDialog({
 }) {
   const [newTarget, setNewTarget] = useState(currentTarget);
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setNewTarget(Number(e.target.value));
+  function handleChange(_: Event, value: number | number[]) {
+    setNewTarget(Number(value));
   }
 
   async function handleUpdate() {
@@ -66,45 +66,43 @@ export function DailyTargetDialog({
           <div className="flex items-center justify-between">
             <label
               htmlFor="dailyTarget-input"
-              className="text-sm font-medium">
+              className="font-medium">
               Daily Target
             </label>
-            <span className="text-sm text-slate-600 tabular-nums">
+            <span className="text-slate-600 tabular-nums">
               {formatDurationHM(newTarget)}
             </span>
           </div>
-          <input
+          <RangeSlider
             id="dailyTarget-input"
-            type="range"
+            valueLabelDisplay="auto"
+            value={newTarget}
+            onChange={handleChange}
             min={DAILY_MIN}
             max={DAILY_MAX}
             step={5}
-            defaultValue={currentTarget}
-            onChange={handleChange}
-            className="mt-2 w-full accent"
             aria-valuemin={DAILY_MIN}
             aria-valuemax={DAILY_MAX}
-            aria-valuenow={currentTarget}
+            aria-valuenow={newTarget}
             aria-label="Daily study target in minutes"
           />
-          <div className="mt-1 flex justify-between text-xs text-slate-500">
+          <div className="flex justify-between text-xs text-slate-500">
             <span>{formatDurationHM(DAILY_MIN)}</span>
             <span>{formatDurationHM(DAILY_MAX)}</span>
           </div>
         </div>
 
-        <DialogFooter className="flex flex-row justify-end">
-          <Button
-            variant="outline"
-            className="hover:bg-card-hover"
-            onClick={onClose}>
+        <DialogFooter className="flex flex-row justify-between">
+          <button
+            onClick={onClose}
+            className="border border-muted-foreground/70 text-muted-foreground/70 px-5 py-2 rounded-full font-medium">
             Maybe Later
-          </Button>
-          <Button
-            className="hover:bg-primary-hover"
-            onClick={handleUpdate}>
+          </button>
+          <button
+            onClick={handleUpdate}
+            className="bg-primary text-primary-foreground px-5 py-2 rounded-full font-medium disabled:bg-muted-foreground/30">
             Update
-          </Button>
+          </button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -141,8 +139,8 @@ export function WeeklyTargetDialog({
     }
   }
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setNewTarget(Number(e.target.value));
+  function handleChange(_: Event, value: number | number[]) {
+    setNewTarget(Number(value));
   }
 
   return (
@@ -158,46 +156,44 @@ export function WeeklyTargetDialog({
         <div>
           <div className="flex items-center justify-between">
             <label
-              htmlFor="dailyTarget-input"
-              className="text-sm font-medium">
+              htmlFor="weeklyTarget-input"
+              className="font-medium">
               Weekly Target
             </label>
-            <span className="text-sm text-slate-600 tabular-nums">
+            <span className="text-slate-600 tabular-nums">
               {formatDurationHM(newTarget)}
             </span>
           </div>
-          <input
-            id="dailyTarget-input"
-            type="range"
+          <RangeSlider
+            id="weeklyTarget-input"
+            valueLabelDisplay="auto"
+            value={newTarget}
+            onChange={handleChange}
             min={WEEKLY_MIN}
             max={WEEKLY_MAX}
             step={30}
-            defaultValue={currentTarget}
-            onChange={handleChange}
-            className="mt-2 w-full accent"
             aria-valuemin={WEEKLY_MIN}
             aria-valuemax={WEEKLY_MAX}
-            aria-valuenow={currentTarget}
-            aria-label="Daily study target in minutes"
+            aria-valuenow={newTarget}
+            aria-label="Weekly study target in minutes"
           />
-          <div className="mt-1 flex justify-between text-xs text-slate-500">
+          <div className="flex justify-between text-xs text-slate-500">
             <span>{formatDurationHM(WEEKLY_MIN)}</span>
             <span>{formatDurationHM(WEEKLY_MAX)}</span>
           </div>
         </div>
 
-        <DialogFooter className="flex flex-row justify-end">
-          <Button
-            variant="outline"
-            className="hover:bg-card-hover"
-            onClick={onClose}>
+        <DialogFooter className="flex flex-row justify-between">
+          <button
+            onClick={onClose}
+            className="border border-muted-foreground/70 text-muted-foreground/70 px-5 py-2 rounded-full font-medium">
             Maybe Later
-          </Button>
-          <Button
-            className="hover:bg-primary-hover"
-            onClick={handleUpdate}>
+          </button>
+          <button
+            onClick={handleUpdate}
+            className="bg-primary text-primary-foreground px-5 py-2 rounded-full font-medium disabled:bg-muted-foreground/30">
             Update
-          </Button>
+          </button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
